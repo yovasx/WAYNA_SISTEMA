@@ -57,7 +57,6 @@
 |---|---|
 | **Motor** | PostgreSQL |
 | **Administración** | pgAdmin (incluido en el entorno Docker) |
-| **Características** | Almacenamiento relacional, robusto y escalable con backups automáticos diarios |
 
 ---
 
