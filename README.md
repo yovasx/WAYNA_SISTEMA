@@ -136,7 +136,7 @@ main                  ← Producción. Solo recibe merges estables desde develop
 
 ```bash
 # 1. Clonar el repositorio
-git clone <url-del-repositorio>
+git clone https://github.com/yovasx/WAYNA_SISTEMA.git
 cd wayna
 
 # 2. Copiar variables de entorno
