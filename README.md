@@ -1,6 +1,6 @@
  ![image alt](https://github.com/yovasx/WAYNA_SISTEMA/blob/0811ecc7f11f0b5248049b8b96ebb25061719319/HARD_ROCK_CRISTIANO.png)
 
-# WAYNA — Sistema Web Integral de Ventas, Reservas y Donaciones Gamificadas
+# WAYNA — Sistema Web de Ventas, Reservas y Donaciones Gamificadas para emprendedores
 
 > Sistema web para la gestión comercial y administrativa de emprendedores artesanales afiliados a WAYNA en la ciudad de La Paz, Bolivia.
 
