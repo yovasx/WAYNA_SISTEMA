@@ -1,4 +1,4 @@
- ![image alt]( Aquí escriben el permalink de la imagen )
+ ![image alt](https://github.com/yovasx/WAYNA_SISTEMA/blob/0811ecc7f11f0b5248049b8b96ebb25061719319/HARD_ROCK_CRISTIANO.png)
 
 # WAYNA — Sistema Web Integral de Ventas, Reservas y Donaciones Gamificadas
 
