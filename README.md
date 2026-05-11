@@ -1,3 +1,5 @@
+ ![image alt]( Aquí escriben el permalink de la imagen )
+
 # WAYNA — Sistema Web Integral de Ventas, Reservas y Donaciones Gamificadas
 
 > Sistema web para la gestión comercial y administrativa de emprendedores artesanales afiliados a WAYNA en la ciudad de La Paz, Bolivia.
