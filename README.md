@@ -10,11 +10,6 @@
 |---|---|
 | **FE+1** | Rubro 2 caso WAYNA |
 | **Rubro asignado** | Sistemas de Gestión Comercial para Emprendedores Artesanales |
-| **Universidad** | Universidad Privada "Franz Tamayo" — UNIFRANZ |
-| **Facultad** | Facultad de Ingeniería |
-| **Carrera** | Ingeniería en Sistemas |
-| **Año** | 2026 |
-
 ---
 
 ## Integrantes
