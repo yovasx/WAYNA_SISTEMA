@@ -26,7 +26,7 @@ export default defineConfig({
 
         // El HMR se dirige al navegador del host (tu máquina)
         hmr: {
-            host: 'localhost',
+            host: 'host.docker.internal',
             port: 5173,
         },
     },

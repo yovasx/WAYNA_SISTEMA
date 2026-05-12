@@ -24,7 +24,6 @@ services:
       - ./src:/var/www/html
     environment:
       APP_ENV: ${APP_ENV:-local}
-      APP_KEY: ${APP_KEY:-}
       APP_DEBUG: ${APP_DEBUG:-true}
       APP_URL: ${APP_URL:-http://localhost:9090}
       DB_CONNECTION: pgsql
@@ -37,6 +36,7 @@ services:
       REDIS_PORT: 6379
       CACHE_DRIVER: redis
       SESSION_DRIVER: redis
+      VITE_URL: http://host.docker.internal:5173
       QUEUE_CONNECTION: redis
     depends_on:
       wayna_postgres:
