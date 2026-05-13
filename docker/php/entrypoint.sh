@@ -50,42 +50,49 @@ until php -r "
 done
 echo "  ✓ Redis listo"
 
-# ── 3. Copiar .env si no existe ───────────────────────────
+# ── 3. Instalar dependencias Composer ─────────────────────
+if [ ! -f "vendor/autoload.php" ]; then
+    echo "▶ Instalando dependencias Composer..."
+    composer update --no-scripts --no-interaction --prefer-dist --optimize-autoloader --no-progress
+    echo "  ✓ Composer listo"
+fi
+
+# ── 4. Copiar .env si no existe ───────────────────────────
 if [ ! -f ".env" ]; then
     echo "▶ Copiando .env.example .env"
     cp .env.example .env
 fi
 
-# ── 4. Generar APP_KEY si está vacía ──────────────────────
+# ── 5. Generar APP_KEY si está vacía ──────────────────────
 if grep -q "APP_KEY=$" .env || grep -q "APP_KEY=\"\"" .env; then
     echo "▶ Generando APP_KEY..."
     php artisan key:generate --force || echo "  ⚠ APP_KEY fallo"
     echo "  ✓ APP_KEY generada"
 fi
 
-# ── 5. Permisos de storage ────────────────────────────────
+# ── 6. Permisos de storage ────────────────────────────────
 echo "▶ Ajustando permisos..."
 chown -R www-data:www-data storage bootstrap/cache 2>/dev/null || true
 chmod -R 775 storage bootstrap/cache 2>/dev/null || true
 echo "  ✓ Permisos OK"
 
-# ── 6. Storage link ───────────────────────────────────────
+# ── 7. Storage link ───────────────────────────────────────
 if [ ! -L "public/storage" ]; then
     echo "▶ Creando storage:link..."
     php artisan storage:link 2>&1 || echo "  ⚠ Storage link fallo"
 fi
 
-# ── 7. Limpiar cache de config (evita valores viejos) ─────
+# ── 8. Limpiar cache de config (evita valores viejos) ─────
 echo "▶ Limpiando cache de configuracion..."
 php artisan config:clear 2>&1 || echo "  ⚠ Config clear fallo (puede ser normal)"
 echo "  ✓ Config cache limpia"
 
-# ── 8. Migraciones ────────────────────────────────────────
+# ── 9. Migraciones ────────────────────────────────────────
 echo "▶ Ejecutando migraciones..."
 php artisan migrate --force 2>&1 || echo "  ⚠ Migraciones fallaron"
 echo "  ✓ Migraciones completadas"
 
-# ── 9. Seed (solo primera vez, datos demo) ───────────────
+# ── 10. Seed (solo primera vez, datos demo) ───────────────
 if [ ! -f "storage/app/.seeded" ]; then
     echo "▶ Sembrando datos demo iniciales..."
     php artisan db:seed --force 2>&1 || echo "  ⚠ Seed fallo (puede ser normal si ya hay datos)"
@@ -93,7 +100,7 @@ if [ ! -f "storage/app/.seeded" ]; then
     echo "  ✓ Seed completado"
 fi
 
-# ── 10. Cache según entorno ────────────────────────────────
+# ── 11. Cache según entorno ────────────────────────────────
 if [ "$APP_ENV" = "production" ]; then
     echo "▶ Cacheando configuracion (produccion)..."
     php artisan config:cache 2>&1 || echo "  ⚠ Config cache fallo"
