@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#ffdad2",
+                        "tertiary-fixed": "#ffdf97",
+                        "surface-dim": "#ddd8e1",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#5a4400",
+                        "on-secondary-fixed": "#3d0700",
+                        "on-primary-fixed": "#1d0061",
+                        "primary-container": "#7865c9",
+                        "primary": "#5f4cae",
+                        "surface-bright": "#fdf8ff",
+                        "inverse-surface": "#312f36",
+                        "on-secondary-fixed-variant": "#812914",
+                        "on-primary-fixed-variant": "#4a3597",
+                        "on-tertiary-container": "#fffbff",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#484552",
+                        "surface-tint": "#624eb1",
+                        "on-secondary-container": "#741f0b",
+                        "surface": "#fdf8ff",
+                        "on-background": "#1c1b21",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#cbbeff",
+                        "surface-container-low": "#f7f2fb",
+                        "tertiary-fixed-dim": "#ecc155",
+                        "on-primary-container": "#fffbff",
+                        "primary-fixed-dim": "#cbbeff",
+                        "surface-variant": "#e6e1ea",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary": "#745800",
+                        "secondary": "#a03f29",
+                        "secondary-fixed-dim": "#ffb4a3",
+                        "background": "#fdf8ff",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#927000",
+                        "outline-variant": "#cac4d4",
+                        "primary-fixed": "#e6deff",
+                        "secondary-container": "#fe876a",
+                        "surface-container-high": "#ebe6ef",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f4eff8",
+                        "on-tertiary-fixed": "#251a00",
+                        "on-surface": "#1c1b21",
+                        "surface-container-highest": "#e6e1ea",
+                        "surface-container": "#f1ecf5",
+                        "outline": "#797583",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "section-gap": "80px",
+                        "unit": "8px",
+                        "stack-lg": "32px",
+                        "margin-desktop": "40px",
+                        "stack-md": "16px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["DM Sans"],
+                        "body-sm": ["DM Sans"],
+                        "display-lg": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "data-label": ["JetBrains Mono"],
+                        "headline-sm": ["Playfair Display"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "data-price": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "data-label": ["12px", {"lineHeight": "1.0", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "data-price": ["16px", {"lineHeight": "1.0", "letterSpacing": "-0.03em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #fdf8ff; color: #1c1b21; }
+        .hairline-border { border: 0.5px solid rgba(0, 0, 0, 0.10); }
+        .artisanal-bg { background-color: #F1EFE8; }
+        .ghost-shadow { box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.10); }
+    </style>
+</head>
+<body class="font-body-md text-body-md antialiased">
+<main class="flex min-h-screen">
+<!-- Left Column: Illustration and Tagline -->
+<section class="hidden lg:flex lg:w-1/2 artisanal-bg items-center justify-center p-margin-desktop relative overflow-hidden">
+<div class="relative z-10 flex flex-col items-center text-center max-w-md">
+<div class="mb-stack-lg w-full aspect-[4/5] bg-surface overflow-hidden rounded-xl hairline-border">
+<img class="w-full h-full object-cover" data-alt="An intricate artisanal illustration of Bolivian textile patterns featuring geometric Andean motifs and llamas. The artwork uses a warm, earthy palette of terracotta, deep violet, and ochre against a light cream background. The lighting is soft and natural, emphasizing the tactile texture of woven fabric. The overall style is modern yet deeply rooted in cultural heritage, maintaining a clean and minimalist digital aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcpGXVzSt335ImxkUlt6dwJAEq_QoILJaTBVSKWPGFhxymZyzORnVNi4xMO7zBTbFGVKnQMDcQBCycIqlUJs8rKMh8z-F7yYQIEXnduDKUnDZudZ5gCbChmVZXveZ-bQ9XlENJQKdnbvQHmnVIwfs3hwSpXSuOsRkNmeXs2ZYEHCnM7M5GtAbmC0QH3gvssXiSYwBkviVsIeGH7gYfx3luaOtU1Jm3lamUcOWW0x4aRrFjTtD69l5VVE2BiWCy8js2lFoUAf8KBn4"/>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface-variant">
+                    Arte que conecta culturas
+                </h1>
+<p class="mt-stack-md font-body-lg text-body-lg text-outline">
+                    Descubre la herencia artesanal de Bolivia a través de cada pieza única y transparente.
+                </p>
+</div>
+<!-- Subtle Texture Overlays -->
+<div class="absolute inset-0 opacity-5 pointer-events-none">
+<svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="40" id="pattern-fabric" patternunits="userSpaceOnUse" width="40" x="0" y="0">
+<path d="M0 40L40 0M-10 10L10 -10M30 50L50 30" fill="none" stroke="currentColor" stroke-width="0.5"></path>
+</pattern>
+</defs>
+<rect fill="url(#pattern-fabric)" height="100%" width="100%"></rect>
+</svg>
+</div>
+</section>
+<!-- Right Column: Login Form -->
+<section class="w-full lg:w-1/2 bg-surface-container-lowest flex items-center justify-center p-margin-mobile md:p-margin-desktop">
+<div class="w-full max-w-[440px] flex flex-col">
+<!-- Brand Identity -->
+<div class="mb-stack-lg text-center lg:text-left">
+<span class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary">WAYNA</span>
+</div>
+<div class="mb-stack-lg">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-sm">Iniciar sesión</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Bienvenido de nuevo a nuestra comunidad de herencia y arte.</p>
+</div>
+<!-- Login Form -->
+<form action="#" class="flex flex-col gap-stack-md">
+<div class="flex flex-col gap-unit">
+<label class="font-data-label text-data-label text-outline uppercase tracking-wider" for="email">Email</label>
+<input class="w-full px-stack-md py-stack-md rounded-xl hairline-border focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container-low outline-none transition-all placeholder:text-outline-variant" id="email" name="email" placeholder="nombre@ejemplo.com" type="email"/>
+</div>
+<div class="flex flex-col gap-unit relative">
+<label class="font-data-label text-data-label text-outline uppercase tracking-wider" for="password">Password</label>
+<div class="relative">
+<input class="w-full px-stack-md py-stack-md rounded-xl hairline-border focus:ring-1 focus:ring-primary focus:border-primary bg-surface-container-low outline-none transition-all placeholder:text-outline-variant" id="password" name="password" placeholder="••••••••" type="password"/>
+<button class="absolute right-stack-md top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between mt-unit">
+<label class="flex items-center gap-unit cursor-pointer group">
+<input class="w-4 h-4 rounded hairline-border text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Remember me</span>
+</label>
+<a class="font-body-sm text-body-sm text-primary hover:underline transition-all" href="/forgot-password">¿Olvidaste tu contraseña?</a>
+</div>
+<button class="mt-stack-md w-full bg-primary text-on-primary font-body-md py-stack-md rounded-xl hover:opacity-90 active:scale-[0.98] transition-all shadow-sm" type="submit">
+                        Iniciar sesión
+                    </button>
+</form>
+<!-- Divider -->
+<div class="flex items-center gap-stack-md my-stack-lg">
+<div class="flex-1 hairline-border h-[0.5px]"></div>
+<span class="font-data-label text-data-label text-outline uppercase">O continúa con</span>
+<div class="flex-1 hairline-border h-[0.5px]"></div>
+</div>
+<!-- Social Login -->
+<div class="grid grid-cols-2 gap-stack-md">
+<button class="flex items-center justify-center gap-unit py-stack-sm hairline-border rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors">
+<i class="ti ti-brand-google text-on-surface-variant text-xl"></i>
+<span class="font-body-sm text-body-sm">Google</span>
+</button>
+<button class="flex items-center justify-center gap-unit py-stack-sm hairline-border rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors">
+<i class="ti ti-brand-facebook text-on-surface-variant text-xl"></i>
+<span class="font-body-sm text-body-sm">Facebook</span>
+</button>
+</div>
+<!-- Register Footer -->
+<div class="mt-section-gap text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                        ¿No tienes una cuenta? 
+                        <a class="text-primary font-bold hover:underline ml-unit" href="/register">Regístrate</a>
+</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Success Message Toast (Visual only) -->
+<div class="fixed bottom-stack-lg left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-stack-lg py-stack-md rounded-full ghost-shadow flex items-center gap-stack-md opacity-0 pointer-events-none">
+<span class="material-symbols-outlined text-tertiary-fixed" data-icon="check_circle">check_circle</span>
+<span class="font-body-sm">Sesión iniciada correctamente</span>
+</div>
+</body></html>

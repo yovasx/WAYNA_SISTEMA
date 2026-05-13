@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WAYNA Dashboard Emprendedor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Playfair+Display:wght@600;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#ffdad2",
+                        "tertiary-fixed": "#ffdf97",
+                        "surface-dim": "#ddd8e1",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#5a4400",
+                        "on-secondary-fixed": "#3d0700",
+                        "on-primary-fixed": "#1d0061",
+                        "primary-container": "#7865c9",
+                        "primary": "#5f4cae",
+                        "surface-bright": "#fdf8ff",
+                        "inverse-surface": "#312f36",
+                        "on-secondary-fixed-variant": "#812914",
+                        "on-primary-fixed-variant": "#4a3597",
+                        "on-tertiary-container": "#fffbff",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#484552",
+                        "surface-tint": "#624eb1",
+                        "on-secondary-container": "#741f0b",
+                        "surface": "#fdf8ff",
+                        "on-background": "#1c1b21",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#cbbeff",
+                        "surface-container-low": "#f7f2fb",
+                        "tertiary-fixed-dim": "#ecc155",
+                        "on-primary-container": "#fffbff",
+                        "primary-fixed-dim": "#cbbeff",
+                        "surface-variant": "#e6e1ea",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary": "#745800",
+                        "secondary": "#a03f29",
+                        "secondary-fixed-dim": "#ffb4a3",
+                        "background": "#fdf8ff",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#927000",
+                        "outline-variant": "#cac4d4",
+                        "primary-fixed": "#e6deff",
+                        "secondary-container": "#fe876a",
+                        "surface-container-high": "#ebe6ef",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f4eff8",
+                        "on-tertiary-fixed": "#251a00",
+                        "on-surface": "#1c1b21",
+                        "surface-container-highest": "#e6e1ea",
+                        "surface-container": "#f1ecf5",
+                        "outline": "#797583",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "section-gap": "80px",
+                        "unit": "8px",
+                        "stack-lg": "32px",
+                        "margin-desktop": "40px",
+                        "stack-md": "16px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["DM Sans"],
+                        "body-sm": ["DM Sans"],
+                        "display-lg": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "data-label": ["JetBrains Mono"],
+                        "headline-sm": ["Playfair Display"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "data-price": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "data-label": ["12px", {"lineHeight": "1.0", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "data-price": ["16px", {"lineHeight": "1.0", "letterSpacing": "-0.03em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #fdf8ff;
+            color: #1c1b21;
+        }
+        .hairline-border {
+            border: 0.5px solid rgba(0, 0, 0, 0.10);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-margin-desktop bg-surface dark:bg-on-background docked full-width h-[64px] border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-stack-lg">
+<span class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary dark:text-primary-fixed">WAYNA</span>
+<nav class="hidden md:flex gap-stack-md">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Catalog</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Entrepreneurs</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Donate</a>
+</nav>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed p-2 hover:bg-surface-container rounded-full transition-all">shopping_cart</button>
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed p-2 hover:bg-surface-container rounded-full transition-all">notifications</button>
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed p-2 hover:bg-surface-container rounded-full transition-all">account_circle</button>
+</div>
+</header>
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-[64px] h-[calc(100vh-64px)] z-40 flex flex-col p-stack-md bg-surface dark:bg-on-background docked w-[260px] border-r border-outline-variant dark:border-outline hidden md:flex">
+<div class="flex flex-col gap-2 mb-stack-lg">
+<div class="flex items-center gap-3 px-2 py-4">
+<img alt="WAYNA Logo" class="w-12 h-12 rounded-xl object-cover" data-alt="A macro photograph of traditional Bolivian textile patterns with intricate hand-woven geometric designs in deep earthy tones. The lighting is soft and natural, emphasizing the organic cotton texture and high-quality artisanal craftsmanship. The aesthetic is clean and sophisticated, reflecting a heritage brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2AH1nPSdFpY1tX1Sey7a9RRMGyPqbI6ANlpgX3313cWL6xjK9wZ1DgndgmG8GaQkMEi-HPoTgxc_BU5xn-gAN7VI2ESOyvOcRtHBwqfY_kjnMjRku5bK2sSK57bDzdb4yx1KdJW88mPi86F5inEF82xuHyR6sU5DebOUDSxcrY9w1OJwWmGn20KTvami_ThI_DDyf1ySRa0YiKF2hZ4G0xR6QzWOmc3gLzkVnBWE9BA19q6C8Wh-LCy0HAhEjpjRC-0kPDe_0MuM"/>
+<div>
+<div class="font-display-lg-mobile text-[20px] text-primary">WAYNA</div>
+<div class="font-body-sm text-body-sm text-outline">Bolivian Heritage</div>
+</div>
+</div>
+</div>
+<nav class="flex-grow flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low transition-all rounded-xl font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined">home</span> Home
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low transition-all rounded-xl font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined">grid_view</span> Catalog
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low transition-all rounded-xl font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined">storefront</span> Entrepreneurs
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low transition-all rounded-xl font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined">shopping_bag</span> Orders
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low transition-all rounded-xl font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined">auto_awesome</span> Impact
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-xl font-medium font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span> Dashboard
+            </a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-4 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container transition-all rounded-xl font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+            </a>
+<button class="mt-4 bg-secondary text-on-secondary py-3 rounded-xl font-body-sm font-medium hover:opacity-90 transition-all">Donate Now</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="md:ml-[260px] pt-[64px] min-h-screen">
+<div class="px-margin-mobile md:px-margin-desktop py-stack-lg max-w-container-max mx-auto">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-stack-lg">
+<div>
+<h1 class="font-display-lg text-headline-md md:text-display-lg text-on-surface">Bienvenido, Tejidos del Sol</h1>
+<p class="font-data-label text-data-label text-outline uppercase mt-1">Lunes, 24 de Junio de 2024</p>
+</div>
+<div class="flex gap-stack-sm">
+<button class="bg-primary text-on-primary px-stack-md py-2 rounded-xl flex items-center gap-2 hover:opacity-90 transition-all font-body-sm">
+<span class="material-symbols-outlined text-[18px]">add</span> Nuevo Producto
+                    </button>
+</div>
+</div>
+<!-- Alerts -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md mb-stack-lg">
+<div class="bg-error-container text-on-error-container p-4 rounded-xl flex items-center gap-4 hairline-border">
+<span class="material-symbols-outlined text-error">warning</span>
+<span class="font-body-md">2 productos con stock crítico</span>
+</div>
+<div class="bg-primary-fixed text-on-primary-fixed-variant p-4 rounded-xl flex items-center gap-4 hairline-border">
+<span class="material-symbols-outlined">info</span>
+<span class="font-body-md">Tienes 3 reservas para mañana</span>
+</div>
+</div>
+<!-- Quick Metrics Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter mb-section-gap">
+<div class="bg-surface p-stack-md rounded-xl hairline-border flex flex-col justify-between h-[120px]">
+<span class="font-data-label text-data-label text-outline uppercase">Ventas hoy</span>
+<div class="flex items-baseline gap-1">
+<span class="font-data-price text-headline-sm text-primary">Bs. 850</span>
+</div>
+<div class="flex items-center gap-1 text-[12px] text-primary">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +12% vs ayer
+                    </div>
+</div>
+<div class="bg-surface p-stack-md rounded-xl hairline-border flex flex-col justify-between h-[120px]">
+<span class="font-data-label text-data-label text-outline uppercase">Reservas pendientes</span>
+<div class="flex items-baseline gap-1">
+<span class="font-data-price text-headline-sm text-secondary">3</span>
+</div>
+<div class="flex items-center gap-1 text-[12px] text-secondary">
+<span class="material-symbols-outlined text-[14px]">schedule</span> Acción requerida
+                    </div>
+</div>
+<div class="bg-surface p-stack-md rounded-xl hairline-border flex flex-col justify-between h-[120px]">
+<span class="font-data-label text-data-label text-outline uppercase">Stock crítico</span>
+<div class="flex items-baseline gap-1">
+<span class="font-data-price text-headline-sm text-error">2</span>
+</div>
+<div class="flex items-center gap-1 text-[12px] text-error">
+<span class="material-symbols-outlined text-[14px]">inventory_2</span> Reabastecer pronto
+                    </div>
+</div>
+<div class="bg-surface p-stack-md rounded-xl hairline-border flex flex-col justify-between h-[120px]">
+<span class="font-data-label text-data-label text-outline uppercase">Donaciones recibidas</span>
+<div class="flex items-baseline gap-1">
+<span class="font-data-price text-headline-sm text-tertiary">Bs. 120</span>
+</div>
+<div class="w-full bg-surface-variant h-1 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full w-3/4"></div>
+</div>
+</div>
+</div>
+<!-- Secondary Layout: Orders + QR -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Recent Orders Table -->
+<div class="lg:col-span-8 bg-surface rounded-xl hairline-border overflow-hidden">
+<div class="p-stack-md border-b border-outline-variant flex justify-between items-center">
+<h2 class="font-headline-sm text-headline-sm">Pedidos Recientes</h2>
+<button class="text-primary font-body-sm hover:underline">Ver todos</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low font-data-label text-data-label text-outline uppercase">
+<tr>
+<th class="px-stack-md py-3">Código</th>
+<th class="px-stack-md py-3">Cliente</th>
+<th class="px-stack-md py-3">Productos</th>
+<th class="px-stack-md py-3">Total</th>
+<th class="px-stack-md py-3">Estado</th>
+<th class="px-stack-md py-3">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant font-body-sm">
+<tr>
+<td class="px-stack-md py-4 font-data-label">#W-4921</td>
+<td class="px-stack-md py-4">Elena Vargas</td>
+<td class="px-stack-md py-4">Manta de Alpaca x1</td>
+<td class="px-stack-md py-4 font-data-price">Bs. 450</td>
+<td class="px-stack-md py-4">
+<span class="px-2 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] font-medium uppercase">pendiente</span>
+</td>
+<td class="px-stack-md py-4">
+<button class="material-symbols-outlined text-outline hover:text-primary">visibility</button>
+</td>
+</tr>
+<tr>
+<td class="px-stack-md py-4 font-data-label">#W-4920</td>
+<td class="px-stack-md py-4">Carlos Rocha</td>
+<td class="px-stack-md py-4">Cesta Tejida x2</td>
+<td class="px-stack-md py-4 font-data-price">Bs. 220</td>
+<td class="px-stack-md py-4">
+<span class="px-2 py-1 rounded-full bg-primary-fixed text-on-primary-fixed text-[10px] font-medium uppercase">confirmado</span>
+</td>
+<td class="px-stack-md py-4">
+<button class="material-symbols-outlined text-outline hover:text-primary">visibility</button>
+</td>
+</tr>
+<tr>
+<td class="px-stack-md py-4 font-data-label">#W-4919</td>
+<td class="px-stack-md py-4">Maria Quispe</td>
+<td class="px-stack-md py-4">Bufanda Lana x1</td>
+<td class="px-stack-md py-4 font-data-price">Bs. 180</td>
+<td class="px-stack-md py-4">
+<span class="px-2 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant text-[10px] font-medium uppercase">entregado</span>
+</td>
+<td class="px-stack-md py-4">
+<button class="material-symbols-outlined text-outline hover:text-primary">visibility</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- My QR Section -->
+<div class="lg:col-span-4 flex flex-col gap-gutter">
+<div class="bg-surface p-stack-lg rounded-xl hairline-border flex flex-col items-center text-center">
+<h2 class="font-headline-sm text-headline-sm mb-stack-md">Mi Espacio WAYNA</h2>
+<div class="relative p-4 bg-white hairline-border rounded-xl mb-stack-md">
+<img alt="QR Code" class="w-[150px] h-[150px] grayscale opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWzTO628phbWD0hcYrfIYugjNI47UgkxrD5yath2WkeipgQcBnIR0l-tWTYgcjFBRoRqswLoYfMejEqXiXAEI7GkWV8rGJly4RpxkzsUjJJKwuimGkBU2JMhaYZ3ljYumZliUCOiC20XY9xlFED_Bm6xfQKeOLN-xesPdnctw-SvK3xJHX9r9-rIoqtEggrLj8ZnwmDZUeQBMv2TTCzCycl1en_30aXZqBPDG8OKfAcZPTaRMPhAukK0sKRUo2iimB_zI_JNLUbUk"/>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<span class="bg-white p-1 rounded-full shadow-sm text-primary font-bold text-[10px]">W</span>
+</div>
+</div>
+<p class="font-body-sm text-outline mb-stack-lg">Comparte tu catálogo artesanal con tus clientes y recibe pagos directos.</p>
+<div class="w-full flex flex-col gap-2">
+<button class="w-full border border-primary text-primary py-2 rounded-xl flex items-center justify-center gap-2 hover:bg-surface-container-low transition-all font-body-sm">
+<span class="material-symbols-outlined text-[18px]">download</span> Descargar QR
+                            </button>
+<button class="w-full bg-surface-variant text-on-surface-variant py-2 rounded-xl flex items-center justify-center gap-2 hover:bg-outline-variant transition-all font-body-sm">
+<span class="material-symbols-outlined text-[18px]">content_copy</span> Copiar link
+                            </button>
+</div>
+</div>
+<!-- Artisan Insight Card -->
+<div class="bg-inverse-surface text-surface p-stack-md rounded-xl flex gap-4 items-center">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-on-primary-container">lightbulb</span>
+</div>
+<div>
+<p class="font-body-sm">Consejo: Las mantas de color <span class="text-tertiary-fixed font-bold">Terracota</span> son tendencia este mes. ¡Actualiza tus fotos!</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Shell -->
+<footer class="md:ml-[260px] w-full py-stack-lg px-margin-desktop grid grid-cols-1 md:grid-cols-3 gap-gutter bg-inverse-surface dark:bg-surface-container-lowest full-width bottom-0">
+<div class="flex flex-col gap-2">
+<span class="font-headline-sm text-surface dark:text-primary">WAYNA</span>
+<p class="font-body-sm text-surface-variant dark:text-outline max-w-xs">© 2024 WAYNA. Preserving Bolivian Artistry through digital connection and fair trade.</p>
+</div>
+<div class="flex flex-col gap-2">
+<h4 class="font-body-md font-bold text-surface">Quick Links</h4>
+<div class="flex flex-wrap gap-x-stack-md gap-y-2">
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">About Us</a>
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">Artisan Stories</a>
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">Terms</a>
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">Contact</a>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<h4 class="font-body-md font-bold text-surface">Language</h4>
+<div class="flex gap-stack-sm">
+<button class="text-secondary-fixed-dim underline font-body-sm">Español</button>
+<button class="text-surface-variant font-body-sm hover:text-surface transition-colors">English</button>
+<button class="text-surface-variant font-body-sm hover:text-surface transition-colors">Quechua</button>
+</div>
+</div>
+</footer>
+</body></html>

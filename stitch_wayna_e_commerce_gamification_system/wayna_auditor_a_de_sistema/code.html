@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#ffdad2",
+                        "tertiary-fixed": "#ffdf97",
+                        "surface-dim": "#ddd8e1",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#5a4400",
+                        "on-secondary-fixed": "#3d0700",
+                        "on-primary-fixed": "#1d0061",
+                        "primary-container": "#7865c9",
+                        "primary": "#5f4cae",
+                        "surface-bright": "#fdf8ff",
+                        "inverse-surface": "#312f36",
+                        "on-secondary-fixed-variant": "#812914",
+                        "on-primary-fixed-variant": "#4a3597",
+                        "on-tertiary-container": "#fffbff",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#484552",
+                        "surface-tint": "#624eb1",
+                        "on-secondary-container": "#741f0b",
+                        "surface": "#fdf8ff",
+                        "on-background": "#1c1b21",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#cbbeff",
+                        "surface-container-low": "#f7f2fb",
+                        "tertiary-fixed-dim": "#ecc155",
+                        "on-primary-container": "#fffbff",
+                        "primary-fixed-dim": "#cbbeff",
+                        "surface-variant": "#e6e1ea",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary": "#745800",
+                        "secondary": "#a03f29",
+                        "secondary-fixed-dim": "#ffb4a3",
+                        "background": "#fdf8ff",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#927000",
+                        "outline-variant": "#cac4d4",
+                        "primary-fixed": "#e6deff",
+                        "secondary-container": "#fe876a",
+                        "surface-container-high": "#ebe6ef",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f4eff8",
+                        "on-tertiary-fixed": "#251a00",
+                        "on-surface": "#1c1b21",
+                        "surface-container-highest": "#e6e1ea",
+                        "surface-container": "#f1ecf5",
+                        "outline": "#797583",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "section-gap": "80px",
+                        "unit": "8px",
+                        "stack-lg": "32px",
+                        "margin-desktop": "40px",
+                        "stack-md": "16px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["DM Sans"],
+                        "body-sm": ["DM Sans"],
+                        "display-lg": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "data-label": ["JetBrains Mono"],
+                        "headline-sm": ["Playfair Display"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "data-price": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "data-label": ["12px", {"lineHeight": "1.0", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "data-price": ["16px", {"lineHeight": "1.0", "letterSpacing": "-0.03em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #fdf8ff;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-margin-desktop bg-surface dark:bg-on-background docked full-width h-[64px] border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-stack-lg">
+<span class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary dark:text-primary-fixed">WAYNA</span>
+<div class="hidden md:flex gap-gutter items-center ml-stack-lg">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80" href="#">Catalog</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80" href="#">Entrepreneurs</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80" href="#">Donate</a>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">shopping_cart</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User avatar" class="w-full h-full object-cover" data-alt="A professional headshot of a person with a warm and friendly expression, set against a minimalist and clean interior studio background. The lighting is soft and diffused, creating a polished, high-end professional aesthetic that fits into a modern artisanal digital brand. The colors are muted and sophisticated, emphasizing clear skin tones and sharp details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPfTNkcLviPjalj8oyyO2Te--rV6MHIYR_3NSiH4ejX5dhTL2znmoG-fh2-NPkkKv1LuI_Ji9oPyePCoUCNN3DV4k3sBqm201-R2cDLyBb8xwHxRBLEpCrkjYaLVFvP9eMv8SVc_KexYSt57GGFjt-utGu9VXT2QplDWZ9KADNndvmypAWpgUHZHVFARqBXuUlv_oO0J3ebYtBJxMVu3GnL1ZHwOmbs6J70IctvEy6tnM6tTpwz1NvdJTzY4ikMWF_K6bEz86onBs"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-[64px] h-[calc(100vh-64px)] z-40 flex flex-col p-stack-md border-r border-outline-variant dark:border-outline bg-surface dark:bg-on-background w-[260px] docked">
+<div class="mb-stack-lg px-2">
+<h2 class="text-on-surface font-headline-sm text-headline-sm">Dashboard</h2>
+<p class="text-on-surface-variant font-body-sm text-body-sm">Bolivian Artisanal Heritage</p>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="flex items-center gap-stack-md px-stack-md py-3 text-on-surface-variant hover:bg-surface-container-low rounded-xl transition-all group" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-body-sm text-body-sm">Home</span>
+</a>
+<a class="flex items-center gap-stack-md px-stack-md py-3 text-on-surface-variant hover:bg-surface-container-low rounded-xl transition-all group" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-body-sm text-body-sm">Catalog</span>
+</a>
+<a class="flex items-center gap-stack-md px-stack-md py-3 text-on-surface-variant hover:bg-surface-container-low rounded-xl transition-all group" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span class="font-body-sm text-body-sm">Entrepreneurs</span>
+</a>
+<a class="flex items-center gap-stack-md px-stack-md py-3 text-on-surface-variant hover:bg-surface-container-low rounded-xl transition-all group" href="#">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="font-body-sm text-body-sm">Orders</span>
+</a>
+<a class="flex items-center gap-stack-md px-stack-md py-3 text-on-surface-variant hover:bg-surface-container-low rounded-xl transition-all group" href="#">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-body-sm text-body-sm">Impact</span>
+</a>
+<a class="flex items-center gap-stack-md px-stack-md py-3 bg-primary-container text-on-primary-container rounded-xl font-medium transition-all group" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-body-sm text-body-sm">Dashboard</span>
+</a>
+</nav>
+<div class="mt-auto flex flex-col gap-1 border-t border-outline-variant pt-stack-md">
+<a class="flex items-center gap-stack-md px-stack-md py-2 text-on-surface-variant hover:bg-surface-container-low rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-sm text-body-sm">Settings</span>
+</a>
+<a class="flex items-center gap-stack-md px-stack-md py-2 text-on-surface-variant hover:bg-surface-container-low rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="font-body-sm text-body-sm">Help</span>
+</a>
+<button class="mt-stack-md bg-secondary text-on-secondary py-3 px-stack-md rounded-xl font-body-sm text-body-sm font-medium hover:opacity-90 transition-opacity">
+                Donate Now
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-[260px] mt-[64px] p-margin-desktop min-h-[calc(100vh-64px)] bg-background">
+<header class="mb-stack-lg">
+<h1 class="font-display-lg text-display-lg text-on-surface">Auditoría del Sistema</h1>
+<p class="text-on-surface-variant font-body-lg text-body-lg">Supervisión y trazabilidad de eventos de la plataforma.</p>
+</header>
+<!-- Filters Bar -->
+<section class="bg-surface p-stack-md rounded-xl border border-outline-variant/30 mb-gutter flex flex-wrap items-end gap-gutter shadow-sm">
+<div class="flex-1 min-w-[240px]">
+<label class="block font-data-label text-data-label text-outline mb-2">BÚSQUEDA DE USUARIO</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-background border border-outline-variant rounded-lg focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-sm" placeholder="ID de usuario, email o nombre..." type="text"/>
+</div>
+</div>
+<div class="w-full md:w-[200px]">
+<label class="block font-data-label text-data-label text-outline mb-2">TIPO DE ACCIÓN</label>
+<select class="w-full px-4 py-2 bg-background border border-outline-variant rounded-lg focus:ring-1 focus:ring-primary focus:border-primary outline-none appearance-none font-body-sm cursor-pointer">
+<option>Todos los eventos</option>
+<option>login</option>
+<option>pago</option>
+<option>error</option>
+<option>alta</option>
+</select>
+</div>
+<div class="w-full md:w-[300px]">
+<label class="block font-data-label text-data-label text-outline mb-2">RANGO DE FECHAS</label>
+<div class="flex items-center gap-2">
+<input class="flex-1 px-4 py-2 bg-background border border-outline-variant rounded-lg focus:ring-1 focus:ring-primary focus:border-primary outline-none font-body-sm" type="date"/>
+<span class="text-outline">al</span>
+<input class="flex-1 px-4 py-2 bg-background border border-outline-variant rounded-lg focus:ring-1 focus:ring-primary focus:border-primary outline-none font-body-sm" type="date"/>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-stack-lg py-2 rounded-xl font-medium flex items-center gap-2 hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+<span>Filtrar</span>
+</button>
+</section>
+<!-- Logs Content (Bento Style Layout) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Logs Table Container -->
+<div class="lg:col-span-2 bg-surface rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-stack-md py-4 font-data-label text-data-label text-outline uppercase tracking-wider">ID</th>
+<th class="px-stack-md py-4 font-data-label text-data-label text-outline uppercase tracking-wider">Usuario</th>
+<th class="px-stack-md py-4 font-data-label text-data-label text-outline uppercase tracking-wider">Acción</th>
+<th class="px-stack-md py-4 font-data-label text-data-label text-outline uppercase tracking-wider">IP / Fecha</th>
+<th class="px-stack-md py-4 font-data-label text-data-label text-outline uppercase tracking-wider text-right">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-stack-md py-4 font-data-label text-data-label">#LOG-8291</td>
+<td class="px-stack-md py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary-fixed flex items-center justify-center text-[10px] text-on-primary-fixed">AM</div>
+<span class="font-body-sm">A. Morales</span>
+</div>
+</td>
+<td class="px-stack-md py-4">
+<span class="px-2 py-1 bg-tertiary-fixed text-on-tertiary-fixed-variant rounded text-[11px] font-bold uppercase tracking-tight">pago</span>
+</td>
+<td class="px-stack-md py-4">
+<div class="text-body-sm">192.168.1.45</div>
+<div class="text-[12px] text-outline">Oct 24, 14:23:01</div>
+</td>
+<td class="px-stack-md py-4 text-right">
+<button class="text-primary hover:underline font-body-sm font-medium">Ver Detalle</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-lowest transition-colors bg-surface-container-low/30">
+<td class="px-stack-md py-4 font-data-label text-data-label">#LOG-8290</td>
+<td class="px-stack-md py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-secondary-fixed flex items-center justify-center text-[10px] text-on-secondary-fixed">System</div>
+<span class="font-body-sm">Cron_Service</span>
+</div>
+</td>
+<td class="px-stack-md py-4">
+<span class="px-2 py-1 bg-error-container text-on-error-container rounded text-[11px] font-bold uppercase tracking-tight">error</span>
+</td>
+<td class="px-stack-md py-4">
+<div class="text-body-sm">Internal_Worker_01</div>
+<div class="text-[12px] text-outline">Oct 24, 14:22:58</div>
+</td>
+<td class="px-stack-md py-4 text-right">
+<button class="text-primary hover:underline font-body-sm font-medium">Ver Detalle</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-stack-md py-4 font-data-label text-data-label">#LOG-8289</td>
+<td class="px-stack-md py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary-fixed flex items-center justify-center text-[10px] text-on-primary-fixed">LC</div>
+<span class="font-body-sm">L. Choque</span>
+</div>
+</td>
+<td class="px-stack-md py-4">
+<span class="px-2 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded text-[11px] font-bold uppercase tracking-tight">login</span>
+</td>
+<td class="px-stack-md py-4">
+<div class="text-body-sm">181.115.12.90</div>
+<div class="text-[12px] text-outline">Oct 24, 14:15:12</div>
+</td>
+<td class="px-stack-md py-4 text-right">
+<button class="text-primary hover:underline font-body-sm font-medium">Ver Detalle</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-stack-md py-4 font-data-label text-data-label">#LOG-8288</td>
+<td class="px-stack-md py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-variant flex items-center justify-center text-[10px] text-on-surface-variant">Admin</div>
+<span class="font-body-sm">SuperAdmin</span>
+</div>
+</td>
+<td class="px-stack-md py-4">
+<span class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded text-[11px] font-bold uppercase tracking-tight">alta</span>
+</td>
+<td class="px-stack-md py-4">
+<div class="text-body-sm">181.115.12.1</div>
+<div class="text-[12px] text-outline">Oct 24, 14:10:00</div>
+</td>
+<td class="px-stack-md py-4 text-right">
+<button class="text-primary hover:underline font-body-sm font-medium">Ver Detalle</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-stack-md border-t border-outline-variant flex items-center justify-between bg-surface-container-lowest">
+<span class="text-body-sm text-outline">Mostrando 4 de 1,240 logs</span>
+<div class="flex gap-2">
+<button class="p-2 border border-outline-variant rounded-lg hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[20px]">chevron_left</span></button>
+<button class="p-2 border border-outline-variant rounded-lg hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[20px]">chevron_right</span></button>
+</div>
+</div>
+</div>
+<!-- Detail View Column -->
+<div class="flex flex-col gap-gutter">
+<div class="bg-inverse-surface text-surface p-stack-md rounded-xl shadow-lg border border-on-surface/10 h-full min-h-[400px]">
+<div class="flex items-center justify-between mb-stack-md border-b border-surface/10 pb-stack-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-fixed">terminal</span>
+<span class="font-data-label text-data-label uppercase tracking-widest text-surface/80">EVENTO_DATA_JSON</span>
+</div>
+<button class="text-surface/60 hover:text-surface"><span class="material-symbols-outlined text-[18px]">content_copy</span></button>
+</div>
+<div class="font-data-label text-[13px] leading-relaxed overflow-auto max-h-[500px]">
+<pre class="text-secondary-fixed-dim">{
+  "event_id": <span class="text-tertiary-fixed">"LOG-8291"</span>,
+  "timestamp": <span class="text-tertiary-fixed">"2024-10-24T14:23:01Z"</span>,
+  "user": {
+    "id": <span class="text-tertiary-fixed">"USR_992"</span>,
+    "role": <span class="text-tertiary-fixed">"Artisan"</span>,
+    "name": <span class="text-tertiary-fixed">"A. Morales"</span>
+  },
+  "action": <span class="text-tertiary-fixed">"PAYMENT_SUCCESS"</span>,
+  "metadata": {
+    "amount": <span class="text-tertiary-fixed">245.50</span>,
+    "currency": <span class="text-tertiary-fixed">"BOB"</span>,
+    "gateway": <span class="text-tertiary-fixed">"Stripe_Connect"</span>,
+    "cart_id": <span class="text-tertiary-fixed">"CRT_4421"</span>
+  },
+  "network": {
+    "ip": <span class="text-tertiary-fixed">"192.168.1.45"</span>,
+    "user_agent": <span class="text-tertiary-fixed">"Mozilla/5.0 (Macintosh; Intel...)"</span>,
+    "location": <span class="text-tertiary-fixed">"La Paz, BO"</span>
+  },
+  "status": <span class="text-tertiary-fixed">"verified"</span>
+}
+                        </pre>
+</div>
+<div class="mt-stack-lg p-stack-md bg-white/5 rounded-lg border border-white/5">
+<p class="font-body-sm text-surface/70 italic">Haga clic en un ID de la tabla para inspeccionar los datos crudos del servidor.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- System Stats Footer Section -->
+<section class="mt-section-gap grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="bg-surface-container-low p-stack-md rounded-xl border border-outline-variant/30">
+<p class="font-data-label text-data-label text-outline mb-1">UPTIME</p>
+<p class="font-headline-sm text-headline-sm text-primary">99.98%</p>
+</div>
+<div class="bg-surface-container-low p-stack-md rounded-xl border border-outline-variant/30">
+<p class="font-data-label text-data-label text-outline mb-1">REQUESTS/SEG</p>
+<p class="font-headline-sm text-headline-sm text-on-surface">142.5</p>
+</div>
+<div class="bg-surface-container-low p-stack-md rounded-xl border border-outline-variant/30">
+<p class="font-data-label text-data-label text-outline mb-1">ERRORES (24H)</p>
+<p class="font-headline-sm text-headline-sm text-error">12</p>
+</div>
+<div class="bg-surface-container-low p-stack-md rounded-xl border border-outline-variant/30">
+<p class="font-data-label text-data-label text-outline mb-1">ÚLTIMO BACKUP</p>
+<p class="font-headline-sm text-headline-sm text-on-surface">Hace 12m</p>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-lg px-margin-desktop grid grid-cols-1 md:grid-cols-3 gap-gutter bg-inverse-surface dark:bg-surface-container-lowest full-width bottom-0">
+<div class="flex flex-col gap-stack-sm">
+<span class="font-headline-sm text-headline-sm text-surface dark:text-primary">WAYNA</span>
+<p class="font-body-sm text-body-sm text-surface-variant dark:text-outline max-w-[300px]">© 2024 WAYNA. Preserving Bolivian Artistry. Safeguarding the heritage of artisan families through digital transparency.</p>
+</div>
+<div class="flex flex-col gap-stack-sm">
+<span class="font-data-label text-data-label text-surface/50 uppercase tracking-widest mb-2">Platform</span>
+<nav class="flex flex-wrap gap-x-gutter gap-y-2">
+<a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">About Us</a>
+<a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">Artisan Stories</a>
+<a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors underline" href="#">Terms of Service</a>
+</nav>
+</div>
+<div class="flex flex-col gap-stack-sm">
+<span class="font-data-label text-data-label text-surface/50 uppercase tracking-widest mb-2">Support</span>
+<nav class="flex flex-wrap gap-x-gutter gap-y-2">
+<a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">Contact Us</a>
+<a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">FAQ</a>
+</nav>
+</div>
+</footer>
+</body></html>

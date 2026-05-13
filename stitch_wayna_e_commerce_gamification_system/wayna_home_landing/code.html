@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed": "#ffdad2",
+                      "tertiary-fixed": "#ffdf97",
+                      "surface-dim": "#ddd8e1",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#5a4400",
+                      "on-secondary-fixed": "#3d0700",
+                      "on-primary-fixed": "#1d0061",
+                      "primary-container": "#7865c9",
+                      "primary": "#5f4cae",
+                      "surface-bright": "#fdf8ff",
+                      "inverse-surface": "#312f36",
+                      "on-secondary-fixed-variant": "#812914",
+                      "on-primary-fixed-variant": "#4a3597",
+                      "on-tertiary-container": "#fffbff",
+                      "error": "#ba1a1a",
+                      "on-surface-variant": "#484552",
+                      "surface-tint": "#624eb1",
+                      "on-secondary-container": "#741f0b",
+                      "surface": "#fdf8ff",
+                      "on-background": "#1c1b21",
+                      "on-error-container": "#93000a",
+                      "inverse-primary": "#cbbeff",
+                      "surface-container-low": "#f7f2fb",
+                      "tertiary-fixed-dim": "#ecc155",
+                      "on-primary-container": "#fffbff",
+                      "primary-fixed-dim": "#cbbeff",
+                      "surface-variant": "#e6e1ea",
+                      "surface-container-lowest": "#ffffff",
+                      "on-error": "#ffffff",
+                      "tertiary": "#745800",
+                      "secondary": "#a03f29",
+                      "secondary-fixed-dim": "#ffb4a3",
+                      "background": "#fdf8ff",
+                      "on-primary": "#ffffff",
+                      "tertiary-container": "#927000",
+                      "outline-variant": "#cac4d4",
+                      "primary-fixed": "#e6deff",
+                      "secondary-container": "#fe876a",
+                      "surface-container-high": "#ebe6ef",
+                      "on-tertiary": "#ffffff",
+                      "inverse-on-surface": "#f4eff8",
+                      "on-tertiary-fixed": "#251a00",
+                      "on-surface": "#1c1b21",
+                      "surface-container-highest": "#e6e1ea",
+                      "surface-container": "#f1ecf5",
+                      "outline": "#797583",
+                      "error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-sm": "8px",
+                      "section-gap": "80px",
+                      "unit": "8px",
+                      "stack-lg": "32px",
+                      "margin-desktop": "40px",
+                      "stack-md": "16px",
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "body-lg": ["DM Sans"],
+                      "body-sm": ["DM Sans"],
+                      "display-lg": ["Playfair Display"],
+                      "body-md": ["DM Sans"],
+                      "data-label": ["JetBrains Mono"],
+                      "headline-sm": ["Playfair Display"],
+                      "display-lg-mobile": ["Playfair Display"],
+                      "headline-md": ["Playfair Display"],
+                      "data-price": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "data-label": ["12px", {"lineHeight": "1.0", "fontWeight": "400"}],
+                      "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "data-price": ["16px", {"lineHeight": "1.0", "letterSpacing": "-0.03em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-margin-desktop bg-surface dark:bg-on-background h-[64px] border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-stack-lg">
+<span class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary dark:text-primary-fixed">WAYNA</span>
+<nav class="hidden md:flex items-center gap-stack-lg ml-stack-lg">
+<a class="font-body-md text-body-md text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed pb-1 cursor-pointer active:opacity-80" href="#">Catalog</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer active:opacity-80" href="#">Entrepreneurs</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer active:opacity-80" href="#">Donate</a>
+</nav>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined">shopping_cart</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<main class="pt-[64px]">
+<!-- Hero Section -->
+<section class="bg-[#F1EFE8] min-h-[480px] flex flex-col md:flex-row items-center px-margin-desktop py-stack-lg gap-gutter">
+<div class="flex-1 space-y-stack-md max-w-xl">
+<div class="inline-block px-3 py-1 bg-surface-container rounded-full border border-outline-variant">
+<span class="font-data-label text-data-label text-on-surface-variant">80+ emprendedores artesanales</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-background">Arte boliviano, ahora en un solo lugar</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Descubre el legado de maestros artesanos de La Paz. Cada pieza cuenta una historia de tradición, cultura y esfuerzo compartido.</p>
+<div class="flex gap-stack-md pt-stack-md">
+<button class="px-stack-lg py-3 bg-secondary text-on-secondary rounded-xl font-body-md font-medium transition-all hover:opacity-90 active:scale-[0.98]">
+                        Explorar catálogo
+                    </button>
+<button class="px-stack-lg py-3 border-[0.5px] border-on-surface text-on-surface rounded-xl font-body-md font-medium transition-all hover:bg-surface-container active:scale-[0.98]">
+                        Ver emprendedores
+                    </button>
+</div>
+</div>
+<div class="flex-1 w-full grid grid-cols-2 gap-stack-sm">
+<div class="aspect-square bg-surface overflow-hidden rounded-lg border border-outline-variant/10">
+<img alt="Artesanía boliviana" class="w-full h-full object-cover" data-alt="A close-up high-resolution photograph of intricate hand-woven Bolivian textiles featuring vibrant geometric patterns in deep reds, earthy browns, and Andean greens. The lighting is soft and natural, emphasizing the rich tactile texture of the alpaca wool fibers. This image embodies a clean, artisanal aesthetic with a warm, sophisticated palette in a bright, modern studio setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOO_csPEvAUTjgbhNSP3FQTkH-JFwmAnfGzISriG8eShTQe3oqIUKnFDLPsT2dvTz732Qcq9L8b0Qbo5YZfmPJqdkP0z3KzCdMYyS_3BRoUx1r_idw_E3lG7vKxGSM6Q9zfW-bNpZRJujrb1gk-3lLF0INY344Qx8thmfvy24mP_3qWiQbf9ScEy4YyuU5QRfIjdk8GvFraqXkeBfhIz_IkF9dt6c4UjoVdywoiJBqMQle0lzjsrJOGwRUe7fFar_0aU3GqUCaAo0"/>
+</div>
+<div class="aspect-square bg-surface overflow-hidden rounded-lg border border-outline-variant/10">
+<img alt="Cerámica local" class="w-full h-full object-cover" data-alt="A minimalist studio shot of a hand-crafted Bolivian ceramic vase with organic shapes and a matte terracotta finish. The piece sits on a clean white surface with subtle ghost shadows, reflecting a luxury lookbook style. The color palette is earthy and grounded, highlighting the raw beauty of natural clay under soft, diffused gallery lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWLYsfSqHEu-Vel7BJsvnzGB6aXyPtnln1erlG0156ntvIal8BVitSrrpyaMr9TioHCaNw5EAYy5xet9KBc2VfGoGmyq6jUCzAe4b8qSeiwbGHnq-Cb18jGnS75xxCzp84iE9ismXAlLBz8V7tpBQ3025B7KgckOpc_6ujjrxPj3NZCjt6ZYrTFCjWzRRfyd4ypX-2h046hp8oWGJZVoFngmzt3aoWrKqAy-rPmPTAQ-hEuQNwIxU9YqLSLxmwdPIldsYryaicFM4"/>
+</div>
+<div class="aspect-square bg-surface overflow-hidden rounded-lg border border-outline-variant/10">
+<img alt="Joyería artesanal" class="w-full h-full object-cover" data-alt="Exquisite hand-made silver jewelry inspired by ancient Andean motifs, arranged artfully on a piece of rough-hewn stone. The shot uses high-contrast editorial lighting to capture the fine-line details and metallic sheen against the earthy texture. The atmosphere is serene and culturally rich, emphasizing sophisticated craftsmanship and digital serenity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAttT8r9G1dB0i0J72YHAgUSAKX34KPctNCFXQ75EOJ6hmj1IuiX1_L0xIWxzo3OHamzzEganBGzgYJBCRLqIGVxYacaGhCRhGo-QHRKWzDms-KP64M9PQ9ZSAxDgYM60BxC4Su7IkD3mKN5rNe1_-TQdmPPF1eUDy7IOg2EOiZP38DRp-wWwiIhOKTaoj7P-ZzE6OSs3z4aDdLgwH7Ok5jvsLYM2y3nVrKHKEs88yxcG4hKdcEfLuNU3L6J813dU_QVI466ocZXrc"/>
+</div>
+<div class="aspect-square bg-surface overflow-hidden rounded-lg border border-outline-variant/10">
+<img alt="Accesorios textiles" class="w-full h-full object-cover" data-alt="A lifestyle product photograph of a modern handbag featuring traditional Bolivian textile accents. The scene is bright and airy with a light-mode aesthetic, utilizing generous negative space. The focus is on the marriage of contemporary fashion and heritage artistry, presented in a clean, minimalist gallery frame style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCod4N8Qp56IXp0cL83xJ2LIJc53bnieTOs0uWWYhGQe2LN2EIRX8i_Vn4fMejb7HhSNRQXjV_nXHdb2rEXUwMYwtlSRUAcMZC_U-4gumMybYB_tB4FBXlQLh3VgBYL_GJjYQP5wsa9Bb25vdNALspKGyANIG6CMGJEK7dui83JeIefH_k89d0hHs13lEStra-J2Px8Hpfd60Wi3ndjPP9Yq0V-0jxUu6VeCpDkICdyEchenxSouBopNYhDUNC4So0Mp42fGTSDrpI"/>
+</div>
+</div>
+</section>
+<!-- Categories Section -->
+<section class="py-stack-lg px-margin-desktop">
+<h2 class="font-headline-md text-headline-md text-on-background mb-stack-lg">Explorar por categoría</h2>
+<div class="flex overflow-x-auto gap-stack-md hide-scrollbar pb-stack-sm">
+<button class="whitespace-nowrap px-stack-lg py-2 bg-primary text-on-primary rounded-full font-body-md transition-colors">Todos</button>
+<button class="whitespace-nowrap px-stack-lg py-2 bg-surface-container border border-outline-variant text-on-surface-variant hover:bg-primary-container/20 rounded-full font-body-md transition-colors">Textiles</button>
+<button class="whitespace-nowrap px-stack-lg py-2 bg-surface-container border border-outline-variant text-on-surface-variant hover:bg-primary-container/20 rounded-full font-body-md transition-colors">Cerámica</button>
+<button class="whitespace-nowrap px-stack-lg py-2 bg-surface-container border border-outline-variant text-on-surface-variant hover:bg-primary-container/20 rounded-full font-body-md transition-colors">Joyería</button>
+<button class="whitespace-nowrap px-stack-lg py-2 bg-surface-container border border-outline-variant text-on-surface-variant hover:bg-primary-container/20 rounded-full font-body-md transition-colors">Cuero</button>
+<button class="whitespace-nowrap px-stack-lg py-2 bg-surface-container border border-outline-variant text-on-surface-variant hover:bg-primary-container/20 rounded-full font-body-md transition-colors">Madera</button>
+<button class="whitespace-nowrap px-stack-lg py-2 bg-surface-container border border-outline-variant text-on-surface-variant hover:bg-primary-container/20 rounded-full font-body-md transition-colors">Instrumentos</button>
+</div>
+</section>
+<!-- Featured Entrepreneurs -->
+<section class="py-section-gap px-margin-desktop bg-surface-container-low">
+<div class="flex justify-between items-end mb-stack-lg">
+<h2 class="font-headline-md text-headline-md text-on-background">Conoce a nuestros emprendedores</h2>
+<a class="text-primary font-body-md font-medium hover:underline flex items-center gap-1" href="#">Ver todos <span class="material-symbols-outlined text-[18px]">arrow_forward</span></a>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Entrepreneur Card 1 -->
+<div class="bg-surface rounded-xl overflow-hidden border-[0.5px] border-outline-variant/30 transition-transform hover:scale-[1.02] cursor-pointer">
+<div class="h-[160px] relative">
+<img alt="Portada Taller" class="w-full h-full object-cover" data-alt="A wide-angle interior shot of a sunlit artisanal workshop in La Paz, Bolivia. Traditional looms and piles of colorful yarn are visible in the background, creating a rich atmosphere of heritage and work. The lighting is warm and natural, following a tactile and organic aesthetic with high-key whites and earthy tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqggDdPbL4ZqxyKswZkch5kbCTI7FHwt-kQnP7L6pQuQ0gSmlI5t7XghoXb6uYQl1_OKiYHTcVRueCk4woDSyeYtj4ZZe2I-cv-OSAnFQ6yDOijzw__HhYn_xh-Tc8JsmDWn5wT5V87cGPjoXuihSMwcgunLM2US9tL32Bq-MbJzHPudOQsMsIx9yFXtSEFl2oAXQHBnw2-H2KP6BNNow__fIgSCt0_1bPUMiCOMl2LE21P8NeKeGldTSsL3sggRuPANkKiYM76E4"/>
+<div class="absolute top-3 left-3 px-2 py-1 bg-white/90 rounded-full text-[10px] font-data-label uppercase tracking-wider">Textiles</div>
+</div>
+<div class="p-stack-md -mt-8 relative z-10">
+<div class="w-16 h-16 rounded-full border-4 border-white overflow-hidden bg-surface-dim mb-stack-sm">
+<img alt="Avatar Artesana" class="w-full h-full object-cover" data-alt="A dignified portrait of an elderly Bolivian woman artisan with deep wisdom in her eyes, wearing traditional attire. The photography is professional and intimate, with a shallow depth of field. The lighting is soft and flattering, emphasizing a mood of cultural preservation and digital serenity within a minimalist frame." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIrg-m5-WnB4R0feNBwhwaWTEuGtIqMPR1ItKYJvuVawmQ4A012iwlkOn4KazG_rou0bbn4svB-fsW2N26CTIUgdHndd7sAY68rx2uvytBASYnYq12OSiYWsUECtdyIs5k83H5xAtflVGgGUVuAWQMo3UeTmFI1vN7uVNfZ2h57-ng2KOJVp3k31oCz0iZZsKXvZu717l5P0Uf-liovQ9StSsOYb_mwiWQqnJt9KeDOcn-j8zaxHHiAVEL0coLqnc6l4u67qNHDsE"/>
+</div>
+<h3 class="font-headline-sm text-headline-sm mb-1">Tejidos del Sol</h3>
+<p class="text-on-surface-variant text-body-sm mb-stack-md">Comunidad de tejedoras de El Alto.</p>
+<div class="flex justify-between items-center border-t border-outline-variant pt-stack-sm">
+<span class="font-data-label text-data-label text-on-surface-variant">12 Productos</span>
+<span class="font-data-label text-data-label text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-tertiary">star</span> 4.9</span>
+</div>
+</div>
+</div>
+<!-- Entrepreneur Card 2 -->
+<div class="bg-surface rounded-xl overflow-hidden border-[0.5px] border-outline-variant/30 transition-transform hover:scale-[1.02] cursor-pointer">
+<div class="h-[160px] relative">
+<img alt="Portada Taller" class="w-full h-full object-cover" data-alt="A focused shot of a master potter's hands shaping a dark clay vessel on a traditional wheel. Fine clay dust hangs in the soft, morning light of a rustic Bolivian studio. The image captures the tactile quality of the craft with a sophisticated, earthy color palette and sharp detail on the textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKbk-mpzWjChMe3nrV-dt8xTotBRBOJ87BoQepa3ioZvT0WmPeTwit13Ak--drEKmDlNjjcNK_Z6IzEyfdtYFAbpL8ECp6edVGBDo_1xEtFFnpnZJQ5oswQGJ8532bWv6i8p1QCfmjLqf6EK_HZCwnQoroEK5VzB-FUiAJ_pkHXm9xt3u1jOQo_ocvxDFPZJo2CxAkEn0ebq54VzJP3qNSf1kjVPwAWmmTVVbXD2v4BqpIUARUcxTHtx9TBQzL_aOK7_LIubArC4g"/>
+<div class="absolute top-3 left-3 px-2 py-1 bg-white/90 rounded-full text-[10px] font-data-label uppercase tracking-wider">Cerámica</div>
+</div>
+<div class="p-stack-md -mt-8 relative z-10">
+<div class="w-16 h-16 rounded-full border-4 border-white overflow-hidden bg-surface-dim mb-stack-sm">
+<img alt="Avatar Artesano" class="w-full h-full object-cover" data-alt="A portrait of a male Bolivian ceramicist in his workshop, looking proudly at the camera with clay-stained hands. The visual style is grounded and clean, highlighting the human element behind the products. The scene is bright and modern, avoiding heavy shadows to maintain a flat, layered paper aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAp1He3lbx-LUp9fw-GsaBbqy-DC-qQi8g176y47nuvzqTLIpJ-EXyNcHnJzrDbMxWh84VeR5DX6dSrLVn8wMnfkHuh46wPo4o4LsbA2Q0ZIddRVKaju_hA3uGH4fSbFCzrXUdjMFWMGeCkI3va_SWZgWsJGlEkTcTkdjLjYDNnxH3OlWTwhhKPVwO8qm_axVDNecetv5hEVfS9yMNoa2pESH_8s_aG4Va5JyeopQHfxjqh6UUGB4qQ0-H-CuT_-zAopYLqjQP1Flo"/>
+</div>
+<h3 class="font-headline-sm text-headline-sm mb-1">Barro Sagrado</h3>
+<p class="text-on-surface-variant text-body-sm mb-stack-md">Cerámica ancestral contemporánea.</p>
+<div class="flex justify-between items-center border-t border-outline-variant pt-stack-sm">
+<span class="font-data-label text-data-label text-on-surface-variant">8 Productos</span>
+<span class="font-data-label text-data-label text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-tertiary">star</span> 4.8</span>
+</div>
+</div>
+</div>
+<!-- Entrepreneur Card 3 -->
+<div class="bg-surface rounded-xl overflow-hidden border-[0.5px] border-outline-variant/30 transition-transform hover:scale-[1.02] cursor-pointer">
+<div class="h-[160px] relative">
+<img alt="Portada Taller" class="w-full h-full object-cover" data-alt="Intricate silver filigree work being meticulously crafted on a jeweler's bench in La Paz. Macro photography captures the fine-line detail of the metal against a dark, velvet-like background. The lighting is sharp and intentional, creating a luxurious and high-end feel for the artisanal process." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWNsp4VzXkuYLYeEWvtHZ4_ofxlhe1yyJSDtZr9ptr1Rj0YmYq3XdGQ4WwVN24K3oM_goQDevFBjn4ieR-uTXesn9WkRH349Kk0Hf7kPmE4wcRFOtnDeDEMAidTIeyhvgdIcaoBrO7AgGrhXUjNJpjG4rs-BlLRKe3RJdSu1uVIxvzTLIhZolBvXF6QYJfQlDUTefvuNeHXsMk8ZBK_IOFdIFgnHVXCtXQjYek-1MSoqHKKPUKho58rEAb_m3bgYgV-CA0DhWpmhs"/>
+<div class="absolute top-3 left-3 px-2 py-1 bg-white/90 rounded-full text-[10px] font-data-label uppercase tracking-wider">Joyería</div>
+</div>
+<div class="p-stack-md -mt-8 relative z-10">
+<div class="w-16 h-16 rounded-full border-4 border-white overflow-hidden bg-surface-dim mb-stack-sm">
+<img alt="Avatar Artesana" class="w-full h-full object-cover" data-alt="Close up of a young Bolivian jewelry designer in a minimalist studio. Her look is contemporary yet connected to her heritage. The image uses a warm, organic color palette with high-contrast editorial vibes and soft white lighting that creates a pristine, modern light-mode look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkZJ-PRGbNPWBln8saveAsSnbS3H2dTI9csQC9SzDthDVBeTYtkR7IrADXCJ3QyBTjn9CXbo3fTu7PX3QWu4x4XF9IYECrTlsN_w-dcUtywDpXPwPWRdwWlIRKRbkC3QFovOc6fBlu_ccZEzqyErlMnk1M1qa1ITX7VN8ACn0PJZgxoANMEkgrbzAVO_7pwUsHkbpgoY2N6AfeIqfDT3p71Tifm_SQc2RdFnL7CgzjHEyEfke5XNV_x_Ngixy7yANPDwdECDYAXzk"/>
+</div>
+<h3 class="font-headline-sm text-headline-sm mb-1">Platería Luna</h3>
+<p class="text-on-surface-variant text-body-sm mb-stack-md">Joyas en plata con alma andina.</p>
+<div class="flex justify-between items-center border-t border-outline-variant pt-stack-sm">
+<span class="font-data-label text-data-label text-on-surface-variant">25 Productos</span>
+<span class="font-data-label text-data-label text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-tertiary">star</span> 5.0</span>
+</div>
+</div>
+</div>
+<!-- Entrepreneur Card 4 -->
+<div class="bg-surface rounded-xl overflow-hidden border-[0.5px] border-outline-variant/30 transition-transform hover:scale-[1.02] cursor-pointer">
+<div class="h-[160px] relative">
+<img alt="Portada Taller" class="w-full h-full object-cover" data-alt="A collection of vibrant Bolivian wooden masks and figurines displayed in a clean, gallery-like setting. The lighting is bright and modern, emphasizing the vivid colors and hand-painted details. The composition is minimalist, letting the textures of the wood and paint stand out against a soft background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI4nhomNxhkDIVc-ennWp4YegWux7ZpIfkbW8n59VPFSwZp35FmBADxku9FfyxPjQModbWqWWmS4ESefyvtL5JWJ6V3UKcXN9KbZ0-6eSvOuMFJScZaVzwJmnRwPm3orW0b5YM-1DZbicnS9LsrKX30fiGgwW8H-77lHjDbCZYeTwSmS6hGG_7Ze37MfoWov0xhuAqsOOJcjpf2vOuPXSoIyY-aijKtmTnu-pAAZXhg_vYnu9cX12J2MFYJZKuVBpaqVz8iVODqI0"/>
+<div class="absolute top-3 left-3 px-2 py-1 bg-white/90 rounded-full text-[10px] font-data-label uppercase tracking-wider">Madera</div>
+</div>
+<div class="p-stack-md -mt-8 relative z-10">
+<div class="w-16 h-16 rounded-full border-4 border-white overflow-hidden bg-surface-dim mb-stack-sm">
+<img alt="Avatar Artesano" class="w-full h-full object-cover" data-alt="An artisan woodcarver smiling kindly, holding a small traditional mask. The background is a soft blur of his workshop. The style is authentic and warm, capturing the 'Digital Serenity' of the brand with a focus on human stories and high-performance, clean presentation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9iqxHbQeEw9Cde-FBRAi8fJfGiM9Jcmru6mqcHAa052IQ0uiOmcYkFTtOCf85-BwkXDenXXIVrU6qGEsmgYtgjD1EpfPt2_FA-InLQLiFxhTfGJhP8sAC9cMzwSv06qkO8na-P4miN1LM-GpFXB3bZvQLXVHiAYbcrMIt-gBzKVf73qfaroklNuSyZJemmVCVRbV9nL3k9ZectPJ2PIZzKz0ewwPpEAQOh4qJeKJ-ueOq17uZiIHybBGmkfdG4DjAqZCX7odMRmc"/>
+</div>
+<h3 class="font-headline-sm text-headline-sm mb-1">Raíces de Madera</h3>
+<p class="text-on-surface-variant text-body-sm mb-stack-md">Esculturas y objetos tallados.</p>
+<div class="flex justify-between items-center border-t border-outline-variant pt-stack-sm">
+<span class="font-data-label text-data-label text-on-surface-variant">6 Productos</span>
+<span class="font-data-label text-data-label text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-tertiary">star</span> 4.7</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Featured Products -->
+<section class="py-section-gap px-margin-desktop">
+<div class="flex justify-between items-end mb-stack-lg">
+<h2 class="font-headline-md text-headline-md text-on-background">Productos más populares</h2>
+<a class="text-primary font-body-md font-medium hover:underline" href="#">Ver catálogo completo</a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
+<!-- Product Card 1 -->
+<div class="group cursor-pointer">
+<div class="aspect-square bg-surface border-[0.5px] border-outline-variant/50 rounded-lg overflow-hidden relative mb-stack-sm">
+<img alt="Producto" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-end product photograph of a hand-woven Bolivian alpaca wool throw blanket in soft cream and grey tones. The blanket is draped elegantly over a minimalist wooden chair. The lighting is soft and airy, creating a tactile and warm artisanal aesthetic. The focus is sharp on the weave pattern, following a luxury lookbook approach." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmC4H-ZoQAP-L1qfz5HUFv8dpphc9Bmrud9umCekNmSAJWSaYAVe5K00HrXO2QfYO3mvfy0DaWhh06lbyOLpRhfVPfV4rHx5Ghf9mPqDx2-urd5K4ngjzkcHwKcxK8j9x2eaG4ljqPEcGbxI4jAjYDTObK9HyA2_1kCMy8mhdmuocjfvqXndhULLi2-NDLDGWh-OJmDdbnOl5ro7htUV4d4E-GlHvjjUyuFEqOPfaXYpIDMLtd5CxMkngk9y5S1wK8F45QswFvZGQ"/>
+<button class="absolute bottom-3 right-3 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center text-primary shadow-sm hover:bg-white transition-all opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+<div class="space-y-1">
+<h4 class="font-body-md text-on-background group-hover:text-primary transition-colors">Manta Alpaca 'Illimani'</h4>
+<a class="font-body-sm text-on-surface-variant hover:text-primary block" href="#">Tejidos del Sol</a>
+<div class="flex items-center justify-between pt-1">
+<span class="font-data-price text-data-price text-secondary">Bs. 450.00</span>
+<span class="font-data-label text-[10px] text-on-surface-variant">8 en stock</span>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group cursor-pointer">
+<div class="aspect-square bg-surface border-[0.5px] border-outline-variant/50 rounded-lg overflow-hidden relative mb-stack-sm">
+<img alt="Producto" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A minimalist studio photo of a set of hand-painted Bolivian ceramic mugs with traditional geometric borders. The colors are warm terracotta and creamy white. The composition uses flat stacking and tonal layers to create a quiet gallery frame effect. Soft white lighting ensures a bright, contemporary presentation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEDj17XiXCIVKabxp24C8E_GKU8XalpkB-NGSgIIpZfE3SRxf_0OAj68SKOkZMbyH4797zKD65nWJosEklxpUGeYMJCoGSU8LP3KDWWurcOnzs18BlTZeN6mfZ6IhWRnYlJBT4cQF6xqVq0OcdOBpZBoW9QN7cnYNE7Ohh6DCk-VcvawSgpUOVhqas3_z5jlBHjUb1F5UWi6FH2pffTSrtIm9N1qSY9bUbvN15wa5eqlDtx8Pzj1FtCIcFPr0-0tunWkGB_RDhkl8"/>
+<button class="absolute bottom-3 right-3 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center text-primary shadow-sm hover:bg-white transition-all opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+<div class="space-y-1">
+<h4 class="font-body-md text-on-background group-hover:text-primary transition-colors">Set Tazas 'Tiahuanaco'</h4>
+<a class="font-body-sm text-on-surface-variant hover:text-primary block" href="#">Barro Sagrado</a>
+<div class="flex items-center justify-between pt-1">
+<span class="font-data-price text-data-price text-secondary">Bs. 120.00</span>
+<span class="font-data-label text-[10px] text-on-surface-variant">15 en stock</span>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group cursor-pointer">
+<div class="aspect-square bg-surface border-[0.5px] border-outline-variant/50 rounded-lg overflow-hidden relative mb-stack-sm">
+<img alt="Producto" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Exquisite Bolivian silver earrings featuring delicate hand-etched flower patterns, presented on a minimalist white pedestal. The shot uses macro photography to highlight the fine line aesthetic and the artisan violet tones in the reflections. The atmosphere is serene and high-performance, ideal for conscious donors and global collectors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqHTal4LsqggRRTIRY-0rqhMQt5qYKSe3gTvSVlYsyHov_WUPX3KPDx-dDiTapx9JrOx7loOrhtQlAol3rV72xDS6hAcO-3ShGFfkKKPnYjdCVBK-EGAyHdtM1NcroYn86X-Sa4KU8DHwCCg-rqZYY3mRJIxiWPo7mVoyRYm6mJ6H40I_JL1W06CJEnvIpRm1gN3kMdgS3DfOu3lgK0A6KyU_53PH31amYZ8RyR8h-k4d0ifFg3Vuw-IZyvCT7hNyHMNKvJ5a45EA"/>
+<button class="absolute bottom-3 right-3 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center text-primary shadow-sm hover:bg-white transition-all opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+<div class="space-y-1">
+<h4 class="font-body-md text-on-background group-hover:text-primary transition-colors">Aritos Filigrana Plata</h4>
+<a class="font-body-sm text-on-surface-variant hover:text-primary block" href="#">Platería Luna</a>
+<div class="flex items-center justify-between pt-1">
+<span class="font-data-price text-data-price text-secondary">Bs. 285.00</span>
+<span class="font-data-label text-[10px] text-on-surface-variant">4 en stock</span>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group cursor-pointer">
+<div class="aspect-square bg-surface border-[0.5px] border-outline-variant/50 rounded-lg overflow-hidden relative mb-stack-sm">
+<img alt="Producto" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality photo of a hand-stitched leather notebook cover with embossed traditional Bolivian patterns. The leather has a rich, warm brown tone and a matte finish. The image is set in a bright, modern light-mode studio, emphasizing the tactile quality and meticulous craftsmanship of the product." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBl2XyIfnf0sFJb4sn6jfZzVRAUaqQz7sEl4Hi6IbsQwF4CSyQPkJrO4bW17-L0gaPpD2TwZoqtTy1tl7O4ka9ojXubymR0Guz9oPI6lF6dG5-vxsCk1uNEyPwM--hJB8OZpxh3AgaBAinkpe1BVzJaWqQbmAGqXzdJFj16pdmOjJ668-D9cIqDkb0ZPm5c4XcVKUqfnQuqONr-YslWmKAJeqa12sAfhvzcjwOzxf8bdDM-59GnkjR3ozUpsnRiBQ-3P4g-eSYamNw"/>
+<button class="absolute bottom-3 right-3 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center text-primary shadow-sm hover:bg-white transition-all opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+<div class="space-y-1">
+<h4 class="font-body-md text-on-background group-hover:text-primary transition-colors">Libreta Cuero Repujado</h4>
+<a class="font-body-sm text-on-surface-variant hover:text-primary block" href="#">Raíces de Madera</a>
+<div class="flex items-center justify-between pt-1">
+<span class="font-data-price text-data-price text-secondary">Bs. 95.00</span>
+<span class="font-data-label text-[10px] text-on-surface-variant">Ultimo disponible</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Donation CTA Section -->
+<section class="mx-margin-desktop my-section-gap bg-[#EEEDFE] rounded-[32px] overflow-hidden flex flex-col md:flex-row items-stretch border border-primary/10">
+<div class="flex-1 p-stack-lg md:p-[64px] space-y-stack-md">
+<span class="font-data-label text-data-label text-primary uppercase tracking-widest">Impacto Social</span>
+<h2 class="font-display-lg text-display-lg text-primary">Tu apoyo hace la diferencia</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">El 100% de las donaciones se destina a la capacitación técnica y digital de nuestros artesanos, preservando técnicas milenarias para las futuras generaciones.</p>
+<button class="px-stack-lg py-4 bg-primary text-on-primary rounded-xl font-body-md font-bold transition-all hover:opacity-90 active:scale-[0.98] mt-stack-md">
+                    Donar ahora
+                </button>
+</div>
+<div class="w-full md:w-[320px] bg-white/50 backdrop-blur-sm p-stack-lg border-l border-white/20">
+<h3 class="font-headline-sm text-headline-sm text-on-background mb-stack-lg">Donadores Top</h3>
+<div class="space-y-stack-md">
+<div class="flex items-center gap-stack-md p-3 bg-white rounded-xl border border-outline-variant/30">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center font-bold text-on-tertiary-fixed">1</div>
+<div class="flex-1">
+<p class="font-body-md font-bold">Familia Morales</p>
+<p class="text-on-surface-variant text-[12px]">Bs. 2,500 donados</p>
+</div>
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+<div class="flex items-center gap-stack-md p-3 bg-white/60 rounded-xl border border-outline-variant/30">
+<div class="w-10 h-10 rounded-full bg-surface-dim flex items-center justify-center font-bold text-on-surface">2</div>
+<div class="flex-1">
+<p class="font-body-md font-medium">Carlos Ruiz</p>
+<p class="text-on-surface-variant text-[12px]">Bs. 1,800 donados</p>
+</div>
+</div>
+<div class="flex items-center gap-stack-md p-3 bg-white/60 rounded-xl border border-outline-variant/30">
+<div class="w-10 h-10 rounded-full bg-surface-dim flex items-center justify-center font-bold text-on-surface">3</div>
+<div class="flex-1">
+<p class="font-body-md font-medium">Elena Gomez</p>
+<p class="text-on-surface-variant text-[12px]">Bs. 1,200 donados</p>
+</div>
+</div>
+</div>
+<div class="mt-stack-lg pt-stack-md border-t border-outline-variant/30">
+<div class="h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[75%] rounded-full"></div>
+</div>
+<p class="font-data-label text-[10px] text-on-surface-variant mt-2 text-center uppercase">75% de la meta mensual alcanzada</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-lg px-margin-desktop grid grid-cols-1 md:grid-cols-3 gap-gutter bg-inverse-surface dark:bg-surface-container-lowest text-surface dark:text-on-surface">
+<div class="space-y-stack-md">
+<span class="font-headline-sm text-headline-sm text-surface dark:text-primary">WAYNA</span>
+<p class="font-body-sm text-body-sm text-surface-variant dark:text-outline max-w-xs">
+                Empoderando a artesanos bolivianos a través de la tecnología y el comercio justo. Preservando el patrimonio cultural de nuestra tierra.
+            </p>
+<p class="font-body-sm text-body-sm text-surface-variant dark:text-outline mt-stack-lg">© 2024 WAYNA. Preserving Bolivian Artistry.</p>
+</div>
+<div>
+<h4 class="font-body-md font-bold mb-stack-md uppercase tracking-wider text-[12px]">Enlaces Rápidos</h4>
+<ul class="space-y-2">
+<li><a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed dark:hover:text-secondary transition-colors" href="#">About Us</a></li>
+<li><a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed dark:hover:text-secondary transition-colors" href="#">Artisan Stories</a></li>
+<li><a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed dark:hover:text-secondary transition-colors" href="#">Terms of Service</a></li>
+<li><a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed dark:hover:text-secondary transition-colors" href="#">Privacy Policy</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-body-md font-bold mb-stack-md uppercase tracking-wider text-[12px]">Contacto &amp; Ayuda</h4>
+<ul class="space-y-2">
+<li><a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed dark:hover:text-secondary transition-colors" href="#">Contact Us</a></li>
+<li><a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed dark:hover:text-secondary transition-colors" href="#">FAQ</a></li>
+</ul>
+<div class="flex gap-stack-md mt-stack-lg">
+<a class="w-10 h-10 border border-surface-variant/30 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">share</span>
+</a>
+<a class="w-10 h-10 border border-surface-variant/30 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">public</span>
+</a>
+</div>
+</div>
+</footer>
+</body></html>

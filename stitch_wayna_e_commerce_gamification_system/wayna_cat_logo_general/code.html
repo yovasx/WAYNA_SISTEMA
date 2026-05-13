@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Playfair+Display:wght@600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        /* Custom thin borders for the "Artisanal" look */
+        .hairline-border {
+            border: 0.5px solid rgba(0,0,0,0.10);
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #5f4cae;
+            cursor: pointer;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed": "#ffdad2",
+                      "tertiary-fixed": "#ffdf97",
+                      "surface-dim": "#ddd8e1",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#5a4400",
+                      "on-secondary-fixed": "#3d0700",
+                      "on-primary-fixed": "#1d0061",
+                      "primary-container": "#7865c9",
+                      "primary": "#5f4cae",
+                      "surface-bright": "#fdf8ff",
+                      "inverse-surface": "#312f36",
+                      "on-secondary-fixed-variant": "#812914",
+                      "on-primary-fixed-variant": "#4a3597",
+                      "on-tertiary-container": "#fffbff",
+                      "error": "#ba1a1a",
+                      "on-surface-variant": "#484552",
+                      "surface-tint": "#624eb1",
+                      "on-secondary-container": "#741f0b",
+                      "surface": "#fdf8ff",
+                      "on-background": "#1c1b21",
+                      "on-error-container": "#93000a",
+                      "inverse-primary": "#cbbeff",
+                      "surface-container-low": "#f7f2fb",
+                      "tertiary-fixed-dim": "#ecc155",
+                      "on-primary-container": "#fffbff",
+                      "primary-fixed-dim": "#cbbeff",
+                      "surface-variant": "#e6e1ea",
+                      "surface-container-lowest": "#ffffff",
+                      "on-error": "#ffffff",
+                      "tertiary": "#745800",
+                      "secondary": "#a03f29",
+                      "secondary-fixed-dim": "#ffb4a3",
+                      "background": "#fdf8ff",
+                      "on-primary": "#ffffff",
+                      "tertiary-container": "#927000",
+                      "outline-variant": "#cac4d4",
+                      "primary-fixed": "#e6deff",
+                      "secondary-container": "#fe876a",
+                      "surface-container-high": "#ebe6ef",
+                      "on-tertiary": "#ffffff",
+                      "inverse-on-surface": "#f4eff8",
+                      "on-tertiary-fixed": "#251a00",
+                      "on-surface": "#1c1b21",
+                      "surface-container-highest": "#e6e1ea",
+                      "surface-container": "#f1ecf5",
+                      "outline": "#797583",
+                      "error-container": "#ffdad6",
+                      "terracotta": "#a03f29"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-sm": "8px",
+                      "section-gap": "80px",
+                      "unit": "8px",
+                      "stack-lg": "32px",
+                      "margin-desktop": "40px",
+                      "stack-md": "16px",
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "body-lg": ["DM Sans"],
+                      "body-sm": ["DM Sans"],
+                      "display-lg": ["Playfair Display"],
+                      "body-md": ["DM Sans"],
+                      "data-label": ["JetBrains Mono"],
+                      "headline-sm": ["Playfair Display"],
+                      "display-lg-mobile": ["Playfair Display"],
+                      "headline-md": ["Playfair Display"],
+                      "data-price": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "data-label": ["12px", {"lineHeight": "1.0", "fontWeight": "400"}],
+                      "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "data-price": ["16px", {"lineHeight": "1.0", "letterSpacing": "-0.03em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- Global TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-margin-desktop bg-surface dark:bg-on-background h-[64px] border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-stack-lg">
+<span class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary dark:text-primary-fixed">WAYNA</span>
+<nav class="hidden md:flex items-center gap-gutter ml-8">
+<a class="font-body-md text-body-md text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed pb-1 cursor-pointer active:opacity-80 transition-colors" href="#">Catalog</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer active:opacity-80" href="#">Entrepreneurs</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer active:opacity-80" href="#">Donate</a>
+</nav>
+</div>
+<div class="flex items-center gap-stack-md">
+<div class="hidden lg:flex items-center bg-surface-container-low px-stack-md py-1.5 rounded-full hairline-border">
+<span class="material-symbols-outlined text-[20px] text-outline mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm font-body-sm placeholder-outline" placeholder="Buscar artesanía..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container transition-all rounded-full" data-icon="shopping_cart">shopping_cart</button>
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container transition-all rounded-full" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container transition-all rounded-full" data-icon="account_circle">account_circle</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-[64px] h-[calc(100vh-64px)] z-40 flex flex-col p-stack-md bg-surface dark:bg-on-background w-[260px] border-r border-outline-variant dark:border-outline hidden lg:flex">
+<div class="mb-stack-lg px-2">
+<h2 class="font-headline-sm text-headline-sm text-primary">Navegación</h2>
+<p class="font-body-sm text-body-sm text-outline">Explora el patrimonio</p>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<div class="group cursor-pointer transition-transform duration-200 flex items-center gap-3 p-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low rounded-xl">
+<span class="material-symbols-outlined">home</span>
+<span class="font-body-sm text-body-sm">Home</span>
+</div>
+<div class="group cursor-pointer transition-transform duration-200 flex items-center gap-3 p-3 bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-xl font-medium">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-body-sm text-body-sm">Catalog</span>
+</div>
+<div class="group cursor-pointer transition-transform duration-200 flex items-center gap-3 p-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low rounded-xl">
+<span class="material-symbols-outlined">storefront</span>
+<span class="font-body-sm text-body-sm">Entrepreneurs</span>
+</div>
+<div class="group cursor-pointer transition-transform duration-200 flex items-center gap-3 p-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low rounded-xl">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="font-body-sm text-body-sm">Orders</span>
+</div>
+<div class="group cursor-pointer transition-transform duration-200 flex items-center gap-3 p-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low rounded-xl">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-body-sm text-body-sm">Impact</span>
+</div>
+<div class="group cursor-pointer transition-transform duration-200 flex items-center gap-3 p-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low rounded-xl">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-sm text-body-sm">Dashboard</span>
+</div>
+</nav>
+<div class="mt-auto pt-stack-md border-t border-outline-variant flex flex-col gap-1">
+<button class="bg-primary text-on-primary py-3 rounded-xl font-body-md font-medium mb-4 hover:opacity-90 transition-all">Donate Now</button>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-low rounded-xl cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-sm text-body-sm">Settings</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-low rounded-xl cursor-pointer">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="font-body-sm text-body-sm">Help</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="lg:ml-[260px] mt-[64px] min-h-screen">
+<div class="flex flex-col lg:flex-row">
+<!-- Filters Sidebar -->
+<section class="w-full lg:w-[240px] border-r border-outline-variant p-margin-desktop space-y-stack-lg shrink-0 h-[calc(100vh-64px)] overflow-y-auto sticky top-[64px]">
+<div>
+<h3 class="font-data-label text-data-label uppercase tracking-widest text-outline mb-4">Categories</h3>
+<ul class="space-y-2">
+<li class="flex items-center gap-2 group cursor-pointer">
+<span class="w-4 h-4 rounded-sm border border-outline group-hover:border-primary transition-colors"></span>
+<span class="font-body-sm text-body-sm text-on-surface">Textiles</span>
+</li>
+<li class="flex items-center gap-2 group cursor-pointer">
+<span class="w-4 h-4 rounded-sm border border-primary bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[12px] text-on-primary">check</span>
+</span>
+<span class="font-body-sm text-body-sm text-primary font-medium">Cerámica</span>
+</li>
+<li class="flex items-center gap-2 group cursor-pointer">
+<span class="w-4 h-4 rounded-sm border border-outline group-hover:border-primary transition-colors"></span>
+<span class="font-body-sm text-body-sm text-on-surface">Joyas</span>
+</li>
+<li class="flex items-center gap-2 group cursor-pointer">
+<span class="w-4 h-4 rounded-sm border border-outline group-hover:border-primary transition-colors"></span>
+<span class="font-body-sm text-body-sm text-on-surface">Madera</span>
+</li>
+</ul>
+</div>
+<div class="pt-4">
+<h3 class="font-data-label text-data-label uppercase tracking-widest text-outline mb-4">Price Range</h3>
+<input class="w-full h-1 bg-surface-variant rounded-lg appearance-none cursor-pointer accent-primary" max="500" min="0" type="range" value="250"/>
+<div class="flex justify-between mt-4">
+<span class="font-data-price text-data-price text-on-surface-variant">Bs. 0</span>
+<span class="font-data-price text-data-price text-on-surface">Bs. 500</span>
+</div>
+</div>
+<div class="pt-4">
+<h3 class="font-data-label text-data-label uppercase tracking-widest text-outline mb-4">Entrepreneur</h3>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2 top-2 text-[18px] text-outline">search</span>
+<input class="w-full pl-8 pr-3 py-2 text-body-sm font-body-sm rounded-lg hairline-border bg-surface-container-lowest focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Search artisan..." type="text"/>
+</div>
+</div>
+<div class="pt-4">
+<h3 class="font-data-label text-data-label uppercase tracking-widest text-outline mb-4">Availability</h3>
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm">In Stock</span>
+<div class="w-10 h-5 bg-primary rounded-full relative p-0.5 cursor-pointer">
+<div class="w-4 h-4 bg-white rounded-full ml-auto"></div>
+</div>
+</div>
+</div>
+<div class="pt-4">
+<h3 class="font-data-label text-data-label uppercase tracking-widest text-outline mb-4">Rating</h3>
+<div class="space-y-2">
+<div class="flex items-center gap-1 cursor-pointer">
+<span class="material-symbols-outlined text-[18px] text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px] text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px] text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px] text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px] text-outline">star</span>
+<span class="font-body-sm text-body-sm ml-2">&amp; up</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Results Section -->
+<section class="flex-1 p-margin-desktop">
+<!-- Results Bar -->
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-stack-lg gap-gutter">
+<div>
+<h1 class="font-display-lg text-display-lg-mobile mb-2">Catálogo General</h1>
+<p class="font-body-sm text-body-sm text-outline">Mostrando 48 de 127 productos artesanos</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex bg-surface-container rounded-lg p-1">
+<button class="px-4 py-1.5 text-body-sm font-medium bg-surface rounded-md shadow-sm">Todos</button>
+<button class="px-4 py-1.5 text-body-sm font-medium text-outline">Productos</button>
+<button class="px-4 py-1.5 text-body-sm font-medium text-outline">Talleres</button>
+</div>
+<div class="flex items-center gap-2">
+<button class="material-symbols-outlined p-2 hairline-border rounded-lg text-primary">grid_view</button>
+<button class="material-symbols-outlined p-2 text-outline">view_list</button>
+</div>
+</div>
+</div>
+<!-- Sort and Filter Badges -->
+<div class="flex items-center gap-3 mb-8 overflow-x-auto pb-2">
+<span class="bg-primary-fixed text-on-primary-fixed-variant px-3 py-1 rounded-full text-body-sm flex items-center gap-2">
+                        Cerámica <span class="material-symbols-outlined text-[14px] cursor-pointer">close</span>
+</span>
+<span class="bg-surface-container-high px-3 py-1 rounded-full text-body-sm flex items-center gap-2">
+                        Precio: $250 - $500 <span class="material-symbols-outlined text-[14px] cursor-pointer">close</span>
+</span>
+<button class="text-primary font-body-sm text-body-sm underline">Limpiar filtros</button>
+<div class="ml-auto">
+<select class="bg-transparent border-none text-body-sm font-medium focus:ring-0 cursor-pointer text-on-surface-variant">
+<option>Ordenar por: Destacados</option>
+<option>Precio: Menor a Mayor</option>
+<option>Nuevas Adiciones</option>
+</select>
+</div>
+</div>
+<!-- Product Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-gutter">
+<!-- Card 1 -->
+<div class="group flex flex-col bg-surface-container-lowest hairline-border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300">
+<div class="relative aspect-square overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A detailed close-up shot of a handcrafted Bolivian clay vase with intricate geometric patterns. The lighting is soft and warm, highlighting the earthy textures of the terracotta material. The vase is set against a clean, minimalist off-white background, creating a high-end artisanal gallery aesthetic. Professional lighting and sharp focus emphasize the tactile quality and cultural heritage of the piece." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRswokNNfXZPC_-stnb5U-HTgmR-gIcC1Ly-04dAfiFSwzD8a1HuWOggHYJ0x82CXWZllwKrOTXNymRoRi5ZE_XLz4cKvGSn__9NHsEIEbA-8I2G4lPjP5PGEEFdY-ojxhW9bOMqZ8WDyu-bldQ6MSwKMP-Xw5TwolpDa3UlG3NHlO_jienQi6jtU1OalXG46J5c6xGp8hkXvtGlCewIlQKrWWSU1MZ7mgX6v5gaXjaKWXtobjvNBKWjI7IvNmr9iDw2wevqsUIRw"/>
+<button class="absolute top-4 right-4 bg-surface/80 backdrop-blur-md p-2 rounded-full material-symbols-outlined text-on-surface-variant hover:text-error transition-colors">favorite</button>
+</div>
+<div class="p-stack-md flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<span class="font-data-label text-data-label text-primary uppercase tracking-widest">Cerámica Cochabamba</span>
+<span class="font-data-price text-data-price text-terracotta">Bs. 320</span>
+</div>
+<h4 class="font-headline-sm text-[18px] mb-2 group-hover:text-primary transition-colors">Vaso Ritual Tradicional</h4>
+<p class="font-body-sm text-body-sm text-outline line-clamp-2 mb-4">Pieza única moldeada a mano con arcilla de los valles interandinos, curada con técnicas ancestrales.</p>
+<div class="mt-auto pt-4 border-t border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-container overflow-hidden">
+<img data-alt="A professional headshot of a Bolivian artisan entrepreneur, smiling warmly with natural outdoor lighting. The portrait emphasizes authenticity and cultural pride." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARdM_Exzi9dB5-Ld5DhxyYfP9_c36Bq80KJ-KhAOSw7DyuIY8Td7mJYP-wSfzOZQIPKzA6jaYtrm9by3adCS37mlihfYxyAFSrrv8_zBYAk2OwjIisLKFvVlywsZSyksVR6f89s3xUW2g5FvN25YiaxHMoAGkksyeFdwzVa21-kMWXtEOxdatQ4ye11-cs6z3xdH1mTSXnmZe7EhjGIKQHM907c7NG82uTv4-Bb1Y7FbO6C-Nvxbti8f3RWFajr7yzQVCBTbCf0WM"/>
+</div>
+<span class="font-data-label text-data-label text-on-surface-variant">Luz Choque</span>
+</div>
+<button class="flex items-center gap-2 text-primary font-medium text-body-sm group/btn">
+<span>Agregar</span>
+<span class="material-symbols-outlined text-[18px] group-hover/btn:translate-x-1 transition-transform">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group flex flex-col bg-surface-container-lowest hairline-border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300">
+<div class="relative aspect-square overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Close-up of a handwoven Bolivian textile with vibrant indigo and ochre dyes. The fabric shows high-relief traditional patterns and tactile yarn textures. Set in a bright studio environment with natural light cascading from the side, reflecting an earthy, modern artisanal vibe. The overall atmosphere is sophisticated and highlights premium craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMrcaR-t_K7RtFvSMTIEm_j0zrFR57gX5BuGl00YaKzMDR2t7vkvqu2_9K0RY-0PEp6SG_8AdCLbRDpWCzNzk4AuMB7wXVeqsFEodjmol2KUW5kkV35qTQ9YZc3XYFuWlnqHdGAWsomkHdkgUyzRVlxKOgfQapR52TwWbKJdHJ2Jizf3-7KUvnGUnxYkssbtbuWhf8OIlhf2qMhNT6s6MvsiF65k_ooFxoTuE32KKOf16fLlhXgeSDX4JQP6kMYDi_BmniKvvXLsk"/>
+</div>
+<div class="p-stack-md flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<span class="font-data-label text-data-label text-primary uppercase tracking-widest">Textiles Tarabuco</span>
+<span class="font-data-price text-data-price text-terracotta">Bs. 450</span>
+</div>
+<h4 class="font-headline-sm text-[18px] mb-2 group-hover:text-primary transition-colors">Manta de Alpaca Tejida</h4>
+<p class="font-body-sm text-body-sm text-outline line-clamp-2 mb-4">Tejida en telar de cintura con fibra de alpaca 100% natural. Tintes orgánicos de plantas nativas.</p>
+<div class="mt-auto pt-4 border-t border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-container overflow-hidden">
+<img data-alt="Portrait of a female artisan weaving at a loom, soft focused background showing colorful yarns, bright and airy lighting style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUyiILLUOykbfmbJZTvRT24gqXM76YBwxZVJh9Jb_HzyzJtnPlNMgL5Y7mBqSeSs8IQsZkFiNfRsH-QjoetN3HmTu5Qq7mJvt1kKGnyEGFvNjy4qPZj4oK3gpWYe4oNzQL31iQeC4yHpr5bxTEy-Mw1Y-b4eMIdvhlLqpyR0IqsFySFYC1H3PJkzmGc8kH9tlXz8mDzhOU7TD3aJvu86-wnHr03hVs_MWwIgjgR0ChVnPkAocx1b6QQp5vMfJ32ZCqlDUICc4pfQE"/>
+</div>
+<span class="font-data-label text-data-label text-on-surface-variant">Rosa Mamani</span>
+</div>
+<button class="flex items-center gap-2 text-primary font-medium text-body-sm group/btn">
+<span>Agregar</span>
+<span class="material-symbols-outlined text-[18px] group-hover/btn:translate-x-1 transition-transform">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group flex flex-col bg-surface-container-lowest hairline-border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300">
+<div class="relative aspect-square overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Elegant hand-carved wooden bowl made from sustainable Bolivian Morado wood. The bowl features polished surfaces and visible natural grain patterns. The product is displayed on a minimalist white stone surface with soft shadows, embodying a clean and contemporary heritage style. High contrast lighting enhances the deep tones of the wood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi3lPBgpEVDDdNXlldDcFgTQxCAEAF1ZktKZWF7T5h_FmpBNExErKPqq2poGu5WTAdVzpoB_Zcya9MFwXxlVw6ohaaBN6VY7GAQ_j5BResuMPkboxkVpzWyQqAkfleUOynMi9h3ICdY_n0_D01j23mWMuAYzuY_S7wC2x3sIzXwJUZTQzHdVGApCbsuW8Ykc6469pVbs0BWuV7KLqqX981kIqwYKToEy7IFz641xrNsinyLjoRyIQzmf0WMQPIBJ6XjG9sgc-OkH0"/>
+</div>
+<div class="p-stack-md flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<span class="font-data-label text-data-label text-primary uppercase tracking-widest">Talla en Madera</span>
+<span class="font-data-price text-data-price text-terracotta">Bs. 180</span>
+</div>
+<h4 class="font-headline-sm text-[18px] mb-2 group-hover:text-primary transition-colors">Cuenco de Madera Morado</h4>
+<p class="font-body-sm text-body-sm text-outline line-clamp-2 mb-4">Tallado artesanalmente en madera noble, acabado con aceites vegetales naturales para uso diario.</p>
+<div class="mt-auto pt-4 border-t border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-container overflow-hidden">
+<img data-alt="Close up portrait of an elderly Bolivian artisan smiling, warm lighting, earthy background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJow-vpE_dfLax77ld0EAeToUNfMlExnzyn-UyJXV036q45DWSdwg3Z6nFKYLPjW1cUpIayEg4cnEvjSEQbiEPsnGU2anyi1XLXazTyom81y6IVhl8H6sXCH-Pm2Mu-e7BcTk0rJwhqV4r8lBsmuNTUaDFcTgvHO1OHB-jsY7AQ8jrB2Esz6g_vd0UVMvRCbs5hVHt5skvGLAIqxK6G_UwAlVnavlfFbzvmDYPlEhtzrB_bXrxF22vibKwhNx2HLjNcIKKruRO-dw"/>
+</div>
+<span class="font-data-label text-data-label text-on-surface-variant">Pedro Rojas</span>
+</div>
+<button class="flex items-center gap-2 text-primary font-medium text-body-sm group/btn">
+<span>Agregar</span>
+<span class="material-symbols-outlined text-[18px] group-hover/btn:translate-x-1 transition-transform">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="mt-section-gap flex flex-col items-center gap-stack-md pb-stack-lg">
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hairline-border hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-on-primary font-medium">1</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors">2</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors">3</button>
+<span class="px-2 text-outline">...</span>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors">12</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hairline-border hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-outline">Página 1 de 12</p>
+</div>
+</section>
+</div>
+</main>
+<!-- Global Footer -->
+<footer class="w-full py-stack-lg px-margin-desktop grid grid-cols-1 md:grid-cols-3 gap-gutter bg-inverse-surface dark:bg-surface-container-lowest text-surface dark:text-on-surface">
+<div class="space-y-4">
+<h2 class="font-headline-sm text-headline-sm text-surface dark:text-primary">WAYNA</h2>
+<p class="font-body-sm text-body-sm text-surface-variant dark:text-outline max-w-xs">
+                Empoderando a artesanos bolivianos a través de la digitalización y el comercio justo. Preservando el patrimonio cultural para el futuro.
+            </p>
+</div>
+<div class="grid grid-cols-2 gap-gutter">
+<div class="flex flex-col gap-2">
+<span class="font-data-label text-data-label uppercase tracking-widest text-secondary-fixed-dim mb-2">Compañía</span>
+<a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">About Us</a>
+<a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">Artisan Stories</a>
+<a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">Contact Us</a>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-data-label text-data-label uppercase tracking-widest text-secondary-fixed-dim mb-2">Ayuda</span>
+<a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">FAQ</a>
+<a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">Terms of Service</a>
+</div>
+</div>
+<div class="space-y-4">
+<span class="font-data-label text-data-label uppercase tracking-widest text-secondary-fixed-dim block mb-2">Boletín</span>
+<div class="flex">
+<input class="bg-surface-container/10 border-surface-variant/20 rounded-l-lg p-2 text-body-sm flex-1 focus:ring-1 focus:ring-secondary-fixed" placeholder="Email" type="email"/>
+<button class="bg-secondary text-on-secondary px-4 py-2 rounded-r-lg text-body-sm font-medium">Unirse</button>
+</div>
+<p class="font-body-sm text-body-sm text-surface-variant dark:text-outline mt-8">
+                © 2024 WAYNA. Preserving Bolivian Artistry.
+            </p>
+</div>
+</footer>
+</body></html>

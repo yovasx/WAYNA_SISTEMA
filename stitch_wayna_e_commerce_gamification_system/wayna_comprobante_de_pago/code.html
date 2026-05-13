@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Playfair+Display:wght@600;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #fdf8ff;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#ffdad2",
+                        "tertiary-fixed": "#ffdf97",
+                        "surface-dim": "#ddd8e1",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#5a4400",
+                        "on-secondary-fixed": "#3d0700",
+                        "on-primary-fixed": "#1d0061",
+                        "primary-container": "#7865c9",
+                        "primary": "#5f4cae",
+                        "surface-bright": "#fdf8ff",
+                        "inverse-surface": "#312f36",
+                        "on-secondary-fixed-variant": "#812914",
+                        "on-primary-fixed-variant": "#4a3597",
+                        "on-tertiary-container": "#fffbff",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#484552",
+                        "surface-tint": "#624eb1",
+                        "on-secondary-container": "#741f0b",
+                        "surface": "#fdf8ff",
+                        "on-background": "#1c1b21",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#cbbeff",
+                        "surface-container-low": "#f7f2fb",
+                        "tertiary-fixed-dim": "#ecc155",
+                        "on-primary-container": "#fffbff",
+                        "primary-fixed-dim": "#cbbeff",
+                        "surface-variant": "#e6e1ea",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary": "#745800",
+                        "secondary": "#a03f29",
+                        "secondary-fixed-dim": "#ffb4a3",
+                        "background": "#fdf8ff",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#927000",
+                        "outline-variant": "#cac4d4",
+                        "primary-fixed": "#e6deff",
+                        "secondary-container": "#fe876a",
+                        "surface-container-high": "#ebe6ef",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f4eff8",
+                        "on-tertiary-fixed": "#251a00",
+                        "on-surface": "#1c1b21",
+                        "surface-container-highest": "#e6e1ea",
+                        "surface-container": "#f1ecf5",
+                        "outline": "#797583",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "section-gap": "80px",
+                        "unit": "8px",
+                        "stack-lg": "32px",
+                        "margin-desktop": "40px",
+                        "stack-md": "16px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["DM Sans"],
+                        "body-sm": ["DM Sans"],
+                        "display-lg": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "data-label": ["JetBrains Mono"],
+                        "headline-sm": ["Playfair Display"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "data-price": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "data-label": ["12px", {"lineHeight": "1.0", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "data-price": ["16px", {"lineHeight": "1.0", "letterSpacing": "-0.03em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-body-md text-on-surface bg-background min-h-screen">
+<!-- TopNavBar (Shared Component) -->
+<nav class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-margin-desktop bg-surface dark:bg-on-background docked full-width h-[64px] border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-stack-lg">
+<span class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary dark:text-primary-fixed cursor-pointer">WAYNA</span>
+<div class="hidden md:flex items-center gap-stack-md ml-stack-lg">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer active:opacity-80">Catalog</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer active:opacity-80">Entrepreneurs</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer active:opacity-80">Donate</a>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<div class="flex items-center gap-stack-sm text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors" data-icon="shopping_cart">shopping_cart</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</nav>
+<main class="pt-[120px] pb-section-gap px-margin-mobile flex justify-center">
+<!-- Receipt Canvas -->
+<div class="max-w-[480px] w-full bg-surface-container-lowest border-[0.5px] border-black/10 rounded-xl overflow-hidden shadow-sm">
+<!-- Success Header -->
+<div class="p-stack-lg flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-tertiary-container/10 flex items-center justify-center mb-stack-md border border-tertiary-fixed">
+<span class="material-symbols-outlined text-[40px] text-tertiary" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-on-surface mb-stack-sm">Pago exitoso</h1>
+<p class="font-body-md text-on-surface-variant">Tu contribución está preservando el legado artesanal de Bolivia.</p>
+</div>
+<!-- Transaction Details -->
+<div class="px-stack-lg pb-stack-lg">
+<div class="bg-surface-container-low rounded-lg p-stack-md border-[0.5px] border-outline-variant/30">
+<div class="flex justify-between items-center mb-stack-md pb-stack-sm border-b border-outline-variant/20">
+<span class="font-data-label text-data-label text-outline uppercase tracking-wider">Número de Pedido</span>
+<span class="font-data-price text-data-price text-on-surface">#0041</span>
+</div>
+<div class="space-y-stack-sm">
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-on-surface-variant">Fecha y Hora</span>
+<span class="font-body-sm text-on-surface">24 Mayo, 2024 • 14:35</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-on-surface-variant">Método de Pago</span>
+<span class="font-body-sm text-on-surface">Tarjeta de Débito (...4412)</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-on-surface-variant">Estado</span>
+<span class="font-data-label text-[10px] bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded-full uppercase font-bold">Completado</span>
+</div>
+</div>
+<div class="mt-stack-lg pt-stack-md border-t border-outline-variant">
+<div class="flex justify-between items-end">
+<span class="font-headline-sm text-headline-sm text-on-surface">Total</span>
+<div class="text-right">
+<span class="font-data-price text-[24px] text-primary">Bs. 450.00</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Visual Context Image -->
+<div class="px-stack-lg pb-stack-lg">
+<div class="relative aspect-video rounded-lg overflow-hidden border-[0.5px] border-outline-variant">
+<img alt="Bolivian Artisan working" class="w-full h-full object-cover" data-alt="A close-up, high-detail photograph of a Bolivian artisan's hands meticulously weaving a vibrant, multi-colored textile on a traditional wooden loom. The scene is bathed in warm, natural morning sunlight that highlights the rich textures of the wool and the intricate geometric patterns. The aesthetic is clean, artisanal, and sophisticated, reflecting a high-end gallery style with soft-focus background of an Andean workshop. The colors are warm and earthy, dominated by terracotta and deep violets." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxps5WLpUKISf_54G8lta02B9502EIVyEv83V1qBxf2B9bnOrT2NoC61Tf3K3MXzln23IHS0z5RdOzVNL_yShmHlMvqeXp0mAVETXr3xnlVMfpoG0iIfd6b_PXI6oN8eKqMyWVrupPEtfg__2r6mDzqYf5LK-E2nifzMX8SRgj57hYU6YxwD5dj7Ijlk7wT51UbEEkGr1z25MPFu8QQ71jH3eD6zgVueRkjJHrejag04af9GVLpflbMxOl8CaTdAPL3xRE3k_3TaI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end p-stack-md">
+<p class="text-white text-[12px] font-body-sm">Tu compra apoya directamente a la comunidad de tejedores de Tarabuco.</p>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="px-stack-lg pb-stack-lg flex flex-col gap-stack-sm">
+<button class="w-full bg-primary text-on-primary py-3 rounded-xl font-medium flex items-center justify-center gap-2 hover:opacity-90 transition-opacity active:scale-[0.98]">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+                    Descargar comprobante
+                </button>
+<button class="w-full border-[0.5px] border-outline text-on-surface py-3 rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-surface-container transition-colors active:scale-[0.98]">
+                    Volver al inicio
+                </button>
+</div>
+<!-- Share & Social -->
+<div class="border-t border-outline-variant/30 p-stack-md bg-surface-container-highest/30 flex justify-center gap-stack-md">
+<span class="font-data-label text-outline">COMPARTIR IMPACTO</span>
+<div class="flex gap-stack-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] cursor-pointer hover:text-primary transition-colors" data-icon="share">share</span>
+<span class="material-symbols-outlined text-[18px] cursor-pointer hover:text-primary transition-colors" data-icon="link">link</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="w-full py-stack-lg px-margin-desktop grid grid-cols-1 md:grid-cols-3 gap-gutter bg-inverse-surface dark:bg-surface-container-lowest full-width bottom-0">
+<div class="flex flex-col gap-stack-sm">
+<span class="font-headline-sm text-surface dark:text-primary">WAYNA</span>
+<p class="font-body-sm text-surface-variant dark:text-outline max-w-[280px]">© 2024 WAYNA. Preserving Bolivian Artistry. Empowering local creators through global commerce.</p>
+</div>
+<div class="grid grid-cols-2 gap-stack-md">
+<div class="flex flex-col gap-2">
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors cursor-pointer">About Us</a>
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors cursor-pointer">Artisan Stories</a>
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors cursor-pointer">Contact Us</a>
+</div>
+<div class="flex flex-col gap-2">
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors cursor-pointer">Terms of Service</a>
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors cursor-pointer">Privacy Policy</a>
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors cursor-pointer">FAQ</a>
+</div>
+</div>
+<div class="flex flex-col gap-stack-sm md:items-end">
+<span class="font-body-sm text-surface dark:text-on-surface">Join our journey</span>
+<div class="flex gap-stack-md">
+<span class="material-symbols-outlined text-surface dark:text-on-surface cursor-pointer" data-icon="mail">mail</span>
+<span class="material-symbols-outlined text-surface dark:text-on-surface cursor-pointer" data-icon="public">public</span>
+</div>
+</div>
+</footer>
+</body></html>

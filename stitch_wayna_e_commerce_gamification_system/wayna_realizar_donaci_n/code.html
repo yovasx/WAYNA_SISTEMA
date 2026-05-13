@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#ffdad2",
+                        "tertiary-fixed": "#ffdf97",
+                        "surface-dim": "#ddd8e1",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#5a4400",
+                        "on-secondary-fixed": "#3d0700",
+                        "on-primary-fixed": "#1d0061",
+                        "primary-container": "#7865c9",
+                        "primary": "#5f4cae",
+                        "surface-bright": "#fdf8ff",
+                        "inverse-surface": "#312f36",
+                        "on-secondary-fixed-variant": "#812914",
+                        "on-primary-fixed-variant": "#4a3597",
+                        "on-tertiary-container": "#fffbff",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#484552",
+                        "surface-tint": "#624eb1",
+                        "on-secondary-container": "#741f0b",
+                        "surface": "#fdf8ff",
+                        "on-background": "#1c1b21",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#cbbeff",
+                        "surface-container-low": "#f7f2fb",
+                        "tertiary-fixed-dim": "#ecc155",
+                        "on-primary-container": "#fffbff",
+                        "primary-fixed-dim": "#cbbeff",
+                        "surface-variant": "#e6e1ea",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary": "#745800",
+                        "secondary": "#a03f29",
+                        "secondary-fixed-dim": "#ffb4a3",
+                        "background": "#fdf8ff",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#927000",
+                        "outline-variant": "#cac4d4",
+                        "primary-fixed": "#e6deff",
+                        "secondary-container": "#fe876a",
+                        "surface-container-high": "#ebe6ef",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f4eff8",
+                        "on-tertiary-fixed": "#251a00",
+                        "on-surface": "#1c1b21",
+                        "surface-container-highest": "#e6e1ea",
+                        "surface-container": "#f1ecf5",
+                        "outline": "#797583",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "section-gap": "80px",
+                        "unit": "8px",
+                        "stack-lg": "32px",
+                        "margin-desktop": "40px",
+                        "stack-md": "16px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["DM Sans"],
+                        "body-sm": ["DM Sans"],
+                        "display-lg": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "data-label": ["JetBrains Mono"],
+                        "headline-sm": ["Playfair Display"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "data-price": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "data-label": ["12px", {"lineHeight": "1.0", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "data-price": ["16px", {"lineHeight": "1.0", "letterSpacing": "-0.03em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #FAFAF8;
+        }
+        .hairline-border {
+            border: 0.5px solid rgba(0,0,0,0.10);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-margin-desktop bg-surface dark:bg-on-background h-[64px] border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-gutter">
+<span class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary dark:text-primary-fixed">WAYNA</span>
+<nav class="hidden md:flex items-center gap-stack-lg">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer" href="#">Catalog</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer" href="#">Entrepreneurs</a>
+<a class="font-body-md text-body-md text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed pb-1 cursor-pointer" href="#">Donate</a>
+</nav>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">shopping_cart</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden hairline-border">
+<img alt="User avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbNcDm6c_r_0sWNW0ihpKSvDJ2YLb42eqgwiKffqAzNJQnZOVuAbVNWza-Jj0pY_1sZ4Zn1QKXUxJLwW5LztfPdxbWCfAEviZ_js2EVF--MWmoPX4z9lY5awxCMLInHpfXCSEZr2JAEpBMnqrdgIP0Z5Hq9hhGUQh2WEFa4cHBQAm5klTtQQTr5X1ZovtNYDgIYnVCGSD2zVDK8af1Jqu3WwiGTwMjIZebpjK-MlwcaN_iWTw7wq1P9dPhH-Dt87y3NzX4xhbQUpg"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-[64px] h-[calc(100vh-64px)] z-40 w-[260px] flex flex-col p-stack-md bg-surface border-r border-outline-variant hidden md:flex">
+<div class="flex flex-col gap-1 mb-stack-lg">
+<p class="font-headline-sm text-primary">WAYNA</p>
+<p class="font-body-sm text-on-surface-variant opacity-70">Bolivian Artisanal Heritage</p>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-low rounded-xl cursor-pointer transition-all">
+<span class="material-symbols-outlined">home</span>
+<span class="font-body-sm">Home</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-low rounded-xl cursor-pointer transition-all">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-body-sm">Catalog</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-low rounded-xl cursor-pointer transition-all">
+<span class="material-symbols-outlined">storefront</span>
+<span class="font-body-sm">Entrepreneurs</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-low rounded-xl cursor-pointer transition-all">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="font-body-sm">Orders</span>
+</div>
+<div class="flex items-center gap-3 p-3 bg-primary-container text-on-primary-container rounded-xl font-medium cursor-pointer transition-all">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-body-sm">Impact</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-low rounded-xl cursor-pointer transition-all">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-sm">Dashboard</span>
+</div>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-stack-md">
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-low rounded-xl cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-sm">Settings</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-low rounded-xl cursor-pointer">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="font-body-sm">Help</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-[260px] pt-[64px] min-h-screen">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 mb-stack-md">
+<span class="font-data-label text-outline uppercase tracking-wider">WAYNA</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="font-data-label text-primary uppercase tracking-wider">Donar</span>
+</div>
+<!-- Header Section -->
+<div class="mb-stack-lg">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-2">Apoya la artesanía boliviana</h1>
+<p class="font-body-lg text-on-surface-variant max-w-2xl">Tu contribución directa preserva técnicas milenarias y empodera a comunidades locales en los Andes y la Amazonía.</p>
+</div>
+<!-- 2-Column Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Form -->
+<div class="lg:col-span-7 space-y-stack-lg">
+<!-- Selected Entrepreneur (Contextual Card) -->
+<div class="bg-surface hairline-border rounded-xl p-stack-md flex gap-stack-md items-center">
+<div class="w-16 h-16 rounded-full overflow-hidden hairline-border shrink-0">
+<img class="w-full h-full object-cover" data-alt="A portrait of a Bolivian female artisan smiling warmly, wearing a traditional colorful aguayo textile shawl around her shoulders. She is standing in a brightly lit studio filled with hand-woven textiles and ceramic pots. The lighting is soft and natural, emphasizing the rich textures and organic colors of the environment. The overall mood is dignified and celebratory of her craft." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgF96hQBKTMe2IKggY4IMNJGzmEjAgMKxz0yi0dGeEizIrWQLN5j_UUbfMfzGj1eS144B32Ye5CVyD6vqMx2C_VYW_OBDzAKahAiJpqk-XqUqm8f9IDv1V3pyEOtHbkDb0n0B7DB_MEo5GvN8F2ynhyNQU8RmsqnkqBVowr0lkxib_Q4BpFqCL9EC_NOEMZFVn58vK4QBFixi5yv9o5s7wj76b-W86l2om7ki_rWunqc0XfjK-ODlYH5gj3R2JzAc97Au7Roz9lno"/>
+</div>
+<div class="flex-1">
+<h3 class="font-headline-sm text-on-surface text-body-md font-semibold">Beatriz Quispe</h3>
+<p class="font-body-sm text-on-surface-variant">Maestra Tejedora • El Alto, Bolivia</p>
+</div>
+<button class="text-primary font-body-sm font-medium hover:underline">Cambiar</button>
+</div>
+<!-- Form Section -->
+<div class="bg-surface hairline-border rounded-xl p-stack-lg space-y-stack-lg">
+<!-- Destination Selector -->
+<div>
+<label class="font-data-label text-outline block mb-3 uppercase tracking-widest">Destino de la donación</label>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-stack-sm">
+<label class="relative flex items-center p-4 rounded-lg hairline-border cursor-pointer hover:bg-surface-container-low transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary-fixed">
+<input checked="" class="hidden peer" name="destination" type="radio"/>
+<div class="flex flex-col">
+<span class="font-body-md font-medium">Beatriz Quispe</span>
+<span class="font-body-sm opacity-70">Donación Directa</span>
+</div>
+<span class="material-symbols-outlined ml-auto text-primary opacity-0 peer-checked:opacity-100">check_circle</span>
+</label>
+<label class="relative flex items-center p-4 rounded-lg hairline-border cursor-pointer hover:bg-surface-container-low transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary-fixed">
+<input class="hidden peer" name="destination" type="radio"/>
+<div class="flex flex-col">
+<span class="font-body-md font-medium">Fondo General</span>
+<span class="font-body-sm opacity-70">Impacto Colectivo</span>
+</div>
+<span class="material-symbols-outlined ml-auto text-primary opacity-0 peer-checked:opacity-100">check_circle</span>
+</label>
+</div>
+</div>
+<!-- Amount Selection -->
+<div>
+<label class="font-data-label text-outline block mb-3 uppercase tracking-widest">Monto de donación (Bs.)</label>
+<div class="flex flex-wrap gap-stack-sm">
+<button class="px-6 py-3 rounded-full hairline-border font-data-price hover:border-primary hover:text-primary transition-all">20</button>
+<button class="px-6 py-3 rounded-full hairline-border font-data-price hover:border-primary hover:text-primary transition-all">50</button>
+<button class="px-6 py-3 rounded-full border-2 border-primary text-primary font-data-price bg-primary-fixed">100</button>
+<button class="px-6 py-3 rounded-full hairline-border font-data-price hover:border-primary hover:text-primary transition-all">200</button>
+<div class="relative flex-1 min-w-[120px]">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 font-data-price text-outline">Bs.</span>
+<input class="w-full pl-12 pr-4 py-3 rounded-full hairline-border focus:ring-1 focus:ring-primary focus:border-primary bg-transparent font-data-price outline-none" placeholder="Otro" type="number"/>
+</div>
+</div>
+</div>
+<!-- Message -->
+<div>
+<label class="font-data-label text-outline block mb-3 uppercase tracking-widest">Mensaje de aliento (Opcional)</label>
+<textarea class="w-full p-4 rounded-xl hairline-border focus:ring-1 focus:ring-primary focus:border-primary bg-transparent font-body-md resize-none outline-none" placeholder="Escribe unas palabras para el artesano..." rows="4"></textarea>
+</div>
+<!-- Submit -->
+<button class="w-full bg-primary text-on-primary py-4 rounded-xl font-body-md font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+<span>Donar ahora</span>
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+</div>
+<!-- Right Column: Contextual Info -->
+<div class="lg:col-span-5 space-y-gutter">
+<!-- Impact Card -->
+<div class="bg-surface hairline-border rounded-xl p-stack-lg overflow-hidden relative">
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary"></div>
+<h4 class="font-headline-sm text-body-lg mb-stack-sm">Tu impacto real</h4>
+<div class="flex items-baseline gap-2 mb-4">
+<span class="font-data-price text-[32px] text-on-surface">Bs. 100</span>
+<span class="font-body-md text-outline">=</span>
+</div>
+<div class="p-4 bg-secondary-fixed text-on-secondary-fixed-variant rounded-lg mb-stack-md flex items-start gap-3">
+<span class="material-symbols-outlined mt-0.5">timer</span>
+<p class="font-body-md"><strong>4 horas de taller:</strong> Financia materiales y espacio para que Beatriz transmita su técnica a 2 aprendices locales.</p>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between text-body-sm mb-1">
+<span class="text-on-surface-variant">Progreso de la meta semanal</span>
+<span class="font-data-label">75%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 75%"></div>
+</div>
+</div>
+</div>
+<!-- Reward Preview -->
+<div class="bg-surface hairline-border rounded-xl p-stack-lg">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 bg-tertiary-fixed flex items-center justify-center rounded-full text-on-tertiary-fixed-variant">
+<span class="material-symbols-outlined">military_tech</span>
+</div>
+<h4 class="font-headline-sm text-body-lg">Recompensas de impacto</h4>
+</div>
+<div class="space-y-stack-md">
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-lowest hairline-border">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary">add_circle</span>
+<span class="font-body-sm font-medium">Puntos Wayna</span>
+</div>
+<span class="font-data-label text-primary font-bold">+100 pts</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-lowest hairline-border">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">verified</span>
+<span class="font-body-sm font-medium">Insignia "Mecenas Rural"</span>
+</div>
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+</div>
+</div>
+</div>
+<!-- Mini Leaderboard -->
+<div class="bg-surface hairline-border rounded-xl p-stack-lg">
+<h4 class="font-headline-sm text-body-lg mb-4">Top Donantes del Mes</h4>
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<span class="font-data-label text-outline w-4">01</span>
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden">
+<img alt="User avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwTqfKqXXNzPrAazZM92_RP1fTG6CIZ_o6N5wBB7gCL2p6Chf4nglCJbG8B1PAf0RZVgkKR6kpTk19m44kMDOHY0hiBRjQWBGkibkZ3VCHhNTzLf0AzSppj-Ag_3z5i9kD91a6qSI9p-91t2l_ylqATZfpqnnIW0ZN4CVCOgIoytK8ioMwkUobCrz62eJuZOLMm5wST_DyS1zTLPkA00xqWhq5KePPpDhR2gwd37KThai9kkGG5bchEvRgaa_QCesYBcILYLDIHdA"/>
+</div>
+<span class="font-body-sm flex-1 font-medium">Marco Valenzuela</span>
+<span class="font-data-price text-on-surface">Bs. 1,500</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-data-label text-outline w-4">02</span>
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden">
+<img alt="User avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrkMD-YOAXjVCu3pydw-ASKWvsEUBgeGs8yzLI4kTdNYuQMDUMXIN-464NvWnqW0ptT4PVCO6PcSW_N4Po_NtRzxDPUW1f01N_ENbRLnXVnsaws-flBVZ9hcalxSz264UJwCJjE7YxGa0IJKHJ5yCMVydik1QDSXw5zRvs9UxOqpLI3MgtDH-VQ5884zD-8zTbaJjlRAZ3kIxw4cd5D-PWcvv4m2oSNX72kOOVaEpBVuL-kBIvgeTu9zDaBu5LLSR9vQOhIgP3noE"/>
+</div>
+<span class="font-body-sm flex-1 font-medium">Ana María Flores</span>
+<span class="font-data-price text-on-surface">Bs. 840</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-data-label text-outline w-4">03</span>
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden">
+<img alt="User avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7DWz0ILKyd_YTxyb2XX8gm0zu973oiy0e4W6mjRwyVhJ1HfczCZQTq60ZqwaeFQ3DdbbhJKGWb7YpdE46h1Emp-1Oe4j3cVZ7_SvlFRGUms-RZRThODJZGQfHDtoCeVw7K1L0uBq3NEwA90WrRrzswQu_bq_U9TOq8IicLiKPw3_Fgco6H66zXNvk8AfR-OUBcKYWIm9_nTxiRsNSGwZMJ0dzy7YczN-sAMSyTuWw_DxAz1qkLpLJKWHgvhOZER3KHAvzHfG7y9k"/>
+</div>
+<span class="font-body-sm flex-1 font-medium">Luis Herrera</span>
+<span class="font-data-price text-on-surface">Bs. 450</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="md:ml-[260px] w-full py-stack-lg px-margin-desktop grid grid-cols-1 md:grid-cols-3 gap-gutter bg-inverse-surface dark:bg-surface-container-lowest text-surface dark:text-on-surface">
+<div class="flex flex-col gap-4">
+<span class="font-headline-sm text-surface dark:text-primary">WAYNA</span>
+<p class="font-body-sm text-surface-variant dark:text-outline opacity-80 max-w-xs">
+                Conectamos el talento artesanal de Bolivia con el mundo, garantizando comercio justo y preservación cultural.
+            </p>
+</div>
+<div class="flex flex-col gap-2">
+<h5 class="font-data-label uppercase tracking-widest mb-2">Comunidad</h5>
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">Artisan Stories</a>
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">Impact Reports</a>
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed transition-colors" href="#">FAQ</a>
+</div>
+<div class="flex flex-col gap-4">
+<h5 class="font-data-label uppercase tracking-widest mb-2">Legal &amp; Contacto</h5>
+<div class="flex flex-wrap gap-stack-md">
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed" href="#">Privacy Policy</a>
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed" href="#">Terms</a>
+</div>
+<p class="font-body-sm text-surface-variant dark:text-outline mt-auto">© 2024 WAYNA. Preserving Bolivian Artistry.</p>
+</div>
+</footer>
+</body></html>

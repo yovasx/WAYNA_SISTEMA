@@ -21,9 +21,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxml2-dev \
     libicu-dev \
     libgmp-dev \
-    imagemagick-dev \
+    libmagickwand-dev \
     ghostscript \
-    zlib-dev \
+    zlib1g-dev \
     libssl-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -78,7 +78,8 @@ WORKDIR /var/www/html
 
 # ── 8. Entrypoint ─────────────────────────────────────────
 COPY docker/php/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh \
+    && chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 9000
 ENTRYPOINT ["entrypoint.sh"]

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WAYNA | POS Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Playfair+Display:wght@600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#ffdad2",
+                        "tertiary-fixed": "#ffdf97",
+                        "surface-dim": "#ddd8e1",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#5a4400",
+                        "on-secondary-fixed": "#3d0700",
+                        "on-primary-fixed": "#1d0061",
+                        "primary-container": "#7865c9",
+                        "primary": "#5f4cae",
+                        "surface-bright": "#fdf8ff",
+                        "inverse-surface": "#312f36",
+                        "on-secondary-fixed-variant": "#812914",
+                        "on-primary-fixed-variant": "#4a3597",
+                        "on-tertiary-container": "#fffbff",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#484552",
+                        "surface-tint": "#624eb1",
+                        "on-secondary-container": "#741f0b",
+                        "surface": "#fdf8ff",
+                        "on-background": "#1c1b21",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#cbbeff",
+                        "surface-container-low": "#f7f2fb",
+                        "tertiary-fixed-dim": "#ecc155",
+                        "on-primary-container": "#fffbff",
+                        "primary-fixed-dim": "#cbbeff",
+                        "surface-variant": "#e6e1ea",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary": "#745800",
+                        "secondary": "#a03f29",
+                        "secondary-fixed-dim": "#ffb4a3",
+                        "background": "#fdf8ff",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#927000",
+                        "outline-variant": "#cac4d4",
+                        "primary-fixed": "#e6deff",
+                        "secondary-container": "#fe876a",
+                        "surface-container-high": "#ebe6ef",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f4eff8",
+                        "on-tertiary-fixed": "#251a00",
+                        "on-surface": "#1c1b21",
+                        "surface-container-highest": "#e6e1ea",
+                        "surface-container": "#f1ecf5",
+                        "outline": "#797583",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "section-gap": "80px",
+                        "unit": "8px",
+                        "stack-lg": "32px",
+                        "margin-desktop": "40px",
+                        "stack-md": "16px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["DM Sans"],
+                        "body-sm": ["DM Sans"],
+                        "display-lg": ["Playfair Display"],
+                        "body-md": ["DM Sans"],
+                        "data-label": ["JetBrains Mono"],
+                        "headline-sm": ["Playfair Display"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "data-price": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "data-label": ["12px", {"lineHeight": "1.0", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "data-price": ["16px", {"lineHeight": "1.0", "letterSpacing": "-0.03em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .artisanal-border { border: 0.5px solid rgba(0,0,0,0.10); }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar (Fixed Shell) -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-margin-desktop bg-surface dark:bg-on-background h-[64px] border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-stack-lg">
+<span class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary dark:text-primary-fixed">WAYNA</span>
+<nav class="hidden md:flex items-center gap-gutter ml-stack-lg">
+<a class="font-body-md text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed pb-1 cursor-pointer active:opacity-80 transition-colors" href="#">Catalog</a>
+<a class="font-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer active:opacity-80" href="#">Entrepreneurs</a>
+<a class="font-body-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer active:opacity-80" href="#">Donate</a>
+</nav>
+</div>
+<div class="flex items-center gap-stack-md">
+<div class="flex items-center gap-stack-sm text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer" data-icon="shopping_cart">shopping_cart</span>
+<span class="material-symbols-outlined cursor-pointer" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined cursor-pointer" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</header>
+<main class="pt-[64px] flex h-screen overflow-hidden">
+<!-- Left Main Content Area -->
+<div class="flex-1 flex flex-col overflow-hidden">
+<!-- Context Tabs -->
+<div class="flex items-center gap-gutter px-margin-desktop py-stack-md bg-surface-container-lowest artisanal-border border-l-0 border-r-0">
+<button class="px-stack-lg py-stack-sm rounded-xl bg-primary text-on-primary font-body-md font-medium transition-all">
+                    Restaurante
+                </button>
+<button class="px-stack-lg py-stack-sm rounded-xl text-on-surface-variant hover:bg-surface-container transition-all artisanal-border">
+                    Mercado artesanal
+                </button>
+<button class="px-stack-lg py-stack-sm rounded-xl text-on-surface-variant hover:bg-surface-container transition-all artisanal-border">
+                    Modo kiosco
+                </button>
+</div>
+<!-- Grid of Items -->
+<div class="flex-1 overflow-y-auto p-margin-desktop hide-scrollbar">
+<div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter">
+<!-- POS Card 1 -->
+<div class="bg-surface artisanal-border rounded-xl p-stack-sm hover:border-primary transition-all cursor-pointer group">
+<div class="aspect-square rounded-lg overflow-hidden mb-stack-sm bg-surface-container">
+<img alt="Salteñas Tradicionales" class="w-full h-full object-cover transition-transform group-hover:scale-105" data-alt="A gourmet Bolivian hamburger presented on a rustic ceramic plate, featuring locally sourced ingredients like artisanal cheese and Andean herbs. The lighting is warm and cinematic, highlighting the rich textures of the bun and fresh vegetables. The overall aesthetic is clean and high-end, fitting for a modern artisanal market." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAak1QClf70pCU587SR1BC49ErKpscLgue_uDgeZLX2mGglJ1ykBMy1SCRXQN0kZ2y5yox-0bkn5Klt_VLsySMK9COSK2tDYRtTVW5LPFRVcTMVS28mGU8_PWRC7f0jbC5ATO466aVFUO15z-68dJnJthdmGTbIPKcz9cAkUz53VK_U1kpP7qRxkpFoePjZXzk9DbQBeb-N5oST6xSh6HLcVLBtHEuZunk93Wu3t8oiVLJTyM64FDlcnOIIM4DofLC5we5xV3ptrGY"/>
+</div>
+<div class="px-stack-sm pb-stack-sm">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-body-md font-bold text-on-surface">Salteña de Carne</h3>
+<span class="font-data-price text-primary font-medium">Bs. 12.00</span>
+</div>
+<div class="flex items-center justify-between mt-stack-md">
+<span class="text-xs font-data-label text-tertiary-container bg-tertiary-fixed px-2 py-0.5 rounded-full">DISPONIBLE</span>
+<div class="w-10 h-5 bg-primary-container rounded-full relative">
+<div class="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- POS Card 2 -->
+<div class="bg-surface artisanal-border rounded-xl p-stack-sm hover:border-primary transition-all cursor-pointer group">
+<div class="aspect-square rounded-lg overflow-hidden mb-stack-sm bg-surface-container">
+<img alt="Manta Tejida" class="w-full h-full object-cover transition-transform group-hover:scale-105" data-alt="A collection of hand-woven Bolivian textile placemats in vibrant earthy tones like terracotta, ocre, and deep violet. The textures are rich and detailed, showcasing traditional patterns. The setting is a minimalist wooden table in a brightly lit studio, emphasizing a serene and premium artisanal vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzLlCkfLgRIhMEHaj_YpUzxHSwllArnNMWd7bKILOx3ywNkceVBKI6aJcUz7Wtp_Q9OMUbgwou5LLcDQ9guNp-40-uwxco9QpAHMvBdIyJhbWpwVYGtt_xDvZd0rAUChfAtA8xQQtaDTzMSScGXXDvSX2G1yIh_Vxk-YbKNnts_f44lXjOeh_my56cvRZKEWMS03OjJLzmdU18r6IdtcdneVHxaJ8IAZKtYq7TCzOXcTG31pcje3BbpO8mowWvVneT6UWN-c-4Chc"/>
+</div>
+<div class="px-stack-sm pb-stack-sm">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-body-md font-bold text-on-surface">Manta de Alpaca</h3>
+<span class="font-data-price text-primary font-medium">Bs. 450.00</span>
+</div>
+<div class="flex items-center justify-between mt-stack-md">
+<span class="text-xs font-data-label text-tertiary-container bg-tertiary-fixed px-2 py-0.5 rounded-full">DISPONIBLE</span>
+<div class="w-10 h-5 bg-primary-container rounded-full relative">
+<div class="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- POS Card 3 -->
+<div class="bg-surface artisanal-border rounded-xl p-stack-sm opacity-60 grayscale-[0.5]">
+<div class="aspect-square rounded-lg overflow-hidden mb-stack-sm bg-surface-container">
+<img alt="Silpancho Cocha" class="w-full h-full object-cover" data-alt="A classic Silpancho plate, a traditional Bolivian dish with breaded meat, rice, and fried egg. The presentation is neat on a white artisan plate, set against an off-white background. The lighting is bright and flat, emphasizing the natural colors of the food and the minimalist design of the interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiLJx9w9J2ldEESN61BpCJ1y2rB8s4LwB4Hkj0_lPPcni0QkiC3M-N89TKAWmEl8vFsmyhprZ7SkDWF-ZJe3y653YkGJGItBsAP8dW4BPTLonLpk1x8ioMT6HNxIW4Qm1BpNw3nCqL2bmZnLU_AD69TubUwDt0tdnarkem7W9gjNKnvlD8YlPDtHVhPyN5CTdc1kKqy__whG6I9VOzz3n1ImkcHeyEOzVqkxbO_wQ5516ykpZfszbKJbR40fC8GOW9j2zKH5R5npA"/>
+</div>
+<div class="px-stack-sm pb-stack-sm">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-body-md font-bold text-on-surface">Silpancho</h3>
+<span class="font-data-price text-outline font-medium">Bs. 35.00</span>
+</div>
+<div class="flex items-center justify-between mt-stack-md">
+<span class="text-xs font-data-label text-on-surface-variant bg-surface-variant px-2 py-0.5 rounded-full">AGOTADO</span>
+<div class="w-10 h-5 bg-outline-variant rounded-full relative">
+<div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- POS Card 4 -->
+<div class="bg-surface artisanal-border rounded-xl p-stack-sm hover:border-primary transition-all cursor-pointer group">
+<div class="aspect-square rounded-lg overflow-hidden mb-stack-sm bg-surface-container">
+<img alt="Sopa de Maní" class="w-full h-full object-cover transition-transform group-hover:scale-105" data-alt="A bowl of Sopa de Maní, a creamy Bolivian peanut soup, garnished with crispy fries and parsley. The bowl is made of dark clay, sitting on a light-colored stone surface. The lighting is soft and side-lit, creating a deep, appetizing look that reflects heritage and quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPxGa57j9QfAOlSeZeecsdIhmApwulGoy7PXsCJmzvElvJTKgePpi0--ytb3EH0etNTXmaKoMXoERaPSPcNpK7ICEyftD1sM3t1L1pMvGr3fM78D5XT2xRSWTVxJiQHyqQVmUWsBlR7BVscq4q1cQqhRA1nFGXrYJ5YN7Jfq2HVctf6dMmvthucnD4yQewcrpmL4geIky3xO3aujDge28NfWzQDyufZVuDeMZSsgxWUyelBae4OPFtadwgdAQj7GUWCEvNZ8zOIW4"/>
+</div>
+<div class="px-stack-sm pb-stack-sm">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-body-md font-bold text-on-surface">Sopa de Maní</h3>
+<span class="font-data-price text-primary font-medium">Bs. 25.00</span>
+</div>
+<div class="flex items-center justify-between mt-stack-md">
+<span class="text-xs font-data-label text-tertiary-container bg-tertiary-fixed px-2 py-0.5 rounded-full">DISPONIBLE</span>
+<div class="w-10 h-5 bg-primary-container rounded-full relative">
+<div class="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- POS Card 5 -->
+<div class="bg-surface artisanal-border rounded-xl p-stack-sm hover:border-primary transition-all cursor-pointer group">
+<div class="aspect-square rounded-lg overflow-hidden mb-stack-sm bg-surface-container">
+<img alt="Cerámica Roja" class="w-full h-full object-cover transition-transform group-hover:scale-105" data-alt="Handcrafted ceramic coffee mugs with matte glaze and traditional Andean engravings. The mugs are positioned in a balanced composition on a minimalist shelf. The lighting is gentle and warm, evoking a sense of calm and artisanal excellence in a boutique setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcFWQu_x8LYPArckqx0WLQVQHd3i5PBivq0P1fkRVv9mFLr3-BkumqxdCqsq5foncURG0d1Zi482oc2lrS0z8ObJghC_DUCudvNl0GrS2x5AYrq9h79ZnoA6Su2zx9WWUQeBiKTBQW8geQgpk6IqCdkmVZjWMhsSxVEaJnWPwgNAIFMAgc_qHzlYVc6VkzD6tqiTSmZ7oVAa8pMPySSEcHbwWoOW54KJUmQWKlsbYA4DRErVn72XHOCJJIzIl3YAipxxmT2jkHcak"/>
+</div>
+<div class="px-stack-sm pb-stack-sm">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-body-md font-bold text-on-surface">Taza Ceramista</h3>
+<span class="font-data-price text-primary font-medium">Bs. 45.00</span>
+</div>
+<div class="flex items-center justify-between mt-stack-md">
+<span class="text-xs font-data-label text-tertiary-container bg-tertiary-fixed px-2 py-0.5 rounded-full">DISPONIBLE</span>
+<div class="w-10 h-5 bg-primary-container rounded-full relative">
+<div class="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- POS Card 6 -->
+<div class="bg-surface artisanal-border rounded-xl p-stack-sm hover:border-primary transition-all cursor-pointer group">
+<div class="aspect-square rounded-lg overflow-hidden mb-stack-sm bg-surface-container">
+<img alt="Café Yungas" class="w-full h-full object-cover transition-transform group-hover:scale-105" data-alt="A steaming cup of Bolivian specialty coffee beans, presented in a minimalist ceramic cup with a side of traditional bread. The atmosphere is cozy yet modern, with high-key lighting that emphasizes the rich coffee tones and the tactile quality of the bread. The aesthetic is sophisticated and grounded." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDC3EWz5J135EMX5y_PNVNSOQPXvCVS3sY86tm54j3mlMXNIaPLLo5L5NamBB4k_7RMblY4_pqAeWhkUpDDY09Tmz2omHkpIxlHKg_8abdyG_z9vGjGwchCuADC1sOtqfyyWrlcKhpQTCptuXp035yt8IVEBfpWBSyG3ORUGheMuRBu7nErjklSVOtAKjhOBOKoKD7lepST0fe3gOft7mmrVxfnyoLr4SRK5SkWuUad2VdWM5SrzmcOeqLSoDEzmBEivBBNOVlEQi8"/>
+</div>
+<div class="px-stack-sm pb-stack-sm">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-body-md font-bold text-on-surface">Café Especial</h3>
+<span class="font-data-price text-primary font-medium">Bs. 18.00</span>
+</div>
+<div class="flex items-center justify-between mt-stack-md">
+<span class="text-xs font-data-label text-tertiary-container bg-tertiary-fixed px-2 py-0.5 rounded-full">DISPONIBLE</span>
+<div class="w-10 h-5 bg-primary-container rounded-full relative">
+<div class="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Sidebar: Gestión Pedidos -->
+<aside class="w-[380px] bg-surface-container-low border-l border-outline-variant flex flex-col">
+<div class="p-stack-md border-b border-outline-variant bg-surface">
+<h2 class="font-headline-sm text-on-surface">Gestión Pedidos</h2>
+<p class="text-xs font-data-label text-outline mt-1 uppercase tracking-wider">3 Pedidos activos</p>
+</div>
+<div class="flex-1 overflow-y-auto p-stack-md flex flex-col gap-stack-md hide-scrollbar">
+<!-- Active Order 1 -->
+<div class="bg-surface artisanal-border rounded-xl p-stack-md">
+<div class="flex justify-between items-center mb-stack-sm">
+<span class="font-data-label text-primary font-bold text-lg">#1204</span>
+<div class="flex items-center gap-1 text-secondary font-data-label">
+<span class="material-symbols-outlined text-sm" data-icon="timer">timer</span>
+<span>08:12</span>
+</div>
+</div>
+<div class="space-y-1 mb-stack-md border-y border-outline-variant py-stack-sm">
+<div class="flex justify-between text-sm">
+<span class="text-on-surface-variant">2x Salteña Carne</span>
+<span class="font-data-price">Bs. 24.00</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-on-surface-variant">1x Café Yungas</span>
+<span class="font-data-price">Bs. 18.00</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-stack-sm bg-primary text-on-primary rounded-lg text-sm font-medium transition-opacity active:opacity-80">
+                            En preparación
+                        </button>
+<button class="px-3 py-stack-sm artisanal-border rounded-lg text-on-surface-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined" data-icon="print">print</span>
+</button>
+</div>
+</div>
+<!-- Active Order 2 -->
+<div class="bg-surface artisanal-border rounded-xl p-stack-md border-l-4 border-l-primary">
+<div class="flex justify-between items-center mb-stack-sm">
+<span class="font-data-label text-primary font-bold text-lg">#1203</span>
+<div class="flex items-center gap-1 text-tertiary font-data-label">
+<span class="material-symbols-outlined text-sm" data-icon="timer">timer</span>
+<span>14:45</span>
+</div>
+</div>
+<div class="space-y-1 mb-stack-md border-y border-outline-variant py-stack-sm">
+<div class="flex justify-between text-sm">
+<span class="text-on-surface-variant">1x Silpancho</span>
+<span class="font-data-price">Bs. 35.00</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-stack-sm bg-primary text-on-primary rounded-lg text-sm font-medium transition-opacity active:opacity-80">
+                            Listo
+                        </button>
+<button class="px-3 py-stack-sm artisanal-border rounded-lg text-on-surface-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined" data-icon="print">print</span>
+</button>
+</div>
+</div>
+<!-- Active Order 3 -->
+<div class="bg-surface artisanal-border rounded-xl p-stack-md border-l-4 border-l-secondary">
+<div class="flex justify-between items-center mb-stack-sm">
+<span class="font-data-label text-primary font-bold text-lg">#1202</span>
+<div class="flex items-center gap-1 text-error font-data-label">
+<span class="material-symbols-outlined text-sm" data-icon="priority_high">priority_high</span>
+<span>22:05</span>
+</div>
+</div>
+<div class="space-y-1 mb-stack-md border-y border-outline-variant py-stack-sm">
+<div class="flex justify-between text-sm">
+<span class="text-on-surface-variant">1x Manta Alpaca</span>
+<span class="font-data-price">Bs. 450.00</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-on-surface-variant">1x Sopa Maní</span>
+<span class="font-data-price">Bs. 25.00</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-stack-sm bg-primary text-on-primary rounded-lg text-sm font-medium transition-opacity active:opacity-80">
+                            En preparación
+                        </button>
+<button class="px-3 py-stack-sm artisanal-border rounded-lg text-on-surface-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined" data-icon="print">print</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Total Bar -->
+<div class="p-stack-md bg-inverse-surface text-surface mt-auto">
+<div class="flex justify-between items-end mb-stack-sm">
+<span class="font-body-sm opacity-80">Caja Actual (Total)</span>
+<span class="font-headline-sm font-bold">Bs. 4,230.50</span>
+</div>
+<button class="w-full py-stack-md bg-primary rounded-xl font-body-md font-bold shadow-lg shadow-black/20">
+                    Corte de Caja
+                </button>
+</div>
+</aside>
+</main>
+<!-- Footer (Suppressed based on POS context but generated per requirement for visual anchoring) -->
+<footer class="w-full py-stack-lg px-margin-desktop grid grid-cols-1 md:grid-cols-3 gap-gutter bg-inverse-surface dark:bg-surface-container-lowest text-surface dark:text-on-surface fixed bottom-0 z-[60] transform translate-y-full md:relative md:translate-y-0">
+<div class="flex flex-col">
+<span class="font-headline-sm text-surface dark:text-primary mb-2">WAYNA</span>
+<p class="font-body-sm text-surface-variant dark:text-outline max-w-xs">Preserving Bolivian Artistry through digital commerce and heritage storytelling.</p>
+</div>
+<div class="flex flex-col gap-1">
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed dark:hover:text-secondary transition-colors" href="#">Artisan Stories</a>
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed dark:hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="font-body-sm text-surface-variant dark:text-outline hover:text-secondary-fixed dark:hover:text-secondary transition-colors" href="#">Contact Us</a>
+</div>
+<div class="flex flex-col items-start md:items-end justify-between">
+<span class="font-body-sm text-surface-variant dark:text-outline">© 2024 WAYNA. All Rights Reserved.</span>
+<div class="flex gap-4 mt-4">
+<span class="material-symbols-outlined cursor-pointer hover:opacity-80" data-icon="public">public</span>
+<span class="material-symbols-outlined cursor-pointer hover:opacity-80" data-icon="volunteer_activism">volunteer_activism</span>
+</div>
+</div>
+</footer>
+</body></html>
