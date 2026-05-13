@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,17 +13,20 @@ class Producto extends Model
     use HasFactory;
 
     protected $fillable = [
+        'emprendedor_id',
         'perfil_emprendedor_id',
         'categoria_id',
         'nombre',
-        'slug',
         'descripcion',
         'precio',
         'stock',
+        'estado_stock',
         'estado_disponibilidad',
-        'destacado',
+        'foto_principal',
+        'qr_codigo',
         'codigo_qr_publico',
-        'publicado_at',
+        'qr_url',
+        'activo',
     ];
 
     protected function casts(): array
@@ -30,8 +34,7 @@ class Producto extends Model
         return [
             'precio' => 'decimal:2',
             'stock' => 'integer',
-            'destacado' => 'boolean',
-            'publicado_at' => 'datetime',
+            'activo' => 'boolean',
         ];
     }
 
@@ -42,11 +45,42 @@ class Producto extends Model
 
     public function perfilEmprendedor(): BelongsTo
     {
-        return $this->belongsTo(PerfilEmprendedor::class, 'perfil_emprendedor_id');
+        return $this->belongsTo(PerfilEmprendedor::class, 'emprendedor_id');
     }
 
     public function imagenes(): HasMany
     {
         return $this->hasMany(ImagenProducto::class, 'producto_id');
+    }
+
+    protected function perfilEmprendedorId(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?int $value, array $attributes) => $attributes['emprendedor_id'] ?? null,
+            set: fn (?int $value) => ['emprendedor_id' => $value],
+        );
+    }
+
+    protected function estadoDisponibilidad(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value, array $attributes) => $attributes['estado_stock'] ?? 'disponible',
+            set: fn (?string $value) => ['estado_stock' => $value],
+        );
+    }
+
+    protected function codigoQrPublico(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value, array $attributes) => $attributes['qr_codigo'] ?? null,
+            set: fn (?string $value) => ['qr_codigo' => $value],
+        );
+    }
+
+    protected function publicadoAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->created_at,
+        );
     }
 }

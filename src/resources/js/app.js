@@ -54,3 +54,25 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('resize', syncActiveLink);
     });
 });
+
+window.adminLayoutState = () => ({
+    sidebarExpanded: true,
+    mobileSidebarOpen: false,
+
+    init() {
+        const savedState = window.localStorage.getItem('wayna.admin.sidebar.expanded');
+
+        if (savedState !== null) {
+            this.sidebarExpanded = savedState === 'true';
+        }
+    },
+
+    toggleSidebar() {
+        this.sidebarExpanded = !this.sidebarExpanded;
+        window.localStorage.setItem('wayna.admin.sidebar.expanded', String(this.sidebarExpanded));
+    },
+
+    closeMobileSidebar() {
+        this.mobileSidebarOpen = false;
+    },
+});

@@ -25,22 +25,20 @@ class AuthController extends Controller
         $rol = ($datos['rol'] ?? 'usuario') === 'emprendedor' ? 'emprendedor' : 'comprador';
 
         $usuario = User::create([
-            'name' => $datos['name'],
+            'nombre_completo' => $datos['name'],
             'email' => $datos['email'],
-            'password' => $datos['password'],
-            'rol' => $rol,
+            'password_hash' => Hash::make($datos['password']),
             'estado' => 'activo',
             'email_verified_at' => now(),
         ]);
+        $usuario->asignarRol($rol === 'emprendedor' ? 'EMPRENDEDOR' : 'COMPRADOR');
 
         if ($rol === 'emprendedor') {
             PerfilEmprendedor::firstOrCreate([
                 'usuario_id' => $usuario->id,
             ], [
-                'nombre_emprendimiento' => $usuario->name,
-                'pais' => 'Bolivia',
-                'estado_aprobacion' => 'aprobado',
-                'acepta_donaciones' => true,
+                'nombre_negocio' => $usuario->name,
+                'estado' => 'pendiente',
             ]);
         }
 

@@ -57,7 +57,7 @@ if [ ! -f "vendor/autoload.php" ]; then
         --no-interaction \
         --prefer-dist \
         --optimize-autoloader \
-        --no-progress || echo "  ⚠ Composer install fallo"
+        --no-progress
     echo "  ✓ Composer listo"
 else
     echo "  ✓ Vendor ya existe, omitiendo composer install"

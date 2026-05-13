@@ -13,10 +13,8 @@ class Dashboard extends Component
         $usuario = auth()->user();
         $perfil = $usuario->perfilEmprendedor ?? PerfilEmprendedor::create([
             'usuario_id' => $usuario->id,
-            'nombre_emprendimiento' => $usuario->name,
-            'pais' => 'Bolivia',
-            'estado_aprobacion' => 'aprobado',
-            'acepta_donaciones' => true,
+            'nombre_negocio' => $usuario->name,
+            'estado' => 'pendiente',
         ]);
 
         $productos = Producto::query()
@@ -32,7 +30,9 @@ class Dashboard extends Component
             'perfil' => $perfil,
             'metricas' => [
                 'productos' => $perfil ? Producto::where('perfil_emprendedor_id', $perfil->id)->count() : 0,
-                'stock_bajo' => $perfil ? Producto::where('perfil_emprendedor_id', $perfil->id)->where('stock', '<=', 5)->count() : 0,
+                'stock_bajo' => $perfil ? Producto::where('perfil_emprendedor_id', $perfil->id)->where(function ($query) {
+                    $query->where('stock', '<=', 5)->orWhere('estado_stock', 'ultimas_unidades');
+                })->count() : 0,
                 'inventario_total' => $perfil ? Producto::where('perfil_emprendedor_id', $perfil->id)->sum('stock') : 0,
                 'valor_catalogo' => $perfil ? Producto::where('perfil_emprendedor_id', $perfil->id)->sum('precio') : 0,
             ],

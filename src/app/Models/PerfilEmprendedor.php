@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,29 +12,28 @@ class PerfilEmprendedor extends Model
 {
     use HasFactory;
 
-    protected $table = 'perfiles_emprendedores';
+    protected $table = 'emprendedores';
 
     protected $fillable = [
         'usuario_id',
         'categoria_id',
+        'nombre_negocio',
         'nombre_emprendimiento',
+        'descripcion',
         'historia',
-        'foto_perfil_url',
+        'foto_portada',
         'portada_url',
-        'direccion',
-        'ciudad',
-        'pais',
-        'sitio_web',
-        'redes_sociales',
+        'nit',
+        'estado',
         'estado_aprobacion',
-        'acepta_donaciones',
+        'aprobado_por',
+        'aprobado_en',
     ];
 
     protected function casts(): array
     {
         return [
-            'redes_sociales' => 'array',
-            'acepta_donaciones' => 'boolean',
+            'aprobado_en' => 'datetime',
         ];
     }
 
@@ -49,6 +49,45 @@ class PerfilEmprendedor extends Model
 
     public function productos(): HasMany
     {
-        return $this->hasMany(Producto::class, 'perfil_emprendedor_id');
+        return $this->hasMany(Producto::class, 'emprendedor_id');
+    }
+
+    protected function nombreEmprendimiento(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value, array $attributes) => $attributes['nombre_negocio'] ?? null,
+            set: fn (?string $value) => ['nombre_negocio' => $value],
+        );
+    }
+
+    protected function portadaUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value, array $attributes) => $attributes['foto_portada'] ?? null,
+            set: fn (?string $value) => ['foto_portada' => $value],
+        );
+    }
+
+    protected function fotoPerfilUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->usuario?->foto_perfil,
+        );
+    }
+
+    protected function estadoAprobacion(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value, array $attributes) => match ($attributes['estado'] ?? null) {
+                'activo' => 'aprobado',
+                'suspendido' => 'suspendido',
+                default => 'pendiente',
+            },
+            set: fn (?string $value) => ['estado' => match ($value) {
+                'aprobado', 'activo' => 'activo',
+                'suspendido' => 'suspendido',
+                default => 'pendiente',
+            }],
+        );
     }
 }

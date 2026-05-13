@@ -21,9 +21,6 @@
                 </div>
 
                 <div class="flex flex-wrap gap-3">
-                    <button type="button" wire:click="abrirModalCategoria" class="rounded-2xl border border-[#cbc4d4] bg-white px-4 py-3 text-sm font-medium text-slate-700 transition hover:border-[#5f4cae] hover:text-[#5f4cae]">
-                        Nueva categoria
-                    </button>
                     <button type="button" wire:click="abrirModalProducto" class="rounded-2xl bg-[#5f4cae] px-4 py-3 text-sm font-medium text-white transition hover:opacity-90">
                         Nuevo producto
                     </button>
@@ -70,9 +67,7 @@
                                         <div>
                                             <h3 class="font-medium text-slate-900">{{ $producto->nombre }}</h3>
                                             <p class="mt-1 max-w-sm text-sm text-slate-600">{{ $producto->descripcion ?: 'Sin descripcion registrada.' }}</p>
-                                            @if ($producto->destacado)
-                                                <span class="mt-3 inline-flex rounded-full bg-[#e6deff] px-3 py-1 text-xs font-medium text-[#4a3597]">Destacado</span>
-                                            @endif
+                                            <span class="mt-3 inline-flex rounded-full {{ $producto->activo ? 'bg-[#eef7f2] text-[#1f6b52]' : 'bg-[#ece7ef] text-slate-500' }} px-3 py-1 text-xs font-medium">{{ $producto->activo ? 'Activo' : 'Inactivo' }}</span>
                                         </div>
                                     </div>
                                 </td>
@@ -96,7 +91,7 @@
                                 <td colspan="6" class="px-6 py-12">
                                     <div class="rounded-3xl border border-dashed border-[#d8d2de] bg-[#fcfbfe] px-6 py-10 text-center">
                                         <p class="font-display text-2xl text-slate-900">Aun no tienes productos publicados</p>
-                                        <p class="mt-2 text-sm text-slate-600">Crea tu primer producto o prepara categorias para organizar tu catalogo desde ahora.</p>
+                                        <p class="mt-2 text-sm text-slate-600">Crea tu primer producto para empezar a poblar el catalogo con tus piezas activas.</p>
                                         <button type="button" wire:click="abrirModalProducto" class="mt-5 rounded-2xl bg-[#5f4cae] px-4 py-3 text-sm font-medium text-white transition hover:opacity-90">
                                             Crear primer producto
                                         </button>
@@ -115,12 +110,10 @@
 
         <aside class="space-y-6">
             <section class="rounded-[1.75rem] border border-[#d8d2de] bg-white p-6">
-                <div class="flex items-center justify-between gap-4">
-                    <div>
-                        <p class="font-mono-data text-xs uppercase tracking-[0.3em] text-slate-500">Categorias</p>
-                        <h2 class="mt-2 font-display text-2xl text-slate-900">Organizacion lista para crecer</h2>
-                    </div>
-                    <button type="button" wire:click="abrirModalCategoria" class="rounded-2xl border border-[#cbc4d4] px-3 py-2 text-xs font-medium text-slate-700 transition hover:border-[#5f4cae] hover:text-[#5f4cae]">Agregar</button>
+                <div>
+                    <p class="font-mono-data text-xs uppercase tracking-[0.3em] text-slate-500">Categorias</p>
+                    <h2 class="mt-2 font-display text-2xl text-slate-900">Disponibles para tu catalogo</h2>
+                    <p class="mt-2 text-sm text-slate-600">Las categorias globales ahora se administran desde el panel admin. Aqui solo ves las que ya puedes usar en tus productos.</p>
                 </div>
 
                 <div class="mt-5 space-y-3">
@@ -131,23 +124,16 @@
                                     <h3 class="font-medium text-slate-900">{{ $categoria->nombre }}</h3>
                                     <p class="mt-1 text-sm text-slate-600">{{ $categoria->descripcion ?: 'Sin descripcion.' }}</p>
                                 </div>
-                                <span class="rounded-full px-3 py-1 text-xs font-medium {{ $categoria->activa ? 'bg-[#e6deff] text-[#4a3597]' : 'bg-[#ece7ef] text-slate-500' }}">
-                                    {{ $categoria->activa ? 'Activa' : 'Pausada' }}
+                                <span class="rounded-full bg-[#e6deff] px-3 py-1 text-xs font-medium text-[#4a3597]">
+                                    Disponible
                                 </span>
                             </div>
-                            <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
-                                <span>{{ $categoria->productos_count }} producto(s)</span>
-                                <div class="flex gap-2">
-                                    <button type="button" wire:click="alternarCategoria({{ $categoria->id }})" class="text-slate-600 hover:text-[#5f4cae]">{{ $categoria->activa ? 'Desactivar' : 'Activar' }}</button>
-                                    <button type="button" wire:click="abrirModalCategoria({{ $categoria->id }})" class="text-slate-600 hover:text-[#5f4cae]">Editar</button>
-                                    <button type="button" wire:click="confirmarEliminarCategoria({{ $categoria->id }})" class="text-[#93000a] hover:underline">Eliminar</button>
-                                </div>
-                            </div>
+                            <div class="mt-4 text-xs text-slate-500">{{ $categoria->productos_count }} producto(s) vinculados</div>
                         </article>
                     @empty
                         <div class="rounded-2xl border border-dashed border-[#d8d2de] bg-[#fcfbfe] px-5 py-8 text-center">
                             <p class="font-display text-xl text-slate-900">Aun no hay categorias</p>
-                            <p class="mt-2 text-sm text-slate-600">Dejalas listas desde ahora para que cuando lleguen mas productos el catalogo ya tenga estructura.</p>
+                            <p class="mt-2 text-sm text-slate-600">El admin podra crear nuevas categorias cuando haga falta ampliar la estructura global.</p>
                         </div>
                     @endforelse
                 </div>
@@ -156,9 +142,9 @@
             <section class="rounded-[1.75rem] border border-[#d8d2de] bg-[#f7f2fb] p-6">
                 <p class="font-mono-data text-xs uppercase tracking-[0.3em] text-slate-500">Perfil operativo</p>
                 <h2 class="mt-2 font-display text-2xl text-slate-900">{{ $perfil->nombre_emprendimiento }}</h2>
-                <p class="mt-2 text-sm text-slate-600">{{ $perfil->ciudad ?: 'Bolivia' }}{{ $perfil->ciudad ? ', Bolivia' : '' }}. Estado: {{ $perfil->estado_aprobacion }}.</p>
+                <p class="mt-2 text-sm text-slate-600">NIT: {{ $perfil->nit ?: 'No registrado' }}. Estado: {{ $perfil->estado_aprobacion }}.</p>
                 <p class="mt-4 rounded-2xl bg-white px-4 py-3 text-sm text-slate-600">
-                    Tu panel ya esta preparado para escalar con mas categorias, productos y visibilidad publica.
+                    Tu panel ya esta preparado para escalar con nuevos productos y visibilidad publica sin tocar configuraciones globales.
                 </p>
             </section>
         </aside>
@@ -222,52 +208,14 @@
                     </div>
 
                     <div class="flex items-center gap-3 rounded-2xl border border-[#d8d2de] bg-[#fcfbfe] px-4 py-4">
-                        <input wire:model.live="productoDestacado" id="productoDestacado" type="checkbox" class="rounded border-[#cbc4d4] text-[#5f4cae] focus:ring-[#5f4cae]">
-                        <label for="productoDestacado" class="text-sm text-slate-700">Marcar como destacado</label>
+                        <span class="material-symbols-outlined text-[#5f4cae]">check_circle</span>
+                        <label class="text-sm text-slate-700">Los productos nuevos se publican como activos dentro de tu catalogo.</label>
                     </div>
                 </div>
 
                 <div class="flex flex-col-reverse gap-3 border-t border-[#ebe6ef] px-6 py-5 sm:flex-row sm:justify-end">
                     <button type="button" wire:click="cerrarModalProducto" class="rounded-2xl border border-[#d8d2de] px-4 py-3 text-sm font-medium text-slate-700 transition hover:border-[#5f4cae] hover:text-[#5f4cae]">Cancelar</button>
                     <button type="button" wire:click="guardarProducto" class="rounded-2xl bg-[#5f4cae] px-4 py-3 text-sm font-medium text-white transition hover:opacity-90">{{ $productoIdEditando ? 'Guardar cambios' : 'Crear producto' }}</button>
-                </div>
-            </div>
-        </div>
-    @endif
-
-    @if ($mostrarModalCategoria)
-        <div class="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/25 px-4 backdrop-blur-sm">
-            <div class="w-full max-w-2xl rounded-[1.75rem] border border-[#d8d2de] bg-white">
-                <div class="flex items-center justify-between border-b border-[#ebe6ef] px-6 py-5">
-                    <div>
-                        <p class="font-mono-data text-xs uppercase tracking-[0.3em] text-slate-500">Categoria</p>
-                        <h3 class="mt-2 font-display text-3xl text-slate-900">{{ $categoriaIdEditando ? 'Editar categoria' : 'Nueva categoria' }}</h3>
-                    </div>
-                    <button type="button" wire:click="cerrarModalCategoria" class="rounded-full border border-[#d8d2de] px-3 py-2 text-sm text-slate-600 hover:border-[#5f4cae] hover:text-[#5f4cae]">Cerrar</button>
-                </div>
-
-                <div class="space-y-5 px-6 py-6">
-                    <div>
-                        <label class="font-mono-data text-xs uppercase tracking-[0.28em] text-slate-500">Nombre</label>
-                        <input wire:model.live="categoriaNombre" type="text" class="mt-2 w-full rounded-2xl border border-[#d8d2de] bg-[#fcfbfe] px-4 py-3 text-sm text-slate-900 outline-none focus:border-[#5f4cae] focus:ring-0" placeholder="Ej. Textiles, Ceramica, Joyeria">
-                        <x-input-error :messages="$errors->get('categoriaNombre')" class="mt-2" />
-                    </div>
-
-                    <div>
-                        <label class="font-mono-data text-xs uppercase tracking-[0.28em] text-slate-500">Descripcion</label>
-                        <textarea wire:model.live="categoriaDescripcion" rows="4" class="mt-2 w-full rounded-2xl border border-[#d8d2de] bg-[#fcfbfe] px-4 py-3 text-sm text-slate-900 outline-none focus:border-[#5f4cae] focus:ring-0" placeholder="Describe brevemente esta familia de productos."></textarea>
-                        <x-input-error :messages="$errors->get('categoriaDescripcion')" class="mt-2" />
-                    </div>
-
-                    <label class="flex items-center gap-3 rounded-2xl border border-[#d8d2de] bg-[#fcfbfe] px-4 py-4">
-                        <input wire:model.live="categoriaActiva" type="checkbox" class="rounded border-[#cbc4d4] text-[#5f4cae] focus:ring-[#5f4cae]">
-                        <span class="text-sm text-slate-700">Dejar esta categoria activa para nuevos productos</span>
-                    </label>
-                </div>
-
-                <div class="flex flex-col-reverse gap-3 border-t border-[#ebe6ef] px-6 py-5 sm:flex-row sm:justify-end">
-                    <button type="button" wire:click="cerrarModalCategoria" class="rounded-2xl border border-[#d8d2de] px-4 py-3 text-sm font-medium text-slate-700 transition hover:border-[#5f4cae] hover:text-[#5f4cae]">Cancelar</button>
-                    <button type="button" wire:click="guardarCategoria" class="rounded-2xl bg-[#5f4cae] px-4 py-3 text-sm font-medium text-white transition hover:opacity-90">{{ $categoriaIdEditando ? 'Guardar categoria' : 'Crear categoria' }}</button>
                 </div>
             </div>
         </div>
@@ -286,16 +234,4 @@
         </div>
     @endif
 
-    @if ($categoriaIdEliminar)
-        <div class="fixed inset-0 z-[75] flex items-center justify-center bg-slate-950/30 px-4 backdrop-blur-sm">
-            <div class="w-full max-w-md rounded-[1.5rem] border border-[#d8d2de] bg-white p-6">
-                <h3 class="font-display text-2xl text-slate-900">Eliminar categoria</h3>
-                <p class="mt-2 text-sm text-slate-600">Si la categoria ya tiene productos asociados no se eliminara. Esto deja el panel listo para crecer sin perder orden.</p>
-                <div class="mt-6 flex justify-end gap-3">
-                    <button type="button" wire:click="$set('categoriaIdEliminar', null)" class="rounded-2xl border border-[#d8d2de] px-4 py-3 text-sm font-medium text-slate-700">Cancelar</button>
-                    <button type="button" wire:click="eliminarCategoria" class="rounded-2xl bg-[#a03f29] px-4 py-3 text-sm font-medium text-white">Eliminar</button>
-                </div>
-            </div>
-        </div>
-    @endif
 </section>

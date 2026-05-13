@@ -6,7 +6,6 @@ use App\Models\Categoria;
 use App\Models\PerfilEmprendedor;
 use App\Models\Producto;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -43,8 +42,6 @@ class GestionCatalogo extends Component
 
     public string $productoEstadoDisponibilidad = 'disponible';
 
-    public bool $productoDestacado = false;
-
     public string $categoriaNombre = '';
 
     public string $categoriaDescripcion = '';
@@ -74,7 +71,6 @@ class GestionCatalogo extends Component
             $this->productoPrecio = number_format((float) $producto->precio, 2, '.', '');
             $this->productoStock = $producto->stock;
             $this->productoEstadoDisponibilidad = $producto->estado_disponibilidad;
-            $this->productoDestacado = $producto->destacado;
         }
 
         $this->mostrarModalProducto = true;
@@ -96,13 +92,11 @@ class GestionCatalogo extends Component
             'perfil_emprendedor_id' => $perfil->id,
             'categoria_id' => $datos['productoCategoriaId'] ? (int) $datos['productoCategoriaId'] : null,
             'nombre' => $datos['productoNombre'],
-            'slug' => $this->generarSlugProducto($datos['productoNombre'], $this->productoIdEditando),
             'descripcion' => $datos['productoDescripcion'] !== '' ? $datos['productoDescripcion'] : null,
             'precio' => $datos['productoPrecio'],
             'stock' => $datos['productoStock'],
-            'estado_disponibilidad' => $datos['productoEstadoDisponibilidad'],
-            'destacado' => $datos['productoDestacado'],
-            'publicado_at' => now(),
+            'estado_stock' => $datos['productoEstadoDisponibilidad'],
+            'activo' => true,
         ];
 
         if ($this->productoIdEditando) {
@@ -136,77 +130,27 @@ class GestionCatalogo extends Component
 
     public function abrirModalCategoria(?int $categoriaId = null): void
     {
-        $this->resetFormularioCategoria();
-        $this->categoriaIdEditando = $categoriaId;
-
-        if ($categoriaId) {
-            $categoria = Categoria::findOrFail($categoriaId);
-            $this->categoriaNombre = $categoria->nombre;
-            $this->categoriaDescripcion = $categoria->descripcion ?? '';
-            $this->categoriaActiva = $categoria->activa;
-        }
-
-        $this->mostrarModalCategoria = true;
+        abort(403, 'Las categorias globales se administran desde el panel admin.');
     }
 
     public function guardarCategoria(): void
     {
-        $datos = $this->validate($this->reglasCategoria(), [], [
-            'categoriaNombre' => 'nombre de categoria',
-            'categoriaDescripcion' => 'descripcion',
-        ]);
-
-        $payload = [
-            'nombre' => $datos['categoriaNombre'],
-            'slug' => $this->generarSlugCategoria($datos['categoriaNombre'], $this->categoriaIdEditando),
-            'descripcion' => $datos['categoriaDescripcion'] !== '' ? $datos['categoriaDescripcion'] : null,
-            'activa' => $datos['categoriaActiva'],
-        ];
-
-        if ($this->categoriaIdEditando) {
-            Categoria::findOrFail($this->categoriaIdEditando)->update($payload);
-            session()->flash('catalogo_estado', 'Categoria actualizada correctamente.');
-        } else {
-            Categoria::create($payload);
-            session()->flash('catalogo_estado', 'Categoria creada correctamente.');
-        }
-
-        $this->cerrarModalCategoria();
+        abort(403, 'Las categorias globales se administran desde el panel admin.');
     }
 
     public function alternarCategoria(int $categoriaId): void
     {
-        $categoria = Categoria::findOrFail($categoriaId);
-        $categoria->update([
-            'activa' => ! $categoria->activa,
-        ]);
-
-        session()->flash('catalogo_estado', 'Estado de categoria actualizado.');
+        abort(403, 'Las categorias globales se administran desde el panel admin.');
     }
 
     public function confirmarEliminarCategoria(int $categoriaId): void
     {
-        $this->categoriaIdEliminar = $categoriaId;
+        abort(403, 'Las categorias globales se administran desde el panel admin.');
     }
 
     public function eliminarCategoria(): void
     {
-        if (! $this->categoriaIdEliminar) {
-            return;
-        }
-
-        $categoria = Categoria::withCount('productos')->findOrFail($this->categoriaIdEliminar);
-
-        if ($categoria->productos_count > 0) {
-            session()->flash('catalogo_error', 'No puedes eliminar una categoria que ya tiene productos asociados.');
-            $this->categoriaIdEliminar = null;
-
-            return;
-        }
-
-        $categoria->delete();
-        $this->categoriaIdEliminar = null;
-        session()->flash('catalogo_estado', 'Categoria eliminada correctamente.');
+        abort(403, 'Las categorias globales se administran desde el panel admin.');
     }
 
     public function cerrarModalProducto(): void
@@ -253,7 +197,6 @@ class GestionCatalogo extends Component
             'productoPrecio' => ['required', 'numeric', 'min:0'],
             'productoStock' => ['required', 'integer', 'min:0'],
             'productoEstadoDisponibilidad' => ['required', Rule::in(['disponible', 'ultimas_unidades', 'agotado'])],
-            'productoDestacado' => ['boolean'],
         ];
     }
 
@@ -276,7 +219,6 @@ class GestionCatalogo extends Component
         $this->productoPrecio = '';
         $this->productoStock = 0;
         $this->productoEstadoDisponibilidad = 'disponible';
-        $this->productoDestacado = false;
     }
 
     private function resetFormularioCategoria(): void
@@ -295,10 +237,8 @@ class GestionCatalogo extends Component
         return PerfilEmprendedor::firstOrCreate([
             'usuario_id' => $usuario->id,
         ], [
-            'nombre_emprendimiento' => $usuario->name,
-            'pais' => 'Bolivia',
-            'estado_aprobacion' => 'aprobado',
-            'acepta_donaciones' => true,
+            'nombre_negocio' => $usuario->name,
+            'estado' => 'pendiente',
         ]);
     }
 
@@ -309,33 +249,5 @@ class GestionCatalogo extends Component
         return Producto::query()
             ->where('perfil_emprendedor_id', $perfil->id)
             ->findOrFail($productoId);
-    }
-
-    private function generarSlugProducto(string $nombre, ?int $ignorarId = null): string
-    {
-        $base = Str::slug($nombre);
-        $slug = $base;
-        $contador = 1;
-
-        while (Producto::query()->where('slug', $slug)->when($ignorarId, fn ($query) => $query->where('id', '!=', $ignorarId))->exists()) {
-            $slug = $base.'-'.$contador;
-            $contador++;
-        }
-
-        return $slug;
-    }
-
-    private function generarSlugCategoria(string $nombre, ?int $ignorarId = null): string
-    {
-        $base = Str::slug($nombre);
-        $slug = $base;
-        $contador = 1;
-
-        while (Categoria::query()->where('slug', $slug)->when($ignorarId, fn ($query) => $query->where('id', '!=', $ignorarId))->exists()) {
-            $slug = $base.'-'.$contador;
-            $contador++;
-        }
-
-        return $slug;
     }
 }

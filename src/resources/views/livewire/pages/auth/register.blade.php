@@ -28,20 +28,23 @@ new #[Layout('layouts.guest')] class extends Component
         ]);
 
         $validated['rol'] = $validated['rol'] === 'emprendedor' ? 'emprendedor' : 'comprador';
-        $validated['password'] = Hash::make($validated['password']);
-        $validated['estado'] = 'activo';
-        $validated['email_verified_at'] = now();
+        $payload = [
+            'nombre_completo' => $validated['name'],
+            'email' => $validated['email'],
+            'password_hash' => Hash::make($validated['password']),
+            'estado' => 'activo',
+            'email_verified_at' => now(),
+        ];
 
-        event(new Registered($user = User::create($validated)));
+        event(new Registered($user = User::create($payload)));
+        $user->asignarRol($validated['rol'] === 'emprendedor' ? 'EMPRENDEDOR' : 'COMPRADOR');
 
         if ($validated['rol'] === 'emprendedor') {
             PerfilEmprendedor::firstOrCreate([
                 'usuario_id' => $user->id,
             ], [
-                'nombre_emprendimiento' => $user->name,
-                'pais' => 'Bolivia',
-                'estado_aprobacion' => 'aprobado',
-                'acepta_donaciones' => true,
+                'nombre_negocio' => $user->name,
+                'estado' => 'pendiente',
             ]);
         }
 

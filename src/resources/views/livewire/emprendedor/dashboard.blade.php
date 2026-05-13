@@ -88,8 +88,8 @@
                 <h2 class="mt-2 font-display text-2xl text-slate-900">{{ $perfil->nombre_emprendimiento }}</h2>
                 <p class="mt-2 text-sm text-slate-600">{{ $perfil->historia ?: 'Tu perfil ya esta listo para editarse y contar mejor el origen de cada pieza.' }}</p>
                 <div class="mt-5 space-y-3 text-sm text-slate-600">
-                    <div class="rounded-2xl bg-white px-4 py-3">Ciudad: {{ $perfil->ciudad ?: 'Por definir' }}</div>
-                    <div class="rounded-2xl bg-white px-4 py-3">Pais: {{ $perfil->pais }}</div>
+                    <div class="rounded-2xl bg-white px-4 py-3">Descripcion: {{ $perfil->descripcion ?: 'Por definir' }}</div>
+                    <div class="rounded-2xl bg-white px-4 py-3">NIT: {{ $perfil->nit ?: 'No registrado' }}</div>
                     <div class="rounded-2xl bg-white px-4 py-3">Aprobacion: {{ ucfirst($perfil->estado_aprobacion) }}</div>
                 </div>
             </section>

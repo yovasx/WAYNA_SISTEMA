@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,20 +11,18 @@ class ImagenProducto extends Model
 {
     use HasFactory;
 
-    protected $table = 'imagenes_producto';
+    protected $table = 'producto_fotos';
 
     protected $fillable = [
         'producto_id',
+        'url_foto',
         'url',
-        'texto_alternativo',
         'orden',
-        'es_principal',
     ];
 
     protected function casts(): array
     {
         return [
-            'es_principal' => 'boolean',
             'orden' => 'integer',
         ];
     }
@@ -31,5 +30,27 @@ class ImagenProducto extends Model
     public function producto(): BelongsTo
     {
         return $this->belongsTo(Producto::class, 'producto_id');
+    }
+
+    protected function url(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value, array $attributes) => $attributes['url_foto'] ?? null,
+            set: fn (?string $value) => ['url_foto' => $value],
+        );
+    }
+
+    protected function textoAlternativo(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => null,
+        );
+    }
+
+    protected function esPrincipal(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?bool $value, array $attributes) => ((int) ($attributes['orden'] ?? 0)) === 1,
+        );
     }
 }

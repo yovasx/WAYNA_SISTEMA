@@ -6,6 +6,7 @@ use App\Models\Categoria;
 use App\Models\PerfilEmprendedor;
 use App\Models\Producto;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -14,75 +15,90 @@ class HomeController extends Controller
     {
         $usuario = auth()->user();
 
-        $categorias = Categoria::query()
-            ->where('activa', true)
-            ->withCount('productos')
-            ->orderByDesc('productos_count')
-            ->orderBy('nombre')
-            ->take(8)
-            ->get();
+        $categorias = Schema::hasTable('categorias')
+            ? Categoria::query()
+                ->withCount('productos')
+                ->orderByDesc('productos_count')
+                ->orderBy('nombre')
+                ->take(8)
+                ->get()
+            : collect();
 
-        $emprendedores = PerfilEmprendedor::query()
-            ->with(['categoria:id,nombre', 'usuario:id,name'])
-            ->withCount('productos')
-            ->where('estado_aprobacion', 'aprobado')
-            ->latest()
-            ->take(8)
-            ->get();
+        $emprendedores = Schema::hasTable('emprendedores')
+            ? PerfilEmprendedor::query()
+                ->with(['categoria:id,nombre', 'usuario:id,nombre_completo'])
+                ->withCount('productos')
+                ->where('estado', 'activo')
+                ->latest()
+                ->take(8)
+                ->get()
+            : collect();
 
-        $productosPopulares = Producto::query()
-            ->with([
+        $productosPopulares = collect();
+
+        if (Schema::hasTable('productos')) {
+            $with = [
                 'categoria:id,nombre',
-                'perfilEmprendedor.usuario:id,name',
-                'imagenes' => fn ($query) => $query->orderByDesc('es_principal')->orderBy('orden'),
-            ])
-            ->orderByDesc('destacado')
-            ->orderByDesc(DB::raw('COALESCE(publicado_at, created_at)'))
-            ->take(8)
-            ->get();
+                'perfilEmprendedor.usuario:id,nombre_completo',
+            ];
 
-        $periodoRanking = DB::table('rankings_donadores')
-            ->orderByDesc('periodo')
-            ->value('periodo');
+            if (Schema::hasTable('producto_fotos')) {
+                $with['imagenes'] = fn ($query) => $query->orderBy('orden');
+            }
 
-        $topDonadores = collect();
-
-        if ($periodoRanking) {
-            $topDonadores = DB::table('rankings_donadores')
-                ->join('users', 'users.id', '=', 'rankings_donadores.donador_id')
-                ->where('rankings_donadores.periodo', $periodoRanking)
-                ->orderBy('rankings_donadores.posicion')
-                ->select([
-                    'users.id',
-                    'users.name',
-                    'users.email',
-                    'rankings_donadores.total_puntos',
-                    'rankings_donadores.posicion',
-                    'rankings_donadores.anonimo',
-                ])
-                ->take(5)
+            $productosPopulares = Producto::query()
+                ->with($with)
+                ->where('activo', true)
+                ->orderByDesc('created_at')
+                ->take(8)
                 ->get();
         }
 
-        $impactoDonaciones = [
-            'total' => (float) DB::table('donaciones')->sum('monto'),
-            'cantidad' => (int) DB::table('donaciones')->count(),
-        ];
+        $periodoRanking = 'Acumulado';
+
+        $topDonadores = collect();
+
+        if (Schema::hasTable('puntos_donador')) {
+            $topDonadores = DB::table('puntos_donador')
+                ->join('usuarios', 'usuarios.id', '=', 'puntos_donador.usuario_id')
+                ->orderByDesc('puntos_donador.puntos_total')
+                ->select([
+                    'usuarios.id',
+                    'usuarios.nombre_completo as name',
+                    'usuarios.email',
+                    'puntos_donador.puntos_total as total_puntos',
+                    DB::raw('row_number() over (order by puntos_donador.puntos_total desc, usuarios.id asc) as posicion'),
+                ])
+                ->take(5)
+                ->get()
+                ->map(fn ($donador) => tap($donador, fn ($item) => $item->anonimo = false));
+        }
+
+        $impactoDonaciones = Schema::hasTable('donaciones')
+            ? [
+                'total' => (float) DB::table('donaciones')->sum('monto'),
+                'cantidad' => (int) DB::table('donaciones')->count(),
+            ]
+            : ['total' => 0.0, 'cantidad' => 0];
 
         $carritoCantidad = 0;
         $notificacionesCantidad = 0;
 
         if ($usuario) {
-            $carritoCantidad = (int) DB::table('items_carrito')
-                ->join('carritos', 'carritos.id', '=', 'items_carrito.carrito_id')
-                ->where('carritos.usuario_id', $usuario->id)
-                ->where('carritos.estado', 'activo')
-                ->sum('items_carrito.cantidad');
+            if (Schema::hasTable('items_carrito') && Schema::hasTable('carritos')) {
+                $carritoCantidad = (int) DB::table('items_carrito')
+                    ->join('carritos', 'carritos.id', '=', 'items_carrito.carrito_id')
+                    ->where('carritos.usuario_id', $usuario->id)
+                    ->where('carritos.estado', 'activo')
+                    ->sum('items_carrito.cantidad');
+            }
 
-            $notificacionesCantidad = (int) DB::table('registros_notificaciones')
-                ->where('destinatario_usuario_id', $usuario->id)
-                ->where('estado_envio', 'pendiente')
-                ->count();
+            if (Schema::hasTable('registros_notificaciones')) {
+                $notificacionesCantidad = (int) DB::table('registros_notificaciones')
+                    ->where('destinatario_usuario_id', $usuario->id)
+                    ->where('estado_envio', 'pendiente')
+                    ->count();
+            }
         }
 
         return view('welcome', [

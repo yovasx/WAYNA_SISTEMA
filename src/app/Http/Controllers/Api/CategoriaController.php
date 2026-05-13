@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Categoria;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class CategoriaController extends Controller
@@ -15,7 +14,6 @@ class CategoriaController extends Controller
     {
         $categorias = Categoria::query()
             ->withCount('productos')
-            ->when($request->boolean('solo_activas'), fn ($query) => $query->where('activa', true))
             ->orderBy('nombre')
             ->get();
 
@@ -28,15 +26,14 @@ class CategoriaController extends Controller
     {
         $datos = $request->validate([
             'nombre' => ['required', 'string', 'max:120', 'unique:categorias,nombre'],
+            'icono' => ['nullable', 'string', 'max:255'],
             'descripcion' => ['nullable', 'string'],
-            'activa' => ['nullable', 'boolean'],
         ]);
 
         $categoria = Categoria::create([
             'nombre' => $datos['nombre'],
-            'slug' => Str::slug($datos['nombre']),
+            'icono' => $datos['icono'] ?? null,
             'descripcion' => $datos['descripcion'] ?? null,
-            'activa' => $datos['activa'] ?? true,
         ]);
 
         return response()->json([
@@ -58,15 +55,14 @@ class CategoriaController extends Controller
     {
         $datos = $request->validate([
             'nombre' => ['required', 'string', 'max:120', Rule::unique('categorias', 'nombre')->ignore($categoria->id)],
+            'icono' => ['nullable', 'string', 'max:255'],
             'descripcion' => ['nullable', 'string'],
-            'activa' => ['nullable', 'boolean'],
         ]);
 
         $categoria->update([
             'nombre' => $datos['nombre'],
-            'slug' => Str::slug($datos['nombre']),
+            'icono' => $datos['icono'] ?? $categoria->icono,
             'descripcion' => $datos['descripcion'] ?? null,
-            'activa' => $datos['activa'] ?? $categoria->activa,
         ]);
 
         return response()->json([

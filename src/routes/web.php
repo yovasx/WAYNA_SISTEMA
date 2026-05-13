@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Livewire\Admin\CategoriasIndex as AdminCategoriasIndex;
+use App\Livewire\Admin\Dashboard as AdminDashboard;
+use App\Livewire\Admin\EmprendedoresIndex as AdminEmprendedoresIndex;
+use App\Livewire\Admin\ProductosIndex as AdminProductosIndex;
 use App\Livewire\Emprendedor\Dashboard as EmprendedorDashboard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -47,17 +51,14 @@ Route::get('dashboard', function (Request $request) {
     ->middleware(['auth'])
     ->name('dashboard');
 
-Route::view('panel/admin', 'dashboards.role', [
-    'titulo' => 'Panel administrativo',
-    'subtitulo' => 'Administra usuarios, categorias, productos y actividad del sistema.',
-    'kpis' => [
-        ['label' => 'Usuarios activos', 'value' => '03', 'tone' => 'violet'],
-        ['label' => 'Categorias base', 'value' => '02', 'tone' => 'amber'],
-        ['label' => 'Productos demo', 'value' => '03', 'tone' => 'green'],
-    ],
-])
+Route::prefix('panel/admin')
     ->middleware(['auth', 'rol:admin'])
-    ->name('dashboard.admin');
+    ->group(function () {
+        Route::get('/', AdminDashboard::class)->name('dashboard.admin');
+        Route::get('emprendedores', AdminEmprendedoresIndex::class)->name('admin.emprendedores.index');
+        Route::get('categorias', AdminCategoriasIndex::class)->name('admin.categorias.index');
+        Route::get('productos', AdminProductosIndex::class)->name('admin.productos.index');
+    });
 
 Route::view('panel/usuario', 'dashboards.role', [
     'titulo' => 'Panel de usuario',
