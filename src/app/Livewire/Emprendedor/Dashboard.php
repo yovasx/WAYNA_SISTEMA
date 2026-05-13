@@ -2,12 +2,40 @@
 
 namespace App\Livewire\Emprendedor;
 
+use App\Models\PerfilEmprendedor;
+use App\Models\Producto;
 use Livewire\Component;
 
 class Dashboard extends Component
 {
     public function render()
     {
-        return view('livewire.emprendedor.dashboard');
+        $usuario = auth()->user();
+        $perfil = $usuario->perfilEmprendedor ?? PerfilEmprendedor::create([
+            'usuario_id' => $usuario->id,
+            'nombre_emprendimiento' => $usuario->name,
+            'pais' => 'Bolivia',
+            'estado_aprobacion' => 'aprobado',
+            'acepta_donaciones' => true,
+        ]);
+
+        $productos = Producto::query()
+            ->when($perfil, fn ($query) => $query->where('perfil_emprendedor_id', $perfil->id), fn ($query) => $query->whereRaw('1 = 0'))
+            ->with('categoria:id,nombre')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('livewire.emprendedor.dashboard', [
+            'usuario' => $usuario,
+            'productos' => $productos,
+            'perfil' => $perfil,
+            'metricas' => [
+                'productos' => $perfil ? Producto::where('perfil_emprendedor_id', $perfil->id)->count() : 0,
+                'stock_bajo' => $perfil ? Producto::where('perfil_emprendedor_id', $perfil->id)->where('stock', '<=', 5)->count() : 0,
+                'inventario_total' => $perfil ? Producto::where('perfil_emprendedor_id', $perfil->id)->sum('stock') : 0,
+                'valor_catalogo' => $perfil ? Producto::where('perfil_emprendedor_id', $perfil->id)->sum('precio') : 0,
+            ],
+        ])->layout('layouts.emprendedor');
     }
 }

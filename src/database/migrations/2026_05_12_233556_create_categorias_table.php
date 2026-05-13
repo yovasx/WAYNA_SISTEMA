@@ -11,10 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categorias', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        if (! Schema::hasTable('categorias')) {
+            Schema::create('categorias', function (Blueprint $table) {
+                $table->id();
+                $table->string('nombre')->unique();
+                $table->text('descripcion')->nullable();
+                $table->boolean('estado')->default(true);
+                $table->timestamps();
+            });
+        }
     }
 
     /**

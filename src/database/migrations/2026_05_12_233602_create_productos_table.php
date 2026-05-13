@@ -11,10 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('productos', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        if (! Schema::hasTable('productos')) {
+            Schema::create('productos', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('categoria_id')->constrained('categorias')->cascadeOnUpdate()->restrictOnDelete();
+                $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
+                $table->string('nombre');
+                $table->text('descripcion')->nullable();
+                $table->decimal('precio', 10, 2);
+                $table->unsignedInteger('stock')->default(0);
+                $table->string('imagen_url')->nullable();
+                $table->string('estado', 20)->default('activo');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
