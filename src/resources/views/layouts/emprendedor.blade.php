@@ -16,9 +16,9 @@
                 <a href="{{ route('dashboard') }}" class="font-display text-2xl font-semibold text-[#5f4cae]">WAYNA</a>
 
                 <nav class="hidden items-center gap-6 md:flex">
-                    <span class="text-sm text-slate-500 transition hover:text-[#5f4cae]">Catalog</span>
-                    <span class="text-sm text-slate-500 transition hover:text-[#5f4cae]">Entrepreneurs</span>
-                    <span class="text-sm text-slate-500 transition hover:text-[#5f4cae]">Donate</span>
+                    <span class="text-sm text-slate-500 transition hover:text-[#5f4cae]">Catalogo</span>
+                    <span class="text-sm text-slate-500 transition hover:text-[#5f4cae]">Emprendedores</span>
+                    <span class="text-sm text-slate-500 transition hover:text-[#5f4cae]">Donar</span>
                 </nav>
 
                 <div class="flex items-center gap-3 text-sm text-slate-600">
@@ -43,14 +43,14 @@
                 <div class="flex h-[calc(100vh-4rem)] flex-col px-5 py-6">
                     <div class="px-2 pb-6">
                         <h2 class="font-display text-2xl text-[#5f4cae]">WAYNA</h2>
-                        <p class="text-sm text-slate-500">Bolivian Artisanal Heritage</p>
+                        <p class="text-sm text-slate-500">Legado artesanal boliviano</p>
                     </div>
 
                     <nav class="space-y-2 text-sm text-slate-700">
-                        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 rounded-2xl px-4 py-3 transition hover:bg-[#f7f2fb] hover:text-[#5f4cae]"><span class="material-symbols-outlined">home</span>Home</a>
-                        <a href="{{ route('dashboard.emprendedor') }}" class="flex items-center gap-3 rounded-2xl bg-[#7865c9] px-4 py-3 font-medium text-white"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
+                        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 rounded-2xl px-4 py-3 transition hover:bg-[#f7f2fb] hover:text-[#5f4cae]"><span class="material-symbols-outlined">home</span>Inicio</a>
+                        <a href="{{ route('dashboard.emprendedor') }}" class="flex items-center gap-3 rounded-2xl bg-[#7865c9] px-4 py-3 font-medium text-white"><span class="material-symbols-outlined">dashboard</span>Panel</a>
                         <a href="{{ route('profile') }}" class="flex items-center gap-3 rounded-2xl px-4 py-3 transition hover:bg-[#f7f2fb] hover:text-[#5f4cae]"><span class="material-symbols-outlined">settings</span>Perfil</a>
-                        <span class="flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-400"><span class="material-symbols-outlined">auto_awesome</span>Impact</span>
+                        <span class="flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-400"><span class="material-symbols-outlined">auto_awesome</span>Impacto</span>
                     </nav>
 
                     <div class="mt-auto rounded-3xl border border-[#efc2bb] bg-[#ffdad6] p-4 text-sm text-[#812914]">

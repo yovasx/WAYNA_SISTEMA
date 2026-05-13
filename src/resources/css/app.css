@@ -20,6 +20,15 @@
 }
 
 @layer components {
+    .landing-page {
+        cursor: default;
+    }
+
+    .landing-page a,
+    .landing-page button {
+        cursor: pointer;
+    }
+
     .font-display {
         font-family: 'Playfair Display', serif;
     }
@@ -55,5 +64,20 @@
     .hide-scrollbar {
         -ms-overflow-style: none;
         scrollbar-width: none;
+    }
+
+    .landing-nav-link {
+        border-bottom: 2px solid transparent;
+        color: #475569;
+        transition: color 150ms ease, border-color 150ms ease, opacity 150ms ease;
+    }
+
+    .landing-nav-link:hover {
+        color: #5f4cae;
+    }
+
+    .landing-nav-link[data-active='true'] {
+        border-color: #5f4cae;
+        color: #5f4cae;
     }
 }

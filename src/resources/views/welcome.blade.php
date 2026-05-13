@@ -8,16 +8,16 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="bg-[#fdf8ff] text-slate-900 antialiased">
+    <body class="landing-page bg-[#fdf8ff] text-slate-900 antialiased">
         <header class="fixed inset-x-0 top-0 z-50 border-b border-[#d8d2de] bg-[#fdf8ff]/95 backdrop-blur">
             <div class="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-10">
                 <div class="flex items-center gap-8">
                     <a href="{{ route('home') }}" class="font-display text-3xl text-[#5f4cae]">WAYNA</a>
 
-                    <nav class="hidden items-center gap-6 md:flex">
-                        <a href="#catalogo" class="border-b-2 border-[#5f4cae] pb-1 text-sm text-[#5f4cae] transition hover:opacity-80">Catalog</a>
-                        <a href="#emprendedores" class="text-sm text-slate-600 transition hover:text-[#5f4cae]">Entrepreneurs</a>
-                        <a href="#donar" class="text-sm text-slate-600 transition hover:text-[#5f4cae]">Donate</a>
+                    <nav data-scroll-nav class="hidden items-center gap-6 md:flex">
+                        <a href="#catalogo" data-nav-link class="landing-nav-link pb-1 text-sm">Catalogo</a>
+                        <a href="#emprendedores" data-nav-link class="landing-nav-link pb-1 text-sm">Emprendedores</a>
+                        <a href="#donar" data-nav-link class="landing-nav-link pb-1 text-sm">Donar</a>
                     </nav>
                 </div>
 
@@ -204,114 +204,121 @@
                 </div>
             </section>
 
-            <section class="bg-[#312f36] px-4 py-16 text-[#f4eff8] sm:px-6 lg:px-10">
-                <div class="mx-auto grid max-w-[1280px] gap-10 lg:grid-cols-[0.95fr_1.05fr]">
-                    <div>
-                        <p class="font-mono-data text-xs uppercase tracking-[0.28em] text-[#cbbeff]">Top donadores</p>
-                        <h2 class="mt-3 font-display text-4xl">Quienes impulsan este ecosistema</h2>
-                        <p class="mt-4 max-w-lg text-sm leading-7 text-[#d7d1dd]">Aunque aun no existan donadores registrados, este bloque ya esta listo para mostrar el ranking, puntos y posicion del periodo actual en cuanto entren datos.</p>
-                    </div>
-
-                    <div class="grid gap-4">
-                        @forelse ($topDonadores as $donador)
-                            <div class="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4">
-                                <div class="flex items-center gap-4">
-                                    <div class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#5f4cae] font-medium text-white">{{ $donador->anonimo ? '?' : strtoupper(mb_substr($donador->name, 0, 1)) }}</div>
-                                    <div>
-                                        <p class="text-sm font-medium text-white">{{ $donador->anonimo ? 'Donador anonimo' : $donador->name }}</p>
-                                        <p class="font-mono-data text-[11px] uppercase tracking-[0.18em] text-[#cbbeff]">Periodo {{ $periodoRanking }}</p>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <p class="font-mono-data text-sm text-white">{{ $donador->total_puntos }} pts</p>
-                                    <p class="text-xs text-[#d7d1dd]">Puesto #{{ $donador->posicion }}</p>
-                                </div>
-                            </div>
-                        @empty
-                            @for ($i = 1; $i <= 3; $i++)
-                                <div class="flex items-center justify-between rounded-2xl border border-dashed border-white/15 bg-white/5 px-5 py-4">
-                                    <div>
-                                        <p class="text-sm font-medium text-white">Top donador #{{ $i }}</p>
-                                        <p class="text-xs text-[#d7d1dd]">Aparecera cuando existan rankings cargados.</p>
-                                    </div>
-                                    <span class="font-mono-data text-xs uppercase tracking-[0.18em] text-[#cbbeff]">Pendiente</span>
-                                </div>
-                            @endfor
-                        @endforelse
-                    </div>
-                </div>
-            </section>
-
             <section id="donar" class="px-4 py-16 sm:px-6 lg:px-10">
-                <div class="mx-auto max-w-[1280px] rounded-[2rem] border border-[#d8d2de] bg-[#f1ecf5] p-8 lg:p-10">
-                    <div class="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-                        <div>
-                            <p class="font-mono-data text-xs uppercase tracking-[0.28em] text-slate-500">Impacto de donacion</p>
-                            <h2 class="mt-3 font-display text-4xl text-slate-900">Cada aporte sostiene talleres, historias y continuidad cultural.</h2>
-                            <p class="mt-4 max-w-2xl text-base leading-7 text-slate-600">Este mensaje final ya queda listo para crecer con campañas reales. Cuando entren nuevas donaciones, esta seccion mostrara el impacto acumulado sin necesidad de rehacer la UI.</p>
+                <div class="mx-auto max-w-[1280px] overflow-hidden rounded-[2rem] border border-[#ddd8e8] bg-[#eeedfe]">
+                    <div class="grid gap-0 lg:grid-cols-[1.15fr_0.85fr] lg:items-stretch">
+                        <div class="p-8 lg:p-12">
+                            <p class="font-mono-data text-xs uppercase tracking-[0.28em] text-[#5f4cae]">Impacto social</p>
+                            <h2 class="mt-3 font-display text-4xl text-[#4a3597]">Tu apoyo hace la diferencia</h2>
+                            <p class="mt-4 max-w-2xl text-base leading-7 text-slate-600">Cada aporte sostiene talleres, historias y continuidad cultural. El bloque ya queda conectado a las donaciones reales para crecer sin rehacer la experiencia.</p>
+
+                            <div class="mt-8 grid max-w-xl gap-4 sm:grid-cols-2">
+                                <div class="rounded-2xl bg-white px-5 py-4 shadow-sm">
+                                    <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Monto total</p>
+                                    <p class="mt-3 font-display text-3xl text-[#5f4cae]">Bs {{ number_format($impactoDonaciones['total'], 2) }}</p>
+                                </div>
+                                <div class="rounded-2xl bg-white px-5 py-4 shadow-sm">
+                                    <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Donaciones</p>
+                                    <p class="mt-3 font-display text-3xl text-[#a03f29]">{{ $impactoDonaciones['cantidad'] }}</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 flex flex-wrap gap-3">
+                                <a href="{{ route('donar.index') }}" class="rounded-2xl bg-[#5f4cae] px-5 py-3 text-sm font-medium text-white transition hover:opacity-90">Donar ahora</a>
+                                <a href="#emprendedores" class="rounded-2xl border border-[#d8d2de] bg-white px-5 py-3 text-sm font-medium text-slate-700 transition hover:border-[#5f4cae] hover:text-[#5f4cae]">Conocer emprendedores</a>
+                            </div>
                         </div>
 
-                        <div class="grid gap-4 sm:grid-cols-2">
-                            <div class="rounded-2xl bg-white px-5 py-4">
-                                <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Monto total</p>
-                                <p class="mt-3 font-display text-3xl text-[#5f4cae]">Bs {{ number_format($impactoDonaciones['total'], 2) }}</p>
-                            </div>
-                            <div class="rounded-2xl bg-white px-5 py-4">
-                                <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Donaciones</p>
-                                <p class="mt-3 font-display text-3xl text-[#a03f29]">{{ $impactoDonaciones['cantidad'] }}</p>
-                            </div>
-                        </div>
-                    </div>
+                        <aside class="border-t border-white/70 bg-white/60 p-8 backdrop-blur-sm lg:border-l lg:border-t-0 lg:p-10">
+                            <p class="font-display text-2xl text-slate-900">Donadores destacados</p>
+                            <p class="mt-2 text-sm leading-6 text-slate-600">Ranking visible con datos reales del periodo actual y listo para mostrar nuevas posiciones en cuanto se registren.</p>
 
-                    <div class="mt-8 flex flex-wrap gap-3">
-                        <a href="{{ route('donar.index') }}" class="rounded-2xl bg-[#a03f29] px-5 py-3 text-sm font-medium text-white transition hover:opacity-90">Donar ahora</a>
-                        <a href="#emprendedores" class="rounded-2xl border border-[#d8d2de] bg-white px-5 py-3 text-sm font-medium text-slate-700 transition hover:border-[#5f4cae] hover:text-[#5f4cae]">Conocer emprendedores</a>
+                            <div class="mt-6 space-y-4">
+                                @forelse ($topDonadores as $donador)
+                                    <div class="flex items-center gap-4 rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 shadow-sm">
+                                        <div class="inline-flex h-11 w-11 items-center justify-center rounded-full {{ $loop->first ? 'bg-[#ffdf97] text-[#5a4400]' : 'bg-[#e6deff] text-[#4a3597]' }} font-mono-data text-sm font-medium">
+                                            {{ $donador->posicion }}
+                                        </div>
+
+                                        <div class="min-w-0 flex-1">
+                                            <p class="truncate text-sm font-medium text-slate-900">{{ $donador->anonimo ? 'Donador anonimo' : $donador->name }}</p>
+                                            <p class="font-mono-data text-[11px] uppercase tracking-[0.18em] text-slate-500">Periodo {{ $periodoRanking }} - Puesto #{{ $donador->posicion }}</p>
+                                        </div>
+
+                                        <div class="text-right">
+                                            <p class="font-mono-data text-sm text-[#a03f29]">{{ $donador->total_puntos }} pts</p>
+                                            @if ($loop->first)
+                                                <p class="text-xs text-[#745800]">Lider actual</p>
+                                            @else
+                                                <p class="text-xs text-slate-500">Ranking activo</p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @empty
+                                    @for ($i = 1; $i <= 3; $i++)
+                                        <div class="flex items-center gap-4 rounded-2xl border border-dashed border-[#d8d2de] bg-white/70 px-4 py-3">
+                                            <div class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#f1ecf5] font-mono-data text-sm text-slate-500">{{ $i }}</div>
+                                            <div class="flex-1">
+                                                <p class="text-sm font-medium text-slate-900">Donador destacado #{{ $i }}</p>
+                                                <p class="text-xs text-slate-500">Aparecera automaticamente cuando existan rankings cargados.</p>
+                                            </div>
+                                            <span class="font-mono-data text-xs uppercase tracking-[0.18em] text-slate-400">Pendiente</span>
+                                        </div>
+                                    @endfor
+                                @endforelse
+                            </div>
+
+                            <div class="mt-6 border-t border-[#d8d2de] pt-4">
+                                <p class="font-mono-data text-[11px] uppercase tracking-[0.18em] text-slate-500">Resumen actual</p>
+                                <p class="mt-2 text-sm text-slate-600">{{ $impactoDonaciones['cantidad'] }} donaciones registradas y Bs {{ number_format($impactoDonaciones['total'], 2) }} movilizados hasta ahora.</p>
+                            </div>
+                        </aside>
                     </div>
                 </div>
             </section>
         </main>
 
-        <footer class="border-t border-[#d8d2de] bg-white/70 px-4 py-10 sm:px-6 lg:px-10">
+        <footer class="bg-[#312f36] px-4 py-10 text-[#f4eff8] sm:px-6 lg:px-10">
             <div class="mx-auto grid max-w-[1280px] gap-8 lg:grid-cols-[1.1fr_0.9fr_0.9fr_0.9fr]">
                 <div>
                     <a href="{{ route('home') }}" class="font-display text-3xl text-[#5f4cae]">WAYNA</a>
-                    <p class="mt-4 max-w-sm text-sm leading-7 text-slate-600">Marketplace y ecosistema cultural listo para conectar artesania boliviana, comercio justo y donacion con una interfaz preparada para crecer.</p>
+                    <p class="mt-4 max-w-sm text-sm leading-7 text-[#d7d1dd]">Marketplace y ecosistema cultural listo para conectar artesania boliviana, comercio justo y donacion con una interfaz preparada para crecer.</p>
                 </div>
 
                 <div>
-                    <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Explorar</p>
-                    <div class="mt-4 space-y-3 text-sm text-slate-600">
-                        <a href="#catalogo" class="block hover:text-[#5f4cae]">Catalogo</a>
-                        <a href="#emprendedores" class="block hover:text-[#5f4cae]">Emprendedores</a>
-                        <a href="#donar" class="block hover:text-[#5f4cae]">Donar</a>
+                    <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-[#cbbeff]">Explorar</p>
+                    <div class="mt-4 space-y-3 text-sm text-[#d7d1dd]">
+                        <a href="#catalogo" class="block transition hover:text-[#ffdad2]">Catalogo</a>
+                        <a href="#emprendedores" class="block transition hover:text-[#ffdad2]">Emprendedores</a>
+                        <a href="#donar" class="block transition hover:text-[#ffdad2]">Donar</a>
                     </div>
                 </div>
 
                 <div>
-                    <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Cuenta</p>
-                    <div class="mt-4 space-y-3 text-sm text-slate-600">
+                    <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-[#cbbeff]">Cuenta</p>
+                    <div class="mt-4 space-y-3 text-sm text-[#d7d1dd]">
                         @auth
-                            <a href="{{ route('profile') }}" class="block hover:text-[#5f4cae]">Mi perfil</a>
-                            <a href="{{ route('dashboard') }}" class="block hover:text-[#5f4cae]">Mi panel</a>
+                            <a href="{{ route('profile') }}" class="block transition hover:text-[#ffdad2]">Mi perfil</a>
+                            <a href="{{ route('dashboard') }}" class="block transition hover:text-[#ffdad2]">Mi panel</a>
                         @else
-                            <a href="{{ route('login') }}" class="block hover:text-[#5f4cae]">Iniciar sesion</a>
-                            <a href="{{ route('register') }}" class="block hover:text-[#5f4cae]">Crear cuenta</a>
+                            <a href="{{ route('login') }}" class="block transition hover:text-[#ffdad2]">Iniciar sesion</a>
+                            <a href="{{ route('register') }}" class="block transition hover:text-[#ffdad2]">Crear cuenta</a>
                         @endauth
                     </div>
                 </div>
 
                 <div>
-                    <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Estado</p>
-                    <div class="mt-4 space-y-3 text-sm text-slate-600">
-                        <p>Footer listo para integraciones futuras.</p>
-                        <p>Version visual preparada para 2026.</p>
+                    <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-[#cbbeff]">Contacto y ayuda</p>
+                    <div class="mt-4 space-y-3 text-sm text-[#d7d1dd]">
+                        <p>Soporte visual y comercial para emprendedores y compradores.</p>
+                        <p>La experiencia ya queda lista para integrar ayuda, redes y canales oficiales.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="mx-auto mt-10 flex max-w-[1280px] flex-col gap-3 border-t border-[#ebe6ef] pt-6 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+            <div class="mx-auto mt-10 flex max-w-[1280px] flex-col gap-3 border-t border-white/10 pt-6 text-sm text-[#d7d1dd] sm:flex-row sm:items-center sm:justify-between">
                 <p>© 2026 WAYNA. Todos los derechos reservados.</p>
-                <p>Inicio preparado para catalogo, emprendedores, donaciones, ranking y footer final.</p>
+                <p>Arte, comercio justo y comunidad en una sola experiencia.</p>
             </div>
         </footer>
     </body>
