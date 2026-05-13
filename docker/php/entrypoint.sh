@@ -5,7 +5,6 @@
 #  Hace todo automáticamente para que el equipo solo
 #  necesite: docker compose up -d
 # ===========================================================
-set -e
 
 echo ""
 echo "╔══════════════════════════════════════╗"
@@ -50,23 +49,36 @@ until php -r "
 done
 echo "  ✓ Redis listo"
 
-# ── 3. Instalar dependencias Composer ─────────────────────
-if [ ! -f "vendor/autoload.php" ]; then
-    echo "▶ Instalando dependencias Composer..."
-    composer update --no-scripts --no-interaction --prefer-dist --optimize-autoloader --no-progress
+# ── 3. Crear proyecto o instalar dependencias ────────────────
+if [ ! -f "composer.json" ]; then
+    echo "▶ Inicializando proyecto Laravel por primera vez..."
+    composer create-project --prefer-dist laravel/laravel temp_app
+    cp -Rn temp_app/* .
+    cp -Rn temp_app/.* . 2>/dev/null || true
+    rm -rf temp_app
+    echo "  ✓ Proyecto Laravel inicializado"
+elif [ ! -f "vendor/autoload.php" ]; then
+    echo "▶ Instalando dependencias Composer (primera vez)..."
+    composer install \
+        --no-interaction \
+        --prefer-dist \
+        --optimize-autoloader \
+        --no-progress
     echo "  ✓ Composer listo"
+else
+    echo "  ✓ Vendor ya existe, omitiendo composer install"
 fi
 
 # ── 4. Copiar .env si no existe ───────────────────────────
 if [ ! -f ".env" ]; then
-    echo "▶ Copiando .env.example .env"
+    echo "▶ Copiando .env.example → .env"
     cp .env.example .env
 fi
 
 # ── 5. Generar APP_KEY si está vacía ──────────────────────
 if grep -q "APP_KEY=$" .env || grep -q "APP_KEY=\"\"" .env; then
     echo "▶ Generando APP_KEY..."
-    php artisan key:generate --force || echo "  ⚠ APP_KEY fallo"
+    php artisan key:generate --force || echo "  ⚠ APP_KEY ya existe"
     echo "  ✓ APP_KEY generada"
 fi
 
@@ -79,34 +91,26 @@ echo "  ✓ Permisos OK"
 # ── 7. Storage link ───────────────────────────────────────
 if [ ! -L "public/storage" ]; then
     echo "▶ Creando storage:link..."
-    php artisan storage:link 2>&1 || echo "  ⚠ Storage link fallo"
+    php artisan storage:link 2>&1 || echo "  ⚠ Storage link falló"
 fi
 
 # ── 8. Limpiar cache de config (evita valores viejos) ─────
-echo "▶ Limpiando cache de configuracion..."
-php artisan config:clear 2>&1 || echo "  ⚠ Config clear fallo (puede ser normal)"
+echo "▶ Limpiando cache de configuración..."
+php artisan config:clear 2>&1 || echo "  ⚠ Config clear falló (puede ser normal)"
 echo "  ✓ Config cache limpia"
 
 # ── 9. Migraciones ────────────────────────────────────────
 echo "▶ Ejecutando migraciones..."
-php artisan migrate --force 2>&1 || echo "  ⚠ Migraciones fallaron"
+php artisan migrate --force 2>&1 || echo "  ⚠ Migraciones fallaron (puede ser normal si ya existen)"
 echo "  ✓ Migraciones completadas"
 
-# ── 10. Seed (solo primera vez, datos demo) ───────────────
-if [ ! -f "storage/app/.seeded" ]; then
-    echo "▶ Sembrando datos demo iniciales..."
-    php artisan db:seed --force 2>&1 || echo "  ⚠ Seed fallo (puede ser normal si ya hay datos)"
-    touch storage/app/.seeded
-    echo "  ✓ Seed completado"
-fi
-
-# ── 11. Cache según entorno ────────────────────────────────
+# ── 10. Cache según entorno ───────────────────────────────
 if [ "$APP_ENV" = "production" ]; then
-    echo "▶ Cacheando configuracion (produccion)..."
-    php artisan config:cache 2>&1 || echo "  ⚠ Config cache fallo"
-    php artisan route:cache 2>&1 || echo "  ⚠ Route cache fallo"
-    php artisan view:cache 2>&1 || echo "  ⚠ View cache fallo"
-    echo "  ✓ Cache de produccion OK"
+    echo "▶ Cacheando configuración (producción)..."
+    php artisan config:cache 2>&1 || echo "  ⚠ Config cache falló"
+    php artisan route:cache 2>&1 || echo "  ⚠ Route cache falló"
+    php artisan view:cache 2>&1 || echo "  ⚠ View cache falló"
+    echo "  ✓ Cache de producción OK"
 else
     echo "  ✓ Entorno local: cache omitida"
 fi
@@ -117,4 +121,4 @@ echo "║     WAYNA lista en puerto 9090       ║"
 echo "╚══════════════════════════════════════╝"
 echo ""
 
-exec "$@"
+exec php-fpm
