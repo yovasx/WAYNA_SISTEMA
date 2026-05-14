@@ -95,8 +95,8 @@
                                 </td>
                                 <td class="px-4 py-5">
                                     <div class="flex justify-end gap-2">
-                                        <button type="button" wire:click="abrirModal({{ $producto->id }})" class="rounded-xl border border-[#d8d2de] px-3 py-2 text-xs font-medium text-slate-700 transition hover:border-[#5f4cae] hover:text-[#5f4cae]">Editar</button>
-                                        <button type="button" wire:click="confirmarEliminar({{ $producto->id }})" class="rounded-xl border border-[#f0c7c2] px-3 py-2 text-xs font-medium text-[#93000a] transition hover:bg-[#ffdad6]">Eliminar</button>
+                                        <x-admin.action-button wire:click="abrirModal({{ $producto->id }})" icon="edit" label="Editar producto" tone="primary" />
+                                        <x-admin.action-button wire:click="confirmarEliminar({{ $producto->id }})" icon="delete" label="Eliminar producto" tone="danger" />
                                     </div>
                                 </td>
                             </tr>

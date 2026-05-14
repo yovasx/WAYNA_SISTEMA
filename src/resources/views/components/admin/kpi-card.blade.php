@@ -6,6 +6,9 @@
         'secondary' => ['chip' => 'bg-[#ffdad2] text-[#812914]', 'value' => 'text-[#a03f29]'],
         'tertiary' => ['chip' => 'bg-[#ffdf97] text-[#5a4400]', 'value' => 'text-[#745800]'],
         'neutral' => ['chip' => 'bg-[#f1ecf5] text-slate-600', 'value' => 'text-slate-900'],
+        'green' => ['chip' => 'bg-[#eef7f2] text-[#1f6b52]', 'value' => 'text-[#1f6b52]'],
+        'red' => ['chip' => 'bg-[#ffdad6] text-[#93000a]', 'value' => 'text-[#93000a]'],
+        'amber' => ['chip' => 'bg-[#fff3cd] text-[#745800]', 'value' => 'text-[#745800]'],
     ];
 
     $palette = $tones[$tone] ?? $tones['primary'];
