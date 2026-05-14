@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\ReportExportController;
+use App\Http\Controllers\Admin\ReportExcelExportController;
+use App\Http\Controllers\Admin\ReportPdfExportController;
 use App\Livewire\Admin\CategoriasIndex as AdminCategoriasIndex;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\DonacionesIndex as AdminDonacionesIndex;
@@ -67,6 +69,8 @@ Route::prefix('panel/admin')
         Route::get('/', AdminDashboard::class)->name('dashboard.admin');
         Route::get('reportes', AdminReportesIndex::class)->name('admin.reportes.index');
         Route::get('reportes/export', ReportExportController::class)->name('admin.reportes.export');
+        Route::get('reportes/export/excel', ReportExcelExportController::class)->name('admin.reportes.export.excel');
+        Route::get('reportes/export/pdf', ReportPdfExportController::class)->name('admin.reportes.export.pdf');
         Route::get('emprendedores', AdminEmprendedoresIndex::class)->name('admin.emprendedores.index');
         Route::get('categorias', AdminCategoriasIndex::class)->name('admin.categorias.index');
         Route::get('productos', AdminProductosIndex::class)->name('admin.productos.index');
