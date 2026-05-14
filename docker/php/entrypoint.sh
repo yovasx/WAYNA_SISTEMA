@@ -12,6 +12,18 @@ echo "║         WAYNA — Iniciando...         ║"
 echo "╚══════════════════════════════════════╝"
 echo ""
 
+COMPOSER_HASH_FILE="storage/framework/cache/.composer-deps.hash"
+
+compute_composer_hash() {
+    if [ -f "composer.lock" ]; then
+        sha256sum composer.json composer.lock | sha256sum | awk '{print $1}'
+    elif [ -f "composer.json" ]; then
+        sha256sum composer.json | awk '{print $1}'
+    else
+        echo ""
+    fi
+}
+
 # ── 1. Esperar PostgreSQL ─────────────────────────────────
 echo "▶ Esperando PostgreSQL..."
 until php -r "
@@ -57,16 +69,37 @@ if [ ! -f "composer.json" ]; then
     cp -Rn temp_app/.* . 2>/dev/null || true
     rm -rf temp_app
     echo "  ✓ Proyecto Laravel inicializado"
-elif [ ! -f "vendor/autoload.php" ]; then
-    echo "▶ Instalando dependencias Composer (primera vez)..."
-    composer install \
-        --no-interaction \
-        --prefer-dist \
-        --optimize-autoloader \
-        --no-progress
-    echo "  ✓ Composer listo"
 else
-    echo "  ✓ Vendor ya existe, omitiendo composer install"
+    mkdir -p "$(dirname "$COMPOSER_HASH_FILE")"
+
+    CURRENT_COMPOSER_HASH="$(compute_composer_hash)"
+    SAVED_COMPOSER_HASH=""
+
+    if [ -f "$COMPOSER_HASH_FILE" ]; then
+        SAVED_COMPOSER_HASH="$(cat "$COMPOSER_HASH_FILE")"
+    fi
+
+    if [ ! -f "vendor/autoload.php" ]; then
+        echo "▶ Instalando dependencias Composer (vendor ausente)..."
+        composer install \
+            --no-interaction \
+            --prefer-dist \
+            --optimize-autoloader \
+            --no-progress || exit 1
+        echo "$CURRENT_COMPOSER_HASH" > "$COMPOSER_HASH_FILE"
+        echo "  ✓ Composer listo"
+    elif [ "$CURRENT_COMPOSER_HASH" != "$SAVED_COMPOSER_HASH" ]; then
+        echo "▶ Detectado cambio en composer.json/composer.lock. Sincronizando dependencias..."
+        composer install \
+            --no-interaction \
+            --prefer-dist \
+            --optimize-autoloader \
+            --no-progress || exit 1
+        echo "$CURRENT_COMPOSER_HASH" > "$COMPOSER_HASH_FILE"
+        echo "  ✓ Dependencias Composer sincronizadas"
+    else
+        echo "  ✓ Dependencias Composer sin cambios, omitiendo install"
+    fi
 fi
 
 # ── 4. Copiar .env si no existe ───────────────────────────
