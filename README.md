@@ -124,10 +124,10 @@ main                  ← Producción. Solo recibe merges estables desde develop
 │
 └── develop           ← Integración. Todo el trabajo se consolida aquí.
     │
-    ├── feature/YovaniAndia
-    ├── feature/DiegoCondori
-    ├── feature/AlexRamires
-    └── feature/RafaelOsinaga
+    ├── feature/Yovani
+    ├── feature/Diego
+    ├── feature/Alex
+    └── feature/Rafael
 ```
 
 **Reglas:**
@@ -281,12 +281,13 @@ chmod -R 775 storage bootstrap/cache
 ```
 ### "Error no cargan diseños de la pagina (se ve html solamente) aplicalo cuando hagas cambios grandes en la views"
 ```bash
-```bashdocker compose run --rm wayna_node npm run buil
+docker compose run --rm wayna_node npm run buil
 ```
-
+### "Error SQLexception"
+```bash
+docker compose exec wayna_app php artisan migrate:fresh --seed
+docker compose exec wayna_app php artisan db:seed
 ```
-
-
 ### "Vite no conecta / HMR no funciona"
 Verifica la configuración de `vite.config.js` (ver sección Frontend).
 
