@@ -56,46 +56,39 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 window.adminLayoutState = () => ({
-    sidebarState: 'expanded',
     sidebarHover: false,
     mobileSidebarOpen: false,
 
-    init() {
-        const savedState = window.localStorage.getItem('wayna.admin.sidebar.state');
-
-        if (savedState !== null && ['expanded', 'icons', 'hidden'].includes(savedState)) {
-            this.sidebarState = savedState;
-        }
-    },
+    init() {},
 
     get sidebarEffective() {
-        if (this.sidebarState === 'expanded') return 'expanded';
-        if (this.sidebarState === 'icons' && this.sidebarHover) return 'expanded';
-        return this.sidebarState;
+        if (this.mobileSidebarOpen || this.sidebarHover) return 'expanded';
+
+        return 'icons';
     },
 
-    get sidebarWidth() {
-        if (this.sidebarState === 'expanded') return 'md:pl-[260px]';
-        if (this.sidebarState === 'icons') return 'md:pl-[88px]';
-        return 'md:pl-0';
+    get desktopSidebarWidth() {
+        return this.sidebarEffective === 'expanded' ? 260 : 88;
     },
 
-    get sidebarWidthEffective() {
-        const eff = this.sidebarEffective;
-        if (eff === 'expanded') return 'md:pl-[260px]';
-        if (this.sidebarState === 'icons') return 'md:pl-[88px]';
-        return 'md:pl-0';
+    get desktopGridStyle() {
+        return `grid-template-columns: ${this.desktopSidebarWidth}px minmax(0, 1fr);`;
     },
 
-    toggleSidebar() {
-        if (this.sidebarState === 'expanded') {
-            this.sidebarState = 'icons';
-        } else if (this.sidebarState === 'icons') {
-            this.sidebarState = 'hidden';
-        } else {
-            this.sidebarState = 'expanded';
+    handleSidebarEnter() {
+        if (window.innerWidth >= 768) {
+            this.sidebarHover = true;
         }
-        window.localStorage.setItem('wayna.admin.sidebar.state', this.sidebarState);
+    },
+
+    handleSidebarLeave() {
+        if (window.innerWidth >= 768) {
+            this.sidebarHover = false;
+        }
+    },
+
+    openMobileSidebar() {
+        this.mobileSidebarOpen = true;
     },
 
     closeMobileSidebar() {

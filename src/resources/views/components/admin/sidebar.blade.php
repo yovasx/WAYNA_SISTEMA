@@ -1,9 +1,9 @@
 <aside x-cloak
-       @mouseenter="if (sidebarState === 'icons') sidebarHover = true"
-       @mouseleave="sidebarHover = false"
-       class="sticky top-16 h-[calc(100vh-4rem)] shrink-0 border-r border-[#d8d2de] bg-white transition-all duration-300 ease-out"
-       :class="[mobileSidebarOpen ? 'translate-x-0 w-[260px]' : '-translate-x-full md:translate-x-0', sidebarEffective === 'expanded' ? 'w-[260px]' : (sidebarState === 'icons' ? 'w-[88px]' : 'w-0 overflow-hidden')]">
-    <div class="flex h-full flex-col overflow-y-auto px-3 py-4">
+       @mouseenter="handleSidebarEnter()"
+       @mouseleave="handleSidebarLeave()"
+       class="fixed inset-y-0 left-0 z-40 w-[260px] overflow-hidden border-r border-[#d8d2de] bg-white pt-20 transition-transform duration-300 ease-out md:static md:z-auto md:w-auto md:pt-0 md:transition-none"
+       :class="mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'">
+    <div class="flex h-full flex-col overflow-hidden px-3 py-4 md:py-6">
         <div class="flex items-start gap-3 rounded-[1.5rem] border border-[#e7e0f1] bg-[#f7f2fb] px-3 py-4">
             <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#5f4cae] text-white">
                 <span class="material-symbols-outlined">admin_panel_settings</span>
@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <nav class="mt-6 space-y-2">
+        <nav class="mt-6 flex-1 space-y-2">
             <x-admin.sidebar-item :href="route('dashboard.admin')" icon="dashboard" :active="request()->routeIs('dashboard.admin')" wire:navigate>
                 Dashboard
             </x-admin.sidebar-item>
@@ -65,7 +65,7 @@
             </x-admin.sidebar-item>
         </nav>
 
-        <div class="mt-auto border-t border-[#d8d2de] pt-4">
+        <div class="mt-6 border-t border-[#d8d2de] pt-4">
             <div x-show="sidebarEffective === 'expanded'" x-transition.opacity.duration.150ms>
                 <button class="mb-4 w-full rounded-2xl bg-[#a03f29] px-4 py-3 text-sm font-medium text-white transition hover:opacity-90">
                     <span class="material-symbols-outlined align-middle text-[20px]">volunteer_activism</span>

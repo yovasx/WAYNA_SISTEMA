@@ -28,15 +28,15 @@
         @endif
     </head>
     <body x-data="adminLayoutState()" x-init="init()" class="bg-[#fdf8ff] text-slate-900 antialiased">
-        <div class="min-h-screen bg-[#fdf8ff]">
+        <div class="grid min-h-screen grid-rows-[4rem_minmax(0,1fr)] bg-[#fdf8ff]">
             <x-admin.topbar />
 
             <div x-cloak x-show="mobileSidebarOpen" class="fixed inset-0 z-30 bg-slate-950/30 backdrop-blur-sm md:hidden" @click="closeMobileSidebar()"></div>
 
-            <div class="flex pt-16">
+            <div class="min-h-0 md:grid md:transition-[grid-template-columns] md:duration-300 md:ease-out" :style="desktopGridStyle">
                 <x-admin.sidebar />
 
-                <main class="min-w-0 flex-1 px-4 py-8 sm:px-6 lg:px-8">
+                <main class="min-h-0 min-w-0 overflow-y-auto px-4 py-8 sm:px-6 lg:px-8">
                     {{ $slot }}
                 </main>
             </div>
