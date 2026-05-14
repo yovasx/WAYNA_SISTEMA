@@ -7,6 +7,7 @@ use App\Models\PerfilEmprendedor;
 use App\Models\Producto;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Component;
@@ -15,19 +16,58 @@ class Dashboard extends Component
 {
     public function render(): View
     {
+        $inicioMes = Carbon::now()->startOfMonth();
+        $inicioManana = Carbon::tomorrow();
+
+        $ventasMensuales = [];
+        $donacionesMensuales = [];
+
+        if (Schema::hasTable('pedidos')) {
+            $ventasMensuales = DB::table('pedidos')
+                ->select(DB::raw('COALESCE(SUM(total), 0) as total'), DB::raw("to_char(created_at, 'YYYY-MM') as mes"))
+                ->whereIn('estado', ['confirmado', 'entregado', 'completado'])
+                ->where('created_at', '>=', now()->subMonths(6))
+                ->groupBy(DB::raw("to_char(created_at, 'YYYY-MM')"))
+                ->orderBy('mes')
+                ->pluck('total', 'mes')
+                ->toArray();
+        }
+
+        if (Schema::hasTable('donaciones')) {
+            $donacionesMensuales = DB::table('donaciones')
+                ->select(DB::raw('COALESCE(SUM(monto), 0) as total'), DB::raw("to_char(created_at, 'YYYY-MM') as mes"))
+                ->where('created_at', '>=', now()->subMonths(6))
+                ->groupBy(DB::raw("to_char(created_at, 'YYYY-MM')"))
+                ->orderBy('mes')
+                ->pluck('total', 'mes')
+                ->toArray();
+        }
+
         $metricas = [
-            'usuarios_activos' => User::query()->where('estado', 'activo')->count(),
-            'emprendedores_pendientes' => PerfilEmprendedor::query()->where('estado', 'pendiente')->count(),
-            'emprendedores_aprobados' => PerfilEmprendedor::query()->where('estado', 'activo')->count(),
-            'categorias_activas' => Categoria::query()->count(),
-            'productos_totales' => Producto::query()->where('activo', true)->count(),
-            'stock_critico' => Producto::query()
-                ->where(function ($query) {
-                    $query
-                        ->where('stock', '<=', 5)
-                        ->orWhereIn('estado_stock', ['ultimas_unidades', 'agotado']);
-                })
-                ->count(),
+            'emprendedores_activos' => PerfilEmprendedor::query()->where('estado', 'activo')->count(),
+            'ventas_mes' => Schema::hasTable('pedidos')
+                ? (float) DB::table('pedidos')
+                    ->whereIn('estado', ['confirmado', 'entregado', 'completado'])
+                    ->where('created_at', '>=', $inicioMes)
+                    ->sum('total')
+                : 0,
+            'donaciones_mes' => Schema::hasTable('donaciones')
+                ? (float) DB::table('donaciones')
+                    ->where('created_at', '>=', $inicioMes)
+                    ->sum('monto')
+                : 0,
+            'usuarios_registrados' => User::query()->count(),
+            'reservas_activas' => Schema::hasTable('reservas')
+                ? (int) DB::table('reservas')
+                    ->whereIn('estado', ['pendiente', 'confirmada'])
+                    ->count()
+                : 0,
+            'transacciones_hoy' => Schema::hasTable('transacciones')
+                ? (int) DB::table('transacciones')
+                    ->where('created_at', '>=', today())
+                    ->where('created_at', '<', $inicioManana)
+                    ->count()
+                : 0,
         ];
 
         $estadoEmprendedores = PerfilEmprendedor::query()
@@ -54,30 +94,6 @@ class Dashboard extends Component
             ->take(6)
             ->get();
 
-        $ventasMensuales = [];
-        $donacionesMensuales = [];
-
-        if (Schema::hasTable('pedidos')) {
-            $ventasMensuales = DB::table('pedidos')
-                ->select(DB::raw('COALESCE(SUM(total), 0) as total'), DB::raw("to_char(created_at, 'YYYY-MM') as mes"))
-                ->whereIn('estado', ['confirmado', 'entregado', 'completado'])
-                ->where('created_at', '>=', now()->subMonths(6))
-                ->groupBy(DB::raw("to_char(created_at, 'YYYY-MM')"))
-                ->orderBy('mes')
-                ->pluck('total', 'mes')
-                ->toArray();
-        }
-
-        if (Schema::hasTable('donaciones')) {
-            $donacionesMensuales = DB::table('donaciones')
-                ->select(DB::raw('COALESCE(SUM(monto), 0) as total'), DB::raw("to_char(created_at, 'YYYY-MM') as mes"))
-                ->where('created_at', '>=', now()->subMonths(6))
-                ->groupBy(DB::raw("to_char(created_at, 'YYYY-MM')"))
-                ->orderBy('mes')
-                ->pluck('total', 'mes')
-                ->toArray();
-        }
-
         $meses = collect();
         for ($i = 5; $i >= 0; $i--) {
             $meses->push(now()->subMonths($i)->format('Y-m'));
@@ -85,7 +101,7 @@ class Dashboard extends Component
 
         $chartData = $meses->map(function ($mes) use ($ventasMensuales, $donacionesMensuales) {
             return [
-                'mes' => \Carbon\Carbon::createFromFormat('Y-m', $mes)->format('M'),
+                'mes' => Carbon::createFromFormat('Y-m', $mes)->format('M'),
                 'ventas' => (float) ($ventasMensuales[$mes] ?? 0),
                 'donaciones' => (float) ($donacionesMensuales[$mes] ?? 0),
             ];
