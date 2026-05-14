@@ -1,4 +1,4 @@
-<aside x-cloak class="fixed left-0 top-16 z-40 h-[calc(100vh-4rem)] w-[260px] border-r border-[#d8d2de] bg-white transition-all duration-300 ease-out" :class="[mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0', sidebarExpanded ? 'md:w-[260px]' : 'md:w-[88px]']">
+<aside x-cloak class="fixed left-0 top-16 z-40 h-[calc(100vh-4rem)] border-r border-[#d8d2de] bg-white transition-all duration-300 ease-out" :class="[mobileSidebarOpen ? 'translate-x-0 w-[260px]' : '-translate-x-full md:translate-x-0', sidebarState === 'expanded' ? 'md:w-[260px]' : (sidebarState === 'icons' ? 'md:w-[88px]' : 'md:w-0 md:overflow-hidden')]">
     <div class="flex h-full flex-col overflow-y-auto px-3 py-4">
         <div class="flex items-start gap-3 rounded-[1.5rem] border border-[#e7e0f1] bg-[#f7f2fb] px-3 py-4">
             <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#5f4cae] text-white">
@@ -7,7 +7,7 @@
 
             <div x-show="sidebarExpanded" x-transition.opacity.duration.150ms class="min-w-0">
                 <p class="font-medium text-slate-900">Portal admin</p>
-                <p class="mt-1 text-xs text-slate-500">Control del ecosistema WAYNA</p>
+                <p class="mt-1 text-xs text-slate-500">Control del ecosistema</p>
             </div>
         </div>
 
@@ -27,15 +27,34 @@
             <x-admin.sidebar-item :href="route('admin.productos.index')" icon="inventory_2" :active="request()->routeIs('admin.productos.*')" wire:navigate>
                 Productos
             </x-admin.sidebar-item>
+
+            <x-admin.sidebar-item href="#" icon="shopping_bag" wire:navigate>
+                Pedidos
+            </x-admin.sidebar-item>
+
+            <x-admin.sidebar-item href="#" icon="auto_awesome" wire:navigate>
+                Impacto
+            </x-admin.sidebar-item>
         </nav>
 
-        <div class="mt-auto rounded-[1.5rem] border border-[#efc2bb] bg-[#ffdad6] px-4 py-4 text-[#812914]">
-            <p x-show="sidebarExpanded" x-transition.opacity.duration.150ms class="text-sm">
-                La fase 1 prioriza control operativo real sin saturar el panel con modulos vacios.
-            </p>
-            <span x-show="! sidebarExpanded" x-transition.opacity.duration.150ms class="flex justify-center">
-                <span class="material-symbols-outlined">tips_and_updates</span>
-            </span>
+        <div class="mt-auto border-t border-[#d8d2de] pt-4">
+            <div x-show="sidebarExpanded" x-transition.opacity.duration.150ms>
+                <button class="mb-4 w-full rounded-2xl bg-[#a03f29] px-4 py-3 text-sm font-medium text-white transition hover:opacity-90">
+                    <span class="material-symbols-outlined align-middle text-[20px]">volunteer_activism</span>
+                    <span class="ml-2 align-middle">Donar ahora</span>
+                </button>
+            </div>
+
+            <nav class="space-y-1">
+                <a href="#" class="flex items-center gap-3 rounded-2xl px-4 py-2 text-sm text-slate-600 transition hover:bg-[#f7f2fb] hover:text-[#5f4cae]" :class="sidebarState !== 'expanded' ? 'justify-center px-2' : ''">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span x-show="sidebarExpanded" x-transition.opacity.duration.150ms>Configuracion</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 rounded-2xl px-4 py-2 text-sm text-slate-600 transition hover:bg-[#f7f2fb] hover:text-[#5f4cae]" :class="sidebarState !== 'expanded' ? 'justify-center px-2' : ''">
+                    <span class="material-symbols-outlined">help_outline</span>
+                    <span x-show="sidebarExpanded" x-transition.opacity.duration.150ms>Ayuda</span>
+                </a>
+            </nav>
         </div>
     </div>
 </aside>

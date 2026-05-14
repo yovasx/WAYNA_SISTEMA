@@ -15,7 +15,100 @@
         <x-admin.kpi-card label="Stock critico" :value="$metricas['stock_critico']" icon="warning" tone="secondary" />
     </div>
 
-    <div class="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+    <div class="grid gap-6 xl:grid-cols-3">
+        <div class="xl:col-span-2">
+            <x-admin.panel-card title="Tendencia de ventas vs donaciones" description="Comparativa de los ultimos 6 meses con datos reales del sistema.">
+                @if ($chartData->isEmpty() || $chartData->every(fn ($item) => $item['ventas'] === 0 && $item['donaciones'] === 0))
+                    <x-admin.empty-state title="Sin datos suficientes" description="Cuando existan pedidos y donaciones registrados, este grafico mostrara la tendencia real del ecosistema." icon="bar_chart" />
+                @else
+                    <div class="relative">
+                        <div class="mb-4 flex items-center gap-4 text-sm">
+                            <div class="flex items-center gap-2">
+                                <span class="inline-block h-3 w-3 rounded-full bg-[#5f4cae]"></span>
+                                <span class="text-slate-600">Ventas</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="inline-block h-3 w-3 rounded-full bg-[#a03f29]"></span>
+                                <span class="text-slate-600">Donaciones</span>
+                            </div>
+                        </div>
+                        <div class="relative flex h-64 items-end gap-4 border-b border-l border-[#d8d2de] pb-2 pl-2">
+                            @foreach ($chartData as $item)
+                                <div class="flex flex-1 flex-col items-center gap-1">
+                                    <div class="flex w-full flex-col items-center justify-end gap-0.5" style="height: 220px;">
+                                        <div class="w-full max-w-[32px] rounded-t-sm bg-[#a03f29]/20 transition-all hover:bg-[#a03f29]/40" 
+                                             style="height: {{ max(($item['donaciones'] / $maxValor) * 180, 2) }}px;"
+                                             title="Donaciones: Bs {{ number_format($item['donaciones'], 2) }}">
+                                        </div>
+                                        <div class="w-full max-w-[32px] rounded-t-sm bg-[#5f4cae]/20 transition-all hover:bg-[#5f4cae]/40" 
+                                             style="height: {{ max(($item['ventas'] / $maxValor) * 180, 2) }}px;"
+                                             title="Ventas: Bs {{ number_format($item['ventas'], 2) }}">
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] font-medium text-slate-500">{{ $item['mes'] }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            </x-admin.panel-card>
+        </div>
+
+        <div class="space-y-6">
+            <x-admin.panel-card title="Impacto del ecosistema" description="Indicadores clave del estado actual del sistema.">
+                <div class="space-y-5">
+                    <div>
+                        <div class="mb-2 flex items-center justify-between text-sm">
+                            <span class="font-medium text-slate-700">Emprendedores aprobados</span>
+                            <span class="font-mono-data text-xs text-[#5f4cae]">{{ $porcentajeAprobados }}%</span>
+                        </div>
+                        <div class="h-2 overflow-hidden rounded-full bg-[#e6e1ea]">
+                            <div class="h-full rounded-full bg-[#5f4cae] transition-all" style="width: {{ $porcentajeAprobados }}%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="mb-2 flex items-center justify-between text-sm">
+                            <span class="font-medium text-slate-700">Productos activos</span>
+                            <span class="font-mono-data text-xs text-[#a03f29]">{{ $porcentajeProductosActivos }}%</span>
+                        </div>
+                        <div class="h-2 overflow-hidden rounded-full bg-[#e6e1ea]">
+                            <div class="h-full rounded-full bg-[#a03f29] transition-all" style="width: {{ $porcentajeProductosActivos }}%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="mb-2 flex items-center justify-between text-sm">
+                            <span class="font-medium text-slate-700">Categorias con productos</span>
+                            <span class="font-mono-data text-xs text-[#745800]">{{ $porcentajeCategoriasConProductos }}%</span>
+                        </div>
+                        <div class="h-2 overflow-hidden rounded-full bg-[#e6e1ea]">
+                            <div class="h-full rounded-full bg-[#745800] transition-all" style="width: {{ $porcentajeCategoriasConProductos }}%"></div>
+                        </div>
+                    </div>
+                </div>
+            </x-admin.panel-card>
+
+            <x-admin.panel-card title="Estados de emprendedores" description="Distribucion actual del flujo de aprobacion.">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between rounded-2xl bg-[#fcfbfe] px-4 py-3">
+                        <span class="text-sm text-slate-600">Pendientes</span>
+                        <x-admin.status-badge tone="amber">{{ $estadoEmprendedores['pendiente'] ?? 0 }}</x-admin.status-badge>
+                    </div>
+                    <div class="flex items-center justify-between rounded-2xl bg-[#fcfbfe] px-4 py-3">
+                        <span class="text-sm text-slate-600">Aprobados</span>
+                        <x-admin.status-badge tone="green">{{ $estadoEmprendedores['activo'] ?? 0 }}</x-admin.status-badge>
+                    </div>
+                    <div class="flex items-center justify-between rounded-2xl bg-[#fcfbfe] px-4 py-3">
+                        <span class="text-sm text-slate-600">Suspendidos</span>
+                        <x-admin.status-badge tone="red">{{ $estadoEmprendedores['suspendido'] ?? 0 }}</x-admin.status-badge>
+                    </div>
+                </div>
+            </x-admin.panel-card>
+        </div>
+    </div>
+
+    <div class="grid gap-6 xl:grid-cols-2">
         <x-admin.panel-card title="Ultimos productos" description="Vista rapida de las ultimas publicaciones y su estado comercial.">
             @if ($ultimosProductos->isEmpty())
                 <x-admin.empty-state title="Aun no hay productos" description="Cuando se creen o importen productos, esta mesa mostrara el pulso operativo del catalogo." icon="inventory_2" />
@@ -44,65 +137,28 @@
             @endif
         </x-admin.panel-card>
 
-        <div class="space-y-6">
-            <x-admin.panel-card title="Estados de emprendedores" description="Distribucion actual del flujo de aprobacion.">
-                <div class="space-y-3">
-                    <div class="flex items-center justify-between rounded-2xl bg-[#fcfbfe] px-4 py-3">
-                        <span class="text-sm text-slate-600">Pendientes</span>
-                        <x-admin.status-badge tone="amber">{{ $estadoEmprendedores['pendiente'] ?? 0 }}</x-admin.status-badge>
-                    </div>
-                    <div class="flex items-center justify-between rounded-2xl bg-[#fcfbfe] px-4 py-3">
-                        <span class="text-sm text-slate-600">Aprobados</span>
-                        <x-admin.status-badge tone="green">{{ $estadoEmprendedores['activo'] ?? 0 }}</x-admin.status-badge>
-                    </div>
-                    <div class="flex items-center justify-between rounded-2xl bg-[#fcfbfe] px-4 py-3">
-                        <span class="text-sm text-slate-600">Suspendidos</span>
-                        <x-admin.status-badge tone="red">{{ $estadoEmprendedores['suspendido'] ?? 0 }}</x-admin.status-badge>
-                    </div>
-                </div>
-            </x-admin.panel-card>
-
-            <x-admin.panel-card title="Categorias con mas productos" description="Prioriza donde hay mas volumen para moderacion y curaduria.">
-                @if ($topCategorias->isEmpty())
-                    <x-admin.empty-state title="Sin categorias" description="El admin podra crear categorias aqui mismo en cuanto se necesiten nuevas familias de productos." icon="category" class="px-4 py-8" />
-                @else
-                    <div class="space-y-3">
-                        @foreach ($topCategorias as $categoria)
-                            <div class="flex items-center justify-between rounded-2xl bg-[#fcfbfe] px-4 py-3">
+        <x-admin.panel-card title="Emprendedores recientes" description="Altas mas recientes para seguimiento del equipo admin.">
+            @if ($ultimosEmprendedores->isEmpty())
+                <x-admin.empty-state title="No hay emprendedores registrados" description="Cuando entren nuevas cuentas emprendedoras, este tablero mostrara el historial mas reciente." icon="storefront" />
+            @else
+                <div class="grid gap-4 sm:grid-cols-2">
+                    @foreach ($ultimosEmprendedores as $perfil)
+                        <article class="rounded-3xl border border-[#ebe6ef] bg-[#fcfbfe] px-4 py-4">
+                            <div class="flex items-start justify-between gap-3">
                                 <div>
-                                    <p class="font-medium text-slate-900">{{ $categoria->nombre }}</p>
-                                    <p class="text-xs text-slate-500">{{ $categoria->productos_count }} producto(s)</p>
+                                    <p class="font-medium text-slate-900">{{ $perfil->nombre_emprendimiento }}</p>
+                                    <p class="mt-1 text-sm text-slate-600">{{ $perfil->usuario?->name ?? 'Sin usuario asociado' }}</p>
+                                    <p class="mt-1 text-xs text-slate-500">{{ $perfil->categoria?->nombre ?? 'Sin categoria' }}</p>
                                 </div>
-                                <span class="font-mono-data text-sm text-[#5f4cae]">{{ $categoria->productos_count }}</span>
+
+                                <x-admin.status-badge :tone="$perfil->estado_aprobacion === 'aprobado' ? 'green' : ($perfil->estado_aprobacion === 'pendiente' ? 'amber' : 'red')">
+                                    {{ $perfil->estado_aprobacion }}
+                                </x-admin.status-badge>
                             </div>
-                        @endforeach
-                    </div>
-                @endif
-            </x-admin.panel-card>
-        </div>
+                        </article>
+                    @endforeach
+                </div>
+            @endif
+        </x-admin.panel-card>
     </div>
-
-    <x-admin.panel-card title="Emprendedores recientes" description="Altas mas recientes para seguimiento del equipo admin.">
-        @if ($ultimosEmprendedores->isEmpty())
-            <x-admin.empty-state title="No hay emprendedores registrados" description="Cuando entren nuevas cuentas emprendedoras, este tablero mostrara el historial mas reciente." icon="storefront" />
-        @else
-            <div class="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
-                @foreach ($ultimosEmprendedores as $perfil)
-                    <article class="rounded-3xl border border-[#ebe6ef] bg-[#fcfbfe] px-4 py-4">
-                        <div class="flex items-start justify-between gap-3">
-                            <div>
-                                <p class="font-medium text-slate-900">{{ $perfil->nombre_emprendimiento }}</p>
-                                <p class="mt-1 text-sm text-slate-600">{{ $perfil->usuario?->name ?? 'Sin usuario asociado' }}</p>
-                                <p class="mt-1 text-xs text-slate-500">{{ $perfil->categoria?->nombre ?? 'Sin categoria' }}</p>
-                            </div>
-
-                            <x-admin.status-badge :tone="$perfil->estado_aprobacion === 'aprobado' ? 'green' : ($perfil->estado_aprobacion === 'pendiente' ? 'amber' : 'red')">
-                                {{ $perfil->estado_aprobacion }}
-                            </x-admin.status-badge>
-                        </div>
-                    </article>
-                @endforeach
-            </div>
-        @endif
-    </x-admin.panel-card>
 </div>

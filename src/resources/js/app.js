@@ -56,20 +56,44 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 window.adminLayoutState = () => ({
-    sidebarExpanded: true,
+    sidebarState: 'expanded',
     mobileSidebarOpen: false,
 
     init() {
-        const savedState = window.localStorage.getItem('wayna.admin.sidebar.expanded');
+        const savedState = window.localStorage.getItem('wayna.admin.sidebar.state');
 
-        if (savedState !== null) {
-            this.sidebarExpanded = savedState === 'true';
+        if (savedState !== null && ['expanded', 'icons', 'hidden'].includes(savedState)) {
+            this.sidebarState = savedState;
         }
     },
 
+    get sidebarExpanded() {
+        return this.sidebarState === 'expanded';
+    },
+
+    get sidebarIcons() {
+        return this.sidebarState === 'icons';
+    },
+
+    get sidebarHidden() {
+        return this.sidebarState === 'hidden';
+    },
+
+    get sidebarWidth() {
+        if (this.sidebarState === 'expanded') return 'md:pl-[260px]';
+        if (this.sidebarState === 'icons') return 'md:pl-[88px]';
+        return 'md:pl-0';
+    },
+
     toggleSidebar() {
-        this.sidebarExpanded = !this.sidebarExpanded;
-        window.localStorage.setItem('wayna.admin.sidebar.expanded', String(this.sidebarExpanded));
+        if (this.sidebarState === 'expanded') {
+            this.sidebarState = 'icons';
+        } else if (this.sidebarState === 'icons') {
+            this.sidebarState = 'hidden';
+        } else {
+            this.sidebarState = 'expanded';
+        }
+        window.localStorage.setItem('wayna.admin.sidebar.state', this.sidebarState);
     },
 
     closeMobileSidebar() {
