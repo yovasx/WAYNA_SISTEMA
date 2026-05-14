@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Models\Categoria;
 use App\Models\PerfilEmprendedor;
 use Illuminate\Contracts\View\View;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -18,27 +19,27 @@ class EmprendedoresIndex extends Component
 
     public string $filtroCategoria = '';
 
-    public function updatingBusqueda(): void
-    {
-        $this->resetPage();
-    }
+    public bool $mostrarModalEdicion = false;
 
-    public function updatingFiltroEstado(): void
-    {
-        $this->resetPage();
-    }
+    public ?int $emprendedorEditandoId = null;
 
-    public function updatingFiltroCategoria(): void
-    {
-        $this->resetPage();
-    }
+    public string $editNombreNegocio = '';
+
+    public string $editDescripcion = '';
+
+    public ?string $editNit = '';
+
+    public int|string|null $editCategoriaId = null;
+
+    public function updatingBusqueda(): void { $this->resetPage(); }
+    public function updatingFiltroEstado(): void { $this->resetPage(); }
+    public function updatingFiltroCategoria(): void { $this->resetPage(); }
 
     public function aprobar(int $perfilId): void
     {
         $perfil = $this->obtenerPerfil($perfilId);
         $perfil->update(['estado' => 'activo']);
         $perfil->usuario?->update(['estado' => 'activo']);
-
         session()->flash('admin_status', 'Emprendedor aprobado correctamente.');
     }
 
@@ -47,7 +48,6 @@ class EmprendedoresIndex extends Component
         $perfil = $this->obtenerPerfil($perfilId);
         $perfil->update(['estado' => 'suspendido']);
         $perfil->usuario?->update(['estado' => 'suspendido']);
-
         session()->flash('admin_status', 'Emprendedor suspendido correctamente.');
     }
 
@@ -56,8 +56,53 @@ class EmprendedoresIndex extends Component
         $perfil = $this->obtenerPerfil($perfilId);
         $perfil->update(['estado' => 'activo']);
         $perfil->usuario?->update(['estado' => 'activo']);
-
         session()->flash('admin_status', 'Emprendedor reactivado correctamente.');
+    }
+
+    public function abrirModalEdicion(int $perfilId): void
+    {
+        $perfil = $this->obtenerPerfil($perfilId);
+        $this->emprendedorEditandoId = $perfilId;
+        $this->editNombreNegocio = $perfil->nombre_negocio;
+        $this->editDescripcion = $perfil->descripcion ?? '';
+        $this->editNit = $perfil->nit ?? '';
+        $this->editCategoriaId = $perfil->categoria_id;
+        $this->mostrarModalEdicion = true;
+    }
+
+    public function guardarEdicion(): void
+    {
+        $datos = $this->validate([
+            'editNombreNegocio' => ['required', 'string', 'max:180'],
+            'editDescripcion' => ['nullable', 'string'],
+            'editNit' => ['nullable', 'string', 'max:20'],
+            'editCategoriaId' => ['nullable', 'integer', 'exists:categorias,id'],
+        ], [], [
+            'editNombreNegocio' => 'nombre del negocio',
+            'editDescripcion' => 'descripcion',
+            'editNit' => 'NIT',
+            'editCategoriaId' => 'categoria',
+        ]);
+
+        PerfilEmprendedor::query()->findOrFail($this->emprendedorEditandoId)->update([
+            'nombre_negocio' => $datos['editNombreNegocio'],
+            'descripcion' => $datos['editDescripcion'] !== '' ? $datos['editDescripcion'] : null,
+            'nit' => $datos['editNit'] !== '' ? $datos['editNit'] : null,
+            'categoria_id' => $datos['editCategoriaId'] ? (int) $datos['editCategoriaId'] : null,
+        ]);
+
+        $this->cerrarModalEdicion();
+        session()->flash('admin_status', 'Datos del emprendedor actualizados correctamente.');
+    }
+
+    public function cerrarModalEdicion(): void
+    {
+        $this->mostrarModalEdicion = false;
+        $this->emprendedorEditandoId = null;
+        $this->editNombreNegocio = '';
+        $this->editDescripcion = '';
+        $this->editNit = '';
+        $this->editCategoriaId = null;
     }
 
     public function render(): View

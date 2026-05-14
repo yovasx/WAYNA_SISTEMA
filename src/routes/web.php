@@ -6,6 +6,7 @@ use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\DonacionesIndex as AdminDonacionesIndex;
 use App\Livewire\Admin\EmprendedoresIndex as AdminEmprendedoresIndex;
 use App\Livewire\Admin\PedidosIndex as AdminPedidosIndex;
+use App\Livewire\Admin\UsuariosIndex as AdminUsuariosIndex;
 use App\Livewire\Admin\ProductosIndex as AdminProductosIndex;
 use App\Livewire\Admin\ReservasIndex as AdminReservasIndex;
 use App\Livewire\Emprendedor\Dashboard as EmprendedorDashboard;
@@ -64,6 +65,7 @@ Route::prefix('panel/admin')
         Route::get('pedidos', AdminPedidosIndex::class)->name('admin.pedidos.index');
         Route::get('donaciones', AdminDonacionesIndex::class)->name('admin.donaciones.index');
         Route::get('reservas', AdminReservasIndex::class)->name('admin.reservas.index');
+        Route::get('usuarios', AdminUsuariosIndex::class)->name('admin.usuarios.index');
     });
 
 Route::view('panel/usuario', 'dashboards.role', [

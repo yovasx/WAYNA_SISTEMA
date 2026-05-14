@@ -15,6 +15,17 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
+        @if (session('admin_status') || session('admin_error'))
+            <div data-toast class="fixed right-6 top-20 z-[100] flex max-w-md items-center gap-3 rounded-2xl border px-5 py-4 shadow-lg transition-all duration-500 ease-out"
+                 :class="session('admin_status') ? 'border-[#1f6b52] bg-[#eef7f2]' : 'border-[#93000a] bg-[#ffdad6]'">
+                <span class="material-symbols-outlined {{ session('admin_status') ? 'text-[#1f6b52]' : 'text-[#93000a]' }}">
+                    {{ session('admin_status') ? 'check_circle' : 'error' }}
+                </span>
+                <p class="text-sm font-medium {{ session('admin_status') ? 'text-[#1f6b52]' : 'text-[#93000a]' }}">
+                    {{ session('admin_status') ?? session('admin_error') }}
+                </p>
+            </div>
+        @endif
     </head>
     <body x-data="adminLayoutState()" x-init="init()" class="bg-[#fdf8ff] text-slate-900 antialiased">
         <div class="min-h-screen bg-[#fdf8ff]">
