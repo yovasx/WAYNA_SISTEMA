@@ -3,8 +3,11 @@
 use App\Http\Controllers\HomeController;
 use App\Livewire\Admin\CategoriasIndex as AdminCategoriasIndex;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
+use App\Livewire\Admin\DonacionesIndex as AdminDonacionesIndex;
 use App\Livewire\Admin\EmprendedoresIndex as AdminEmprendedoresIndex;
+use App\Livewire\Admin\PedidosIndex as AdminPedidosIndex;
 use App\Livewire\Admin\ProductosIndex as AdminProductosIndex;
+use App\Livewire\Admin\ReservasIndex as AdminReservasIndex;
 use App\Livewire\Emprendedor\Dashboard as EmprendedorDashboard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -58,6 +61,9 @@ Route::prefix('panel/admin')
         Route::get('emprendedores', AdminEmprendedoresIndex::class)->name('admin.emprendedores.index');
         Route::get('categorias', AdminCategoriasIndex::class)->name('admin.categorias.index');
         Route::get('productos', AdminProductosIndex::class)->name('admin.productos.index');
+        Route::get('pedidos', AdminPedidosIndex::class)->name('admin.pedidos.index');
+        Route::get('donaciones', AdminDonacionesIndex::class)->name('admin.donaciones.index');
+        Route::get('reservas', AdminReservasIndex::class)->name('admin.reservas.index');
     });
 
 Route::view('panel/usuario', 'dashboards.role', [

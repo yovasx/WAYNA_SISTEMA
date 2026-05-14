@@ -16,7 +16,6 @@ class ImagenProducto extends Model
     protected $fillable = [
         'producto_id',
         'url_foto',
-        'url',
         'orden',
     ];
 
@@ -37,20 +36,6 @@ class ImagenProducto extends Model
         return Attribute::make(
             get: fn (?string $value, array $attributes) => $attributes['url_foto'] ?? null,
             set: fn (?string $value) => ['url_foto' => $value],
-        );
-    }
-
-    protected function textoAlternativo(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => null,
-        );
-    }
-
-    protected function esPrincipal(): Attribute
-    {
-        return Attribute::make(
-            get: fn (?bool $value, array $attributes) => ((int) ($attributes['orden'] ?? 0)) === 1,
         );
     }
 }

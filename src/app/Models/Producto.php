@@ -14,17 +14,14 @@ class Producto extends Model
 
     protected $fillable = [
         'emprendedor_id',
-        'perfil_emprendedor_id',
         'categoria_id',
         'nombre',
         'descripcion',
         'precio',
         'stock',
         'estado_stock',
-        'estado_disponibilidad',
         'foto_principal',
         'qr_codigo',
-        'codigo_qr_publico',
         'qr_url',
         'activo',
     ];
@@ -53,34 +50,11 @@ class Producto extends Model
         return $this->hasMany(ImagenProducto::class, 'producto_id');
     }
 
-    protected function perfilEmprendedorId(): Attribute
-    {
-        return Attribute::make(
-            get: fn (?int $value, array $attributes) => $attributes['emprendedor_id'] ?? null,
-            set: fn (?int $value) => ['emprendedor_id' => $value],
-        );
-    }
-
     protected function estadoDisponibilidad(): Attribute
     {
         return Attribute::make(
             get: fn (?string $value, array $attributes) => $attributes['estado_stock'] ?? 'disponible',
             set: fn (?string $value) => ['estado_stock' => $value],
-        );
-    }
-
-    protected function codigoQrPublico(): Attribute
-    {
-        return Attribute::make(
-            get: fn (?string $value, array $attributes) => $attributes['qr_codigo'] ?? null,
-            set: fn (?string $value) => ['qr_codigo' => $value],
-        );
-    }
-
-    protected function publicadoAt(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->created_at,
         );
     }
 }

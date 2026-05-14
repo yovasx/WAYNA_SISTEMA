@@ -28,12 +28,16 @@
                 Productos
             </x-admin.sidebar-item>
 
-            <x-admin.sidebar-item href="#" icon="shopping_bag" wire:navigate>
+            <x-admin.sidebar-item :href="route('admin.pedidos.index')" icon="shopping_bag" :active="request()->routeIs('admin.pedidos.*')" wire:navigate>
                 Pedidos
             </x-admin.sidebar-item>
 
-            <x-admin.sidebar-item href="#" icon="auto_awesome" wire:navigate>
-                Impacto
+            <x-admin.sidebar-item :href="route('admin.donaciones.index')" icon="volunteer_activism" :active="request()->routeIs('admin.donaciones.*')" wire:navigate>
+                Donaciones
+            </x-admin.sidebar-item>
+
+            <x-admin.sidebar-item :href="route('admin.reservas.index')" icon="calendar_month" :active="request()->routeIs('admin.reservas.*')" wire:navigate>
+                Reservas
             </x-admin.sidebar-item>
         </nav>
 
