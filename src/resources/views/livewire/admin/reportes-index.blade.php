@@ -2,7 +2,7 @@
     <x-admin.page-header eyebrow="Analitica de negocio" title="Reportes" description="Sigue ventas, donaciones e ingreso de plataforma por periodo con una lectura ejecutiva y operativa.">
         <x-slot name="actions">
             <a
-                href="{{ route('admin.reportes.export', ['preset' => $preset, 'desde' => $desde ?: null, 'hasta' => $hasta ?: null]) }}"
+                href="{{ route('admin.reportes.export', ['preset' => $preset, 'desde' => $desde ?: null, 'hasta' => $hasta ?: null, 'emprendedor_id' => $emprendedorId ?: null, 'categoria_id' => $categoriaId ?: null, 'metodo_pago' => $metodoPago ?: null, 'estado_transaccion' => $estadoTransaccion ?: null, 'tipo_transaccion' => $tipoTransaccion ?: null]) }}"
                 class="inline-flex items-center gap-2 rounded-2xl border border-[#d8d2de] bg-white px-5 py-3 text-sm font-medium text-slate-700 transition hover:border-[#5f4cae] hover:text-[#5f4cae]"
             >
                 <span class="material-symbols-outlined text-[20px]">download</span>
@@ -40,16 +40,54 @@
                     @endforeach
                 </div>
             </div>
+
+            <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+                <select wire:model.live="emprendedorId" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                    <option value="">Todos los emprendedores</option>
+                    @foreach ($emprendedores as $emprendedor)
+                        <option value="{{ $emprendedor->id }}">{{ $emprendedor->nombre_negocio }}</option>
+                    @endforeach
+                </select>
+
+                <select wire:model.live="categoriaId" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                    <option value="">Todas las categorias</option>
+                    @foreach ($categorias as $categoria)
+                        <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                    @endforeach
+                </select>
+
+                <select wire:model.live="metodoPago" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                    <option value="">Todos los metodos</option>
+                    <option value="qr">QR</option>
+                    <option value="nfc">NFC</option>
+                    <option value="microtransaccion">Microtransaccion</option>
+                </select>
+
+                <select wire:model.live="estadoTransaccion" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                    <option value="">Todos los estados</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="completada">Completada</option>
+                    <option value="fallida">Fallida</option>
+                    <option value="reembolsada">Reembolsada</option>
+                </select>
+
+                <select wire:model.live="tipoTransaccion" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                    <option value="">Todos los tipos</option>
+                    <option value="pedido">Pedido</option>
+                    <option value="donacion">Donacion</option>
+                    <option value="reserva">Reserva</option>
+                </select>
+            </div>
         </div>
     </x-admin.panel-card>
 
     <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
-        <x-admin.kpi-card label="Ventas brutas" :value="'Bs '.number_format($reporte['kpis']['ventas_brutas'], 2)" icon="shopping_bag" tone="primary" />
-        <x-admin.kpi-card label="Donaciones" :value="'Bs '.number_format($reporte['kpis']['donaciones'], 2)" icon="volunteer_activism" tone="secondary" />
-        <x-admin.kpi-card label="Ingreso plataforma" :value="'Bs '.number_format($reporte['kpis']['ingreso_plataforma'], 2)" icon="trending_up" tone="green" helper="Estimado" />
-        <x-admin.kpi-card label="Flujo total" :value="'Bs '.number_format($reporte['kpis']['flujo_total'], 2)" icon="payments" tone="tertiary" />
-        <x-admin.kpi-card label="Ticket promedio" :value="'Bs '.number_format($reporte['kpis']['ticket_promedio'], 2)" icon="receipt_long" tone="neutral" />
-        <x-admin.kpi-card label="Tasa de exito" :value="$reporte['kpis']['tasa_exito'].'%'" icon="verified" tone="green" />
+        <x-admin.kpi-card label="Ventas brutas" :value="'Bs '.number_format($reporte['kpis']['ventas_brutas'], 2)" icon="shopping_bag" tone="primary" :helper="$comparativas['ventas_brutas']" />
+        <x-admin.kpi-card label="Donaciones" :value="'Bs '.number_format($reporte['kpis']['donaciones'], 2)" icon="volunteer_activism" tone="secondary" :helper="$comparativas['donaciones']" />
+        <x-admin.kpi-card label="Ingreso plataforma" :value="'Bs '.number_format($reporte['kpis']['ingreso_plataforma'], 2)" icon="trending_up" tone="green" :helper="$comparativas['ingreso_plataforma'].' · Estimado'" />
+        <x-admin.kpi-card label="Flujo total" :value="'Bs '.number_format($reporte['kpis']['flujo_total'], 2)" icon="payments" tone="tertiary" :helper="$comparativas['flujo_total']" />
+        <x-admin.kpi-card label="Ticket promedio" :value="'Bs '.number_format($reporte['kpis']['ticket_promedio'], 2)" icon="receipt_long" tone="neutral" :helper="$comparativas['ticket_promedio']" />
+        <x-admin.kpi-card label="Tasa de exito" :value="$reporte['kpis']['tasa_exito'].'%'" icon="verified" tone="green" :helper="$comparativas['tasa_exito']" />
     </div>
 
     <div class="grid gap-6 xl:grid-cols-[minmax(0,1.7fr)_minmax(320px,0.8fr)]">
@@ -82,39 +120,21 @@
                             @endif
                         </div>
 
-                        <div class="flex h-80 items-end gap-4 border-b border-l border-[#d8d2de] pb-3 pl-3">
-                            @foreach ($reporte['series'] as $fila)
-                                <div class="flex flex-1 flex-col items-center gap-2">
-                                    <div class="flex h-[240px] w-full items-end justify-center gap-2">
-                                        @if ($serie === 'todo' || $serie === 'donaciones')
-                                            <div
-                                                class="w-[22px] shrink-0 rounded-t-md bg-[#a03f29]/70 transition hover:bg-[#a03f29]"
-                                                style="height: {{ $fila['donaciones'] > 0 ? max(($fila['donaciones'] / $chartMax) * 210, 10) : 0 }}px;"
-                                                title="Donaciones: Bs {{ number_format($fila['donaciones'], 2) }}"
-                                            ></div>
-                                        @endif
-
-                                        @if ($serie === 'todo' || $serie === 'ventas')
-                                            <div
-                                                class="w-[22px] shrink-0 rounded-t-md bg-[#5f4cae]/80 transition hover:bg-[#5f4cae]"
-                                                style="height: {{ $fila['ventas'] > 0 ? max(($fila['ventas'] / $chartMax) * 210, 10) : 0 }}px;"
-                                                title="Ventas: Bs {{ number_format($fila['ventas'], 2) }}"
-                                            ></div>
-                                        @endif
-
-                                        @if ($serie === 'todo' || $serie === 'ingreso')
-                                            <div
-                                                class="w-[22px] shrink-0 rounded-t-md bg-[#1f6b52]/80 transition hover:bg-[#1f6b52]"
-                                                style="height: {{ $fila['ingreso'] > 0 ? max(($fila['ingreso'] / $chartMax) * 210, 10) : 0 }}px;"
-                                                title="Ingreso plataforma: Bs {{ number_format($fila['ingreso'], 2) }}"
-                                            ></div>
-                                        @endif
-                                    </div>
-
-                                    <span class="text-[10px] font-medium text-slate-500">{{ $fila['label'] }}</span>
-                                </div>
-                            @endforeach
-                        </div>
+                        <x-admin.bar-chart
+                            :buckets="$reporte['series']"
+                            :series="[
+                                'donaciones' => ['label' => 'Donaciones', 'color' => 'rgba(160, 63, 41, 0.78)'],
+                                'ventas' => ['label' => 'Ventas brutas', 'color' => 'rgba(95, 76, 174, 0.9)'],
+                                'ingreso' => ['label' => 'Ingreso plataforma', 'color' => 'rgba(31, 107, 82, 0.85)'],
+                            ]"
+                            :visible="$serie === 'todo' ? ['donaciones', 'ventas', 'ingreso'] : [$serie]"
+                            :max-value="$chartMax"
+                            min-width="760px"
+                            :wrapper-height="320"
+                            :chart-height="240"
+                            :bar-width="22"
+                            :min-bar-height="10"
+                        />
                     </div>
                 </div>
             @endif

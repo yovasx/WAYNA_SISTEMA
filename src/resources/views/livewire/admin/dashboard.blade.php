@@ -49,27 +49,20 @@
                     @if ($chartData->isEmpty() || $chartData->every(fn ($item) => $item['ventas'] === 0 && $item['donaciones'] === 0))
                         <x-admin.empty-state title="Sin datos suficientes" description="Cuando existan pedidos y donaciones registrados, este grafico mostrara la tendencia real del ecosistema." icon="bar_chart" />
                     @else
-                        <div class="relative overflow-x-auto">
-                            <div class="min-w-[420px]">
-                                <div class="relative flex h-64 items-end gap-4 border-b border-l border-[#d8d2de] pb-2 pl-2">
-                                    @foreach ($chartData as $item)
-                                        <div class="flex flex-1 flex-col items-center gap-1">
-                                            <div class="flex w-full items-end justify-center gap-2" style="height: 220px;">
-                                                <div class="w-[28px] shrink-0 rounded-t-md bg-[#a03f29]/75 transition-all hover:bg-[#a03f29]"
-                                                     style="height: {{ $item['donaciones'] > 0 ? max(($item['donaciones'] / $maxValor) * 180, 10) : 0 }}px;"
-                                                     title="Donaciones: Bs {{ number_format($item['donaciones'], 2) }}">
-                                                </div>
-                                                <div class="w-[28px] shrink-0 rounded-t-md bg-[#5f4cae]/85 transition-all hover:bg-[#5f4cae]"
-                                                     style="height: {{ $item['ventas'] > 0 ? max(($item['ventas'] / $maxValor) * 180, 10) : 0 }}px;"
-                                                     title="Ventas: Bs {{ number_format($item['ventas'], 2) }}">
-                                                </div>
-                                            </div>
-                                            <span class="text-[10px] font-medium text-slate-500">{{ $item['mes'] }}</span>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
+                        <x-admin.bar-chart
+                            :buckets="$chartData"
+                            :series="[
+                                'donaciones' => ['label' => 'Donaciones', 'color' => 'rgba(160, 63, 41, 0.78)'],
+                                'ventas' => ['label' => 'Ventas', 'color' => 'rgba(95, 76, 174, 0.9)'],
+                            ]"
+                            :visible="['donaciones', 'ventas']"
+                            :max-value="$maxValor"
+                            min-width="420px"
+                            :wrapper-height="256"
+                            :chart-height="220"
+                            :bar-width="28"
+                            :min-bar-height="10"
+                        />
                     @endif
                 </div>
             </x-admin.panel-card>

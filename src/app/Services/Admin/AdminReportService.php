@@ -17,21 +17,42 @@ class AdminReportService
             $filters['hasta'] ?? null,
         );
 
+        $filtros = [
+            'emprendedor_id' => ! empty($filters['emprendedor_id']) ? (int) $filters['emprendedor_id'] : null,
+            'categoria_id' => ! empty($filters['categoria_id']) ? (int) $filters['categoria_id'] : null,
+            'metodo_pago' => $filters['metodo_pago'] ?? null,
+            'estado_transaccion' => $filters['estado_transaccion'] ?? null,
+            'tipo_transaccion' => $filters['tipo_transaccion'] ?? null,
+        ];
+
         $granularidad = $this->resolverGranularidad($desde, $hasta);
-        $ventasBrutas = $this->ventasBrutas($desde, $hasta);
-        $donaciones = $this->donaciones($desde, $hasta);
+        $ventasBrutas = $this->ventasBrutas($desde, $hasta, $filtros);
+        $donaciones = $this->donaciones($desde, $hasta, $filtros);
         $ingresoPlataforma = $this->ingresoPlataformaEstimado($ventasBrutas, $donaciones);
         $flujoTotal = $ventasBrutas + $donaciones;
-        $pedidos = $this->pedidosValidos($desde, $hasta);
+        $pedidos = $this->pedidosValidos($desde, $hasta, $filtros);
         $ticketPromedio = $pedidos > 0 ? $ventasBrutas / $pedidos : 0;
-        $transacciones = $this->resumenTransacciones($desde, $hasta);
-        $series = $this->series($desde, $hasta, $granularidad);
+        $transacciones = $this->resumenTransacciones($desde, $hasta, $filtros);
+        $series = $this->series($desde, $hasta, $granularidad, $filtros);
+
+        [$desdePrevio, $hastaPrevio] = $this->resolverPeriodoPrevio($desde, $hasta);
+
+        $ventasPrevias = $this->ventasBrutas($desdePrevio, $hastaPrevio, $filtros);
+        $donacionesPrevias = $this->donaciones($desdePrevio, $hastaPrevio, $filtros);
+        $ingresoPrevio = $this->ingresoPlataformaEstimado($ventasPrevias, $donacionesPrevias);
+        $flujoPrevio = $ventasPrevias + $donacionesPrevias;
+        $ticketPrevio = ($pedidosPrevios = $this->pedidosValidos($desdePrevio, $hastaPrevio, $filtros)) > 0
+            ? $ventasPrevias / $pedidosPrevios
+            : 0;
+        $tasaPrevia = $this->resumenTransacciones($desdePrevio, $hastaPrevio, $filtros)['tasa_exito'];
 
         return [
             'rango' => [
                 'desde' => $desde,
                 'hasta' => $hasta,
                 'granularidad' => $granularidad,
+                'previo_desde' => $desdePrevio,
+                'previo_hasta' => $hastaPrevio,
             ],
             'kpis' => [
                 'ventas_brutas' => $ventasBrutas,
@@ -43,12 +64,29 @@ class AdminReportService
                 'pedidos' => $pedidos,
                 'transacciones_completadas' => $transacciones['completadas'],
             ],
+            'comparativas' => [
+                'ventas_brutas' => $this->comparativa($ventasBrutas, $ventasPrevias),
+                'donaciones' => $this->comparativa($donaciones, $donacionesPrevias),
+                'ingreso_plataforma' => $this->comparativa($ingresoPlataforma, $ingresoPrevio),
+                'flujo_total' => $this->comparativa($flujoTotal, $flujoPrevio),
+                'ticket_promedio' => $this->comparativa($ticketPromedio, $ticketPrevio),
+                'tasa_exito' => $this->comparativa($transacciones['tasa_exito'], $tasaPrevia),
+            ],
             'series' => $series,
-            'top_emprendedores' => $this->topEmprendedores($desde, $hasta),
-            'top_productos' => $this->topProductos($desde, $hasta),
-            'metodos_pago' => $this->metodosPago($desde, $hasta),
-            'estados_transaccion' => $this->estadosTransaccion($desde, $hasta),
+            'top_emprendedores' => $this->topEmprendedores($desde, $hasta, $filtros),
+            'top_productos' => $this->topProductos($desde, $hasta, $filtros),
+            'metodos_pago' => $this->metodosPago($desde, $hasta, $filtros),
+            'estados_transaccion' => $this->estadosTransaccion($desde, $hasta, $filtros),
         ];
+    }
+
+    private function resolverPeriodoPrevio(Carbon $desde, Carbon $hasta): array
+    {
+        $duracion = $desde->diffInDays($hasta) + 1;
+        $finPrevio = $desde->copy()->subDay()->endOfDay();
+        $inicioPrevio = $finPrevio->copy()->subDays($duracion - 1)->startOfDay();
+
+        return [$inicioPrevio, $finPrevio];
     }
 
     private function resolverRango(string $preset, ?string $desde, ?string $hasta): array
@@ -103,18 +141,26 @@ class AdminReportService
             : Carbon::parse($fechas->min())->startOfDay();
     }
 
-    private function ventasBrutas(Carbon $desde, Carbon $hasta): float
+    private function ventasBrutas(Carbon $desde, Carbon $hasta, array $filtros): float
     {
+        if ($filtros['categoria_id']) {
+            return (float) $this->pedidoItemsBaseQuery($desde, $hasta, $filtros)->sum('pedido_items.subtotal');
+        }
+
         return (float) DB::table('pedidos')
             ->whereIn('estado', config('reporting.sales_states'))
-            ->whereBetween('created_at', [$desde, $hasta])
+            ->whereBetween('pedidos.created_at', [$desde, $hasta])
+            ->when($filtros['emprendedor_id'], fn ($query, $emprendedorId) => $query->where('emprendedor_id', $emprendedorId))
             ->sum('total');
     }
 
-    private function donaciones(Carbon $desde, Carbon $hasta): float
+    private function donaciones(Carbon $desde, Carbon $hasta, array $filtros): float
     {
         return (float) DB::table('donaciones')
-            ->whereBetween('created_at', [$desde, $hasta])
+            ->leftJoin('emprendedores', 'emprendedores.id', '=', 'donaciones.emprendedor_id')
+            ->whereBetween('donaciones.created_at', [$desde, $hasta])
+            ->when($filtros['emprendedor_id'], fn ($query, $emprendedorId) => $query->where('donaciones.emprendedor_id', $emprendedorId))
+            ->when($filtros['categoria_id'], fn ($query, $categoriaId) => $query->where('emprendedores.categoria_id', $categoriaId))
             ->sum('monto');
     }
 
@@ -124,19 +170,25 @@ class AdminReportService
             + ($donaciones * config('reporting.platform_fees.donations'));
     }
 
-    private function pedidosValidos(Carbon $desde, Carbon $hasta): int
+    private function pedidosValidos(Carbon $desde, Carbon $hasta, array $filtros): int
     {
+        if ($filtros['categoria_id']) {
+            return (int) $this->pedidoItemsBaseQuery($desde, $hasta, $filtros)
+                ->distinct('pedidos.id')
+                ->count('pedidos.id');
+        }
+
         return (int) DB::table('pedidos')
             ->whereIn('estado', config('reporting.sales_states'))
-            ->whereBetween('created_at', [$desde, $hasta])
+            ->whereBetween('pedidos.created_at', [$desde, $hasta])
+            ->when($filtros['emprendedor_id'], fn ($query, $emprendedorId) => $query->where('emprendedor_id', $emprendedorId))
             ->count();
     }
 
-    private function resumenTransacciones(Carbon $desde, Carbon $hasta): array
+    private function resumenTransacciones(Carbon $desde, Carbon $hasta, array $filtros): array
     {
-        $totales = DB::table('transacciones')
+        $totales = $this->transaccionesBaseQuery($desde, $hasta, $filtros)
             ->selectRaw('estado, COUNT(*) as total')
-            ->whereBetween('created_at', [$desde, $hasta])
             ->groupBy('estado')
             ->pluck('total', 'estado');
 
@@ -149,11 +201,11 @@ class AdminReportService
         ];
     }
 
-    private function series(Carbon $desde, Carbon $hasta, string $granularidad): Collection
+    private function series(Carbon $desde, Carbon $hasta, string $granularidad, array $filtros): Collection
     {
         $buckets = $this->buckets($desde, $hasta, $granularidad);
-        $ventas = $this->serieVentas($desde, $hasta, $granularidad);
-        $donaciones = $this->serieDonaciones($desde, $hasta, $granularidad);
+        $ventas = $this->serieVentas($desde, $hasta, $granularidad, $filtros);
+        $donaciones = $this->serieDonaciones($desde, $hasta, $granularidad, $filtros);
 
         return $buckets->map(function (array $bucket) use ($ventas, $donaciones) {
             $ventasValor = (float) ($ventas[$bucket['key']] ?? 0);
@@ -203,45 +255,57 @@ class AdminReportService
         });
     }
 
-    private function serieVentas(Carbon $desde, Carbon $hasta, string $granularidad): Collection
+    private function serieVentas(Carbon $desde, Carbon $hasta, string $granularidad, array $filtros): Collection
     {
-        [$groupExpr, $keyExpr] = $this->bucketSql($granularidad);
+        [$groupExpr, $keyExpr] = $this->bucketSql($granularidad, 'pedidos.created_at');
+
+        if ($filtros['categoria_id']) {
+            return $this->pedidoItemsBaseQuery($desde, $hasta, $filtros)
+                ->selectRaw("$groupExpr as bucket, COALESCE(SUM(pedido_items.subtotal), 0) as total")
+                ->groupByRaw($keyExpr)
+                ->orderBy('bucket')
+                ->pluck('total', 'bucket');
+        }
 
         return DB::table('pedidos')
             ->selectRaw("$groupExpr as bucket, COALESCE(SUM(total), 0) as total")
             ->whereIn('estado', config('reporting.sales_states'))
-            ->whereBetween('created_at', [$desde, $hasta])
+            ->whereBetween('pedidos.created_at', [$desde, $hasta])
+            ->when($filtros['emprendedor_id'], fn ($query, $emprendedorId) => $query->where('emprendedor_id', $emprendedorId))
             ->groupByRaw($keyExpr)
             ->orderBy('bucket')
             ->pluck('total', 'bucket');
     }
 
-    private function serieDonaciones(Carbon $desde, Carbon $hasta, string $granularidad): Collection
+    private function serieDonaciones(Carbon $desde, Carbon $hasta, string $granularidad, array $filtros): Collection
     {
-        [$groupExpr, $keyExpr] = $this->bucketSql($granularidad);
+        [$groupExpr, $keyExpr] = $this->bucketSql($granularidad, 'donaciones.created_at');
 
         return DB::table('donaciones')
+            ->leftJoin('emprendedores', 'emprendedores.id', '=', 'donaciones.emprendedor_id')
             ->selectRaw("$groupExpr as bucket, COALESCE(SUM(monto), 0) as total")
-            ->whereBetween('created_at', [$desde, $hasta])
+            ->whereBetween('donaciones.created_at', [$desde, $hasta])
+            ->when($filtros['emprendedor_id'], fn ($query, $emprendedorId) => $query->where('donaciones.emprendedor_id', $emprendedorId))
+            ->when($filtros['categoria_id'], fn ($query, $categoriaId) => $query->where('emprendedores.categoria_id', $categoriaId))
             ->groupByRaw($keyExpr)
             ->orderBy('bucket')
             ->pluck('total', 'bucket');
     }
 
-    private function bucketSql(string $granularidad): array
+    private function bucketSql(string $granularidad, string $columnaFecha): array
     {
         return match ($granularidad) {
             'week' => [
-                "to_char(date_trunc('week', created_at), 'YYYY-MM-DD')",
-                "date_trunc('week', created_at)",
+                "to_char(date_trunc('week', $columnaFecha), 'YYYY-MM-DD')",
+                "date_trunc('week', $columnaFecha)",
             ],
             'month' => [
-                "to_char(date_trunc('month', created_at), 'YYYY-MM-DD')",
-                "date_trunc('month', created_at)",
+                "to_char(date_trunc('month', $columnaFecha), 'YYYY-MM-DD')",
+                "date_trunc('month', $columnaFecha)",
             ],
             default => [
-                "to_char(date_trunc('day', created_at), 'YYYY-MM-DD')",
-                "date_trunc('day', created_at)",
+                "to_char(date_trunc('day', $columnaFecha), 'YYYY-MM-DD')",
+                "date_trunc('day', $columnaFecha)",
             ],
         };
     }
@@ -255,13 +319,15 @@ class AdminReportService
         };
     }
 
-    private function topEmprendedores(Carbon $desde, Carbon $hasta): Collection
+    private function topEmprendedores(Carbon $desde, Carbon $hasta, array $filtros): Collection
     {
         return DB::table('pedidos')
             ->join('emprendedores', 'emprendedores.id', '=', 'pedidos.emprendedor_id')
             ->join('usuarios', 'usuarios.id', '=', 'emprendedores.usuario_id')
             ->whereIn('pedidos.estado', config('reporting.sales_states'))
             ->whereBetween('pedidos.created_at', [$desde, $hasta])
+            ->when($filtros['emprendedor_id'], fn ($query, $emprendedorId) => $query->where('pedidos.emprendedor_id', $emprendedorId))
+            ->when($filtros['categoria_id'], fn ($query, $categoriaId) => $query->where('emprendedores.categoria_id', $categoriaId))
             ->groupBy('emprendedores.id', 'emprendedores.nombre_negocio', 'usuarios.nombre_completo')
             ->orderByDesc(DB::raw('SUM(pedidos.total)'))
             ->limit(5)
@@ -274,13 +340,15 @@ class AdminReportService
             ]);
     }
 
-    private function topProductos(Carbon $desde, Carbon $hasta): Collection
+    private function topProductos(Carbon $desde, Carbon $hasta, array $filtros): Collection
     {
         return DB::table('pedido_items')
             ->join('pedidos', 'pedidos.id', '=', 'pedido_items.pedido_id')
             ->join('productos', 'productos.id', '=', 'pedido_items.producto_id')
             ->whereIn('pedidos.estado', config('reporting.sales_states'))
             ->whereBetween('pedidos.created_at', [$desde, $hasta])
+            ->when($filtros['emprendedor_id'], fn ($query, $emprendedorId) => $query->where('pedidos.emprendedor_id', $emprendedorId))
+            ->when($filtros['categoria_id'], fn ($query, $categoriaId) => $query->where('productos.categoria_id', $categoriaId))
             ->groupBy('productos.id', 'productos.nombre')
             ->orderByDesc(DB::raw('SUM(pedido_items.subtotal)'))
             ->limit(5)
@@ -292,23 +360,58 @@ class AdminReportService
             ]);
     }
 
-    private function metodosPago(Carbon $desde, Carbon $hasta): Collection
+    private function metodosPago(Carbon $desde, Carbon $hasta, array $filtros): Collection
     {
-        return DB::table('transacciones')
+        return $this->transaccionesBaseQuery($desde, $hasta, $filtros)
             ->selectRaw('metodo_pago, COUNT(*) as total, COALESCE(SUM(monto), 0) as monto')
-            ->whereBetween('created_at', [$desde, $hasta])
             ->groupBy('metodo_pago')
             ->orderByDesc('total')
             ->get();
     }
 
-    private function estadosTransaccion(Carbon $desde, Carbon $hasta): Collection
+    private function estadosTransaccion(Carbon $desde, Carbon $hasta, array $filtros): Collection
     {
-        return DB::table('transacciones')
+        return $this->transaccionesBaseQuery($desde, $hasta, $filtros)
             ->selectRaw('estado, COUNT(*) as total')
-            ->whereBetween('created_at', [$desde, $hasta])
             ->groupBy('estado')
             ->orderByDesc('total')
             ->get();
+    }
+
+    private function pedidoItemsBaseQuery(Carbon $desde, Carbon $hasta, array $filtros)
+    {
+        return DB::table('pedido_items')
+            ->join('pedidos', 'pedidos.id', '=', 'pedido_items.pedido_id')
+            ->join('productos', 'productos.id', '=', 'pedido_items.producto_id')
+            ->whereIn('pedidos.estado', config('reporting.sales_states'))
+            ->whereBetween('pedidos.created_at', [$desde, $hasta])
+            ->when($filtros['emprendedor_id'], fn ($query, $emprendedorId) => $query->where('pedidos.emprendedor_id', $emprendedorId))
+            ->when($filtros['categoria_id'], fn ($query, $categoriaId) => $query->where('productos.categoria_id', $categoriaId));
+    }
+
+    private function transaccionesBaseQuery(Carbon $desde, Carbon $hasta, array $filtros)
+    {
+        return DB::table('transacciones')
+            ->whereBetween('transacciones.created_at', [$desde, $hasta])
+            ->when($filtros['metodo_pago'], fn ($query, $metodo) => $query->where('transacciones.metodo_pago', $metodo))
+            ->when($filtros['estado_transaccion'], fn ($query, $estado) => $query->where('transacciones.estado', $estado))
+            ->when($filtros['tipo_transaccion'], fn ($query, $tipo) => $query->where('transacciones.referencia_tipo', $tipo));
+    }
+
+    private function comparativa(float $actual, float $previo): array
+    {
+        if ($previo == 0.0) {
+            return [
+                'actual' => $actual,
+                'previo' => $previo,
+                'delta' => $actual > 0 ? 100.0 : 0.0,
+            ];
+        }
+
+        return [
+            'actual' => $actual,
+            'previo' => $previo,
+            'delta' => round((($actual - $previo) / $previo) * 100, 1),
+        ];
     }
 }

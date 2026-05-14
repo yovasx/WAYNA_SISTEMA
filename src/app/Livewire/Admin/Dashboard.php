@@ -101,7 +101,8 @@ class Dashboard extends Component
 
         $chartData = $meses->map(function ($mes) use ($ventasMensuales, $donacionesMensuales) {
             return [
-                'mes' => Carbon::createFromFormat('Y-m', $mes)->format('M'),
+                'key' => $mes,
+                'label' => Carbon::createFromFormat('Y-m', $mes)->format('M'),
                 'ventas' => (float) ($ventasMensuales[$mes] ?? 0),
                 'donaciones' => (float) ($donacionesMensuales[$mes] ?? 0),
             ];
