@@ -1,3 +1,58 @@
+import Chart from 'chart.js/auto';
+
+const adminChartRegistry = new WeakMap();
+
+const buildAdminChart = (canvas) => {
+    const rawConfig = canvas.dataset.adminChart;
+
+    if (!rawConfig) {
+        return;
+    }
+
+    const existingChart = adminChartRegistry.get(canvas);
+
+    if (existingChart) {
+        existingChart.destroy();
+        adminChartRegistry.delete(canvas);
+    }
+
+    let config;
+
+    try {
+        config = JSON.parse(rawConfig);
+    } catch {
+        return;
+    }
+
+    const context = canvas.getContext('2d');
+
+    if (!context) {
+        return;
+    }
+
+    const chart = new Chart(context, config);
+    adminChartRegistry.set(canvas, chart);
+};
+
+const initializeAdminCharts = () => {
+    document.querySelectorAll('[data-admin-chart]').forEach((canvas) => {
+        buildAdminChart(canvas);
+    });
+};
+
+const destroyDetachedAdminCharts = () => {
+    document.querySelectorAll('[data-admin-chart]').forEach((canvas) => {
+        if (!canvas.isConnected) {
+            const chart = adminChartRegistry.get(canvas);
+
+            if (chart) {
+                chart.destroy();
+                adminChartRegistry.delete(canvas);
+            }
+        }
+    });
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[data-scroll-nav]').forEach((nav) => {
         const links = Array.from(nav.querySelectorAll('[data-nav-link]'));
@@ -53,7 +108,16 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('scroll', syncActiveLink, { passive: true });
         window.addEventListener('resize', syncActiveLink);
     });
+
+    initializeAdminCharts();
 });
+
+document.addEventListener('livewire:navigated', () => {
+    destroyDetachedAdminCharts();
+    initializeAdminCharts();
+});
+
+window.Chart = Chart;
 
 window.adminLayoutState = () => ({
     sidebarHover: false,

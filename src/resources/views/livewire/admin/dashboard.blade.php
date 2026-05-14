@@ -1,4 +1,49 @@
 <div class="space-y-8">
+    @php
+        $dashboardChartConfig = [
+            'type' => 'bar',
+            'data' => [
+                'labels' => $chartData->pluck('label')->values()->all(),
+                'datasets' => [
+                    [
+                        'label' => 'Donaciones',
+                        'data' => $chartData->pluck('donaciones')->values()->all(),
+                        'backgroundColor' => 'rgba(160, 63, 41, 0.78)',
+                        'borderRadius' => 8,
+                        'barThickness' => 24,
+                        'maxBarThickness' => 24,
+                    ],
+                    [
+                        'label' => 'Ventas',
+                        'data' => $chartData->pluck('ventas')->values()->all(),
+                        'backgroundColor' => 'rgba(95, 76, 174, 0.9)',
+                        'borderRadius' => 8,
+                        'barThickness' => 24,
+                        'maxBarThickness' => 24,
+                    ],
+                ],
+            ],
+            'options' => [
+                'responsive' => true,
+                'maintainAspectRatio' => false,
+                'plugins' => [
+                    'legend' => ['display' => false],
+                ],
+                'scales' => [
+                    'x' => [
+                        'grid' => ['display' => false],
+                        'ticks' => ['color' => '#64748b'],
+                    ],
+                    'y' => [
+                        'beginAtZero' => true,
+                        'grid' => ['color' => 'rgba(216, 210, 222, 0.45)'],
+                        'ticks' => ['color' => '#64748b'],
+                    ],
+                ],
+            ],
+        ];
+    @endphp
+
     <x-admin.page-header eyebrow="Portal admin" title="Dashboard administrador" description="Resumen operativo real de usuarios, emprendedores, categorias y productos dentro de WAYNA.">
         <x-slot name="actions">
             <a href="{{ route('admin.emprendedores.index') }}" wire:navigate class="rounded-2xl border border-[#d8d2de] bg-white px-5 py-3 text-sm font-medium text-slate-700 transition hover:border-[#5f4cae] hover:text-[#5f4cae]">Revisar emprendedores</a>
@@ -49,20 +94,9 @@
                     @if ($chartData->isEmpty() || $chartData->every(fn ($item) => $item['ventas'] === 0 && $item['donaciones'] === 0))
                         <x-admin.empty-state title="Sin datos suficientes" description="Cuando existan pedidos y donaciones registrados, este grafico mostrara la tendencia real del ecosistema." icon="bar_chart" />
                     @else
-                        <x-admin.bar-chart
-                            :buckets="$chartData"
-                            :series="[
-                                'donaciones' => ['label' => 'Donaciones', 'color' => 'rgba(160, 63, 41, 0.78)'],
-                                'ventas' => ['label' => 'Ventas', 'color' => 'rgba(95, 76, 174, 0.9)'],
-                            ]"
-                            :visible="['donaciones', 'ventas']"
-                            :max-value="$maxValor"
-                            min-width="420px"
-                            :wrapper-height="256"
-                            :chart-height="220"
-                            :bar-width="28"
-                            :min-bar-height="10"
-                        />
+                        <div wire:key="dashboard-admin-chart" class="relative h-64 min-w-[420px]">
+                            <canvas data-admin-chart='@json($dashboardChartConfig)' class="h-full w-full"></canvas>
+                        </div>
                     @endif
                 </div>
             </x-admin.panel-card>

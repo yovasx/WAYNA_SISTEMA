@@ -1,12 +1,101 @@
 <div class="space-y-8">
+    @php
+        $reportLabels = $reporte['series']->pluck('label')->values()->all();
+        $reportDatasets = [];
+
+        if ($serie === 'todo' || $serie === 'ventas') {
+            $reportDatasets[] = [
+                'label' => 'Ventas brutas',
+                'data' => $reporte['series']->pluck('ventas')->values()->all(),
+                'borderColor' => 'rgba(95, 76, 174, 1)',
+                'backgroundColor' => 'rgba(95, 76, 174, 0.14)',
+                'pointBackgroundColor' => 'rgba(95, 76, 174, 1)',
+                'pointBorderColor' => 'rgba(95, 76, 174, 1)',
+                'borderWidth' => 3,
+                'tension' => 0.32,
+                'fill' => false,
+            ];
+        }
+
+        if ($serie === 'todo' || $serie === 'donaciones') {
+            $reportDatasets[] = [
+                'label' => 'Donaciones',
+                'data' => $reporte['series']->pluck('donaciones')->values()->all(),
+                'borderColor' => 'rgba(160, 63, 41, 1)',
+                'backgroundColor' => 'rgba(160, 63, 41, 0.14)',
+                'pointBackgroundColor' => 'rgba(160, 63, 41, 1)',
+                'pointBorderColor' => 'rgba(160, 63, 41, 1)',
+                'borderWidth' => 3,
+                'tension' => 0.32,
+                'fill' => false,
+            ];
+        }
+
+        if ($serie === 'todo' || $serie === 'ingreso') {
+            $reportDatasets[] = [
+                'label' => 'Ingreso plataforma',
+                'data' => $reporte['series']->pluck('ingreso')->values()->all(),
+                'borderColor' => 'rgba(31, 107, 82, 1)',
+                'backgroundColor' => 'rgba(31, 107, 82, 0.14)',
+                'pointBackgroundColor' => 'rgba(31, 107, 82, 1)',
+                'pointBorderColor' => 'rgba(31, 107, 82, 1)',
+                'borderWidth' => 3,
+                'tension' => 0.32,
+                'fill' => false,
+            ];
+        }
+
+        $reportChartConfig = [
+            'type' => 'line',
+            'data' => [
+                'labels' => $reportLabels,
+                'datasets' => $reportDatasets,
+            ],
+            'options' => [
+                'responsive' => true,
+                'maintainAspectRatio' => false,
+                'plugins' => [
+                    'legend' => ['display' => false],
+                ],
+                'scales' => [
+                    'x' => [
+                        'grid' => ['display' => false],
+                        'ticks' => ['color' => '#64748b'],
+                    ],
+                    'y' => [
+                        'beginAtZero' => true,
+                        'grid' => ['color' => 'rgba(216, 210, 222, 0.45)'],
+                        'ticks' => ['color' => '#64748b'],
+                    ],
+                ],
+            ],
+        ];
+    @endphp
+
     <x-admin.page-header eyebrow="Analitica de negocio" title="Reportes" description="Sigue ventas, donaciones e ingreso de plataforma por periodo con una lectura ejecutiva y operativa.">
         <x-slot name="actions">
             <a
                 href="{{ route('admin.reportes.export', ['preset' => $preset, 'desde' => $desde ?: null, 'hasta' => $hasta ?: null, 'emprendedor_id' => $emprendedorId ?: null, 'categoria_id' => $categoriaId ?: null, 'metodo_pago' => $metodoPago ?: null, 'estado_transaccion' => $estadoTransaccion ?: null, 'tipo_transaccion' => $tipoTransaccion ?: null]) }}"
                 class="inline-flex items-center gap-2 rounded-2xl border border-[#d8d2de] bg-white px-5 py-3 text-sm font-medium text-slate-700 transition hover:border-[#5f4cae] hover:text-[#5f4cae]"
             >
-                <span class="material-symbols-outlined text-[20px]">download</span>
-                <span>Exportar CSV</span>
+                <span class="material-symbols-outlined text-[20px]">table_view</span>
+                <span>CSV</span>
+            </a>
+
+            <a
+                href="{{ route('admin.reportes.export.excel', ['preset' => $preset, 'desde' => $desde ?: null, 'hasta' => $hasta ?: null, 'emprendedor_id' => $emprendedorId ?: null, 'categoria_id' => $categoriaId ?: null, 'metodo_pago' => $metodoPago ?: null, 'estado_transaccion' => $estadoTransaccion ?: null, 'tipo_transaccion' => $tipoTransaccion ?: null]) }}"
+                class="inline-flex items-center gap-2 rounded-2xl border border-[#d8d2de] bg-white px-5 py-3 text-sm font-medium text-slate-700 transition hover:border-[#1f6b52] hover:text-[#1f6b52]"
+            >
+                <span class="material-symbols-outlined text-[20px]">grid_on</span>
+                <span>Excel</span>
+            </a>
+
+            <a
+                href="{{ route('admin.reportes.export.pdf', ['preset' => $preset, 'desde' => $desde ?: null, 'hasta' => $hasta ?: null, 'emprendedor_id' => $emprendedorId ?: null, 'categoria_id' => $categoriaId ?: null, 'metodo_pago' => $metodoPago ?: null, 'estado_transaccion' => $estadoTransaccion ?: null, 'tipo_transaccion' => $tipoTransaccion ?: null]) }}"
+                class="inline-flex items-center gap-2 rounded-2xl border border-[#d8d2de] bg-white px-5 py-3 text-sm font-medium text-slate-700 transition hover:border-[#a03f29] hover:text-[#a03f29]"
+            >
+                <span class="material-symbols-outlined text-[20px]">picture_as_pdf</span>
+                <span>PDF</span>
             </a>
         </x-slot>
     </x-admin.page-header>
@@ -120,21 +209,9 @@
                             @endif
                         </div>
 
-                        <x-admin.bar-chart
-                            :buckets="$reporte['series']"
-                            :series="[
-                                'donaciones' => ['label' => 'Donaciones', 'color' => 'rgba(160, 63, 41, 0.78)'],
-                                'ventas' => ['label' => 'Ventas brutas', 'color' => 'rgba(95, 76, 174, 0.9)'],
-                                'ingreso' => ['label' => 'Ingreso plataforma', 'color' => 'rgba(31, 107, 82, 0.85)'],
-                            ]"
-                            :visible="$serie === 'todo' ? ['donaciones', 'ventas', 'ingreso'] : [$serie]"
-                            :max-value="$chartMax"
-                            min-width="760px"
-                            :wrapper-height="320"
-                            :chart-height="240"
-                            :bar-width="22"
-                            :min-bar-height="10"
-                        />
+                        <div wire:key="report-chart-{{ $serie }}-{{ $preset }}-{{ $desde ?: 'na' }}-{{ $hasta ?: 'na' }}-{{ $emprendedorId ?: 'na' }}-{{ $categoriaId ?: 'na' }}-{{ $metodoPago ?: 'na' }}-{{ $estadoTransaccion ?: 'na' }}-{{ $tipoTransaccion ?: 'na' }}" class="relative h-80 min-w-[760px]">
+                            <canvas data-admin-chart='@json($reportChartConfig)' class="h-full w-full"></canvas>
+                        </div>
                     </div>
                 </div>
             @endif
