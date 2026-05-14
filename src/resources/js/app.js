@@ -76,7 +76,7 @@ window.adminLayoutState = () => ({
 
     get sidebarWidth() {
         if (this.sidebarState === 'expanded') return 'md:pl-[260px]';
-        if (this.sidebarState === 'icons') return 'md:pl-[88px]';
+        if (this.sidebarState === 'icons') return 'md:pl-0';
         return 'md:pl-0';
     },
 
