@@ -20,6 +20,10 @@
                 Dashboard
             </x-admin.sidebar-item>
 
+            <x-admin.sidebar-item :href="route('admin.reportes.index')" icon="query_stats" :active="request()->routeIs('admin.reportes.*')" wire:navigate>
+                Reportes
+            </x-admin.sidebar-item>
+
             <x-admin.sidebar-item :href="route('admin.usuarios.index')" icon="group" :active="request()->routeIs('admin.usuarios.*')" wire:navigate>
                 Usuarios
             </x-admin.sidebar-item>

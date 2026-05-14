@@ -54,13 +54,13 @@
                                 <div class="relative flex h-64 items-end gap-4 border-b border-l border-[#d8d2de] pb-2 pl-2">
                                     @foreach ($chartData as $item)
                                         <div class="flex flex-1 flex-col items-center gap-1">
-                                            <div class="flex w-full flex-col items-center justify-end gap-0.5" style="height: 220px;">
-                                                <div class="w-full max-w-[32px] rounded-t-sm bg-[#a03f29]/20 transition-all hover:bg-[#a03f29]/40"
-                                                     style="height: {{ max(($item['donaciones'] / $maxValor) * 180, 2) }}px;"
+                                            <div class="flex w-full items-end justify-center gap-2" style="height: 220px;">
+                                                <div class="w-[28px] shrink-0 rounded-t-md bg-[#a03f29]/75 transition-all hover:bg-[#a03f29]"
+                                                     style="height: {{ $item['donaciones'] > 0 ? max(($item['donaciones'] / $maxValor) * 180, 10) : 0 }}px;"
                                                      title="Donaciones: Bs {{ number_format($item['donaciones'], 2) }}">
                                                 </div>
-                                                <div class="w-full max-w-[32px] rounded-t-sm bg-[#5f4cae]/20 transition-all hover:bg-[#5f4cae]/40"
-                                                     style="height: {{ max(($item['ventas'] / $maxValor) * 180, 2) }}px;"
+                                                <div class="w-[28px] shrink-0 rounded-t-md bg-[#5f4cae]/85 transition-all hover:bg-[#5f4cae]"
+                                                     style="height: {{ $item['ventas'] > 0 ? max(($item['ventas'] / $maxValor) * 180, 10) : 0 }}px;"
                                                      title="Ventas: Bs {{ number_format($item['ventas'], 2) }}">
                                                 </div>
                                             </div>

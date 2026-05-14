@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\ReportExportController;
 use App\Livewire\Admin\CategoriasIndex as AdminCategoriasIndex;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\DonacionesIndex as AdminDonacionesIndex;
@@ -9,6 +10,7 @@ use App\Livewire\Admin\HistorialPuntosIndex as AdminHistorialPuntosIndex;
 use App\Livewire\Admin\InsigniasIndex as AdminInsigniasIndex;
 use App\Livewire\Admin\PedidosIndex as AdminPedidosIndex;
 use App\Livewire\Admin\PuntosDonadoresIndex as AdminPuntosDonadoresIndex;
+use App\Livewire\Admin\ReportesIndex as AdminReportesIndex;
 use App\Livewire\Admin\TransaccionesIndex as AdminTransaccionesIndex;
 use App\Livewire\Admin\UsuariosIndex as AdminUsuariosIndex;
 use App\Livewire\Admin\ProductosIndex as AdminProductosIndex;
@@ -63,6 +65,8 @@ Route::prefix('panel/admin')
     ->middleware(['auth', 'rol:admin'])
     ->group(function () {
         Route::get('/', AdminDashboard::class)->name('dashboard.admin');
+        Route::get('reportes', AdminReportesIndex::class)->name('admin.reportes.index');
+        Route::get('reportes/export', ReportExportController::class)->name('admin.reportes.export');
         Route::get('emprendedores', AdminEmprendedoresIndex::class)->name('admin.emprendedores.index');
         Route::get('categorias', AdminCategoriasIndex::class)->name('admin.categorias.index');
         Route::get('productos', AdminProductosIndex::class)->name('admin.productos.index');

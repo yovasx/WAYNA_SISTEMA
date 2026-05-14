@@ -1,4 +1,4 @@
-<section class="mt-10 space-y-8">
+<section class="mt-10 space-y-8 px-4 pb-8 sm:px-6 xl:px-10 2xl:px-14">
     @if (session('catalogo_estado'))
         <div class="rounded-2xl border border-[#d8d2de] bg-[#eef7f2] px-4 py-3 text-sm text-[#1f6b52]">
             {{ session('catalogo_estado') }}
@@ -11,7 +11,7 @@
         </div>
     @endif
 
-    <div class="grid gap-6 xl:grid-cols-[1.6fr_0.95fr]">
+    <div class="grid gap-6 xl:grid-cols-[minmax(0,2.8fr)_minmax(320px,1fr)] 2xl:grid-cols-[minmax(0,3fr)_minmax(340px,1fr)]">
         <section class="overflow-hidden rounded-[1.75rem] border border-[#d8d2de] bg-white">
             <div class="flex flex-col gap-4 border-b border-[#e6e1ea] bg-[#f7f2fb] px-6 py-5 lg:flex-row lg:items-end lg:justify-between">
                 <div>
@@ -27,15 +27,15 @@
                 </div>
             </div>
 
-            <div class="flex flex-col gap-4 border-b border-[#e6e1ea] px-6 py-5 lg:flex-row lg:items-center lg:justify-between">
-                <div class="relative w-full lg:max-w-md">
+            <div class="flex flex-col gap-4 border-b border-[#e6e1ea] px-6 py-5 xl:flex-row xl:items-center xl:justify-between">
+                <div class="relative w-full xl:flex-1">
                     <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400">Buscar</span>
                     <input wire:model.live.debounce.300ms="busqueda" type="text" placeholder="Nombre o descripcion del producto" class="w-full rounded-2xl border border-[#d8d2de] bg-[#fcfbfe] px-4 py-3 pl-20 text-sm text-slate-900 outline-none transition focus:border-[#5f4cae] focus:ring-0">
                 </div>
 
-                <div class="flex items-center gap-3">
+                <div class="flex w-full items-center gap-3 xl:w-auto xl:shrink-0">
                     <label for="filtroCategoria" class="font-mono-data text-xs uppercase tracking-[0.28em] text-slate-500">Categoria</label>
-                    <select id="filtroCategoria" wire:model.live="filtroCategoria" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none focus:border-[#5f4cae] focus:ring-0">
+                    <select id="filtroCategoria" wire:model.live="filtroCategoria" class="w-full rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none focus:border-[#5f4cae] focus:ring-0 xl:w-auto xl:min-w-[220px]">
                         <option value="">Todas</option>
                         @foreach ($categorias as $categoria)
                             <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
@@ -66,7 +66,7 @@
                                         </div>
                                         <div>
                                             <h3 class="font-medium text-slate-900">{{ $producto->nombre }}</h3>
-                                            <p class="mt-1 max-w-sm text-sm text-slate-600">{{ $producto->descripcion ?: 'Sin descripcion registrada.' }}</p>
+                                            <p class="mt-1 text-sm text-slate-600">{{ $producto->descripcion ?: 'Sin descripcion registrada.' }}</p>
                                             <span class="mt-3 inline-flex rounded-full {{ $producto->activo ? 'bg-[#eef7f2] text-[#1f6b52]' : 'bg-[#ece7ef] text-slate-500' }} px-3 py-1 text-xs font-medium">{{ $producto->activo ? 'Activo' : 'Inactivo' }}</span>
                                         </div>
                                     </div>
@@ -81,8 +81,8 @@
                                 </td>
                                 <td class="px-6 py-5">
                                     <div class="flex justify-end gap-2">
-                                        <button type="button" wire:click="abrirModalProducto({{ $producto->id }})" class="rounded-xl border border-[#d8d2de] px-3 py-2 text-xs font-medium text-slate-700 transition hover:border-[#5f4cae] hover:text-[#5f4cae]">Editar</button>
-                                        <button type="button" wire:click="confirmarEliminarProducto({{ $producto->id }})" class="rounded-xl border border-[#f0c7c2] px-3 py-2 text-xs font-medium text-[#93000a] transition hover:bg-[#ffdad6]">Eliminar</button>
+                                        <x-admin.action-button wire:click="abrirModalProducto({{ $producto->id }})" icon="edit" label="Editar producto" tone="primary" />
+                                        <x-admin.action-button wire:click="confirmarEliminarProducto({{ $producto->id }})" icon="delete" label="Eliminar producto" tone="danger" />
                                     </div>
                                 </td>
                             </tr>

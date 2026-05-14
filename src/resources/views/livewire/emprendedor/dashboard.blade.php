@@ -1,4 +1,4 @@
-<div class="mx-auto max-w-[1280px] px-4 py-8 sm:px-6 lg:px-10">
+<div class="px-4 py-8 sm:px-6 xl:px-10 2xl:px-14">
     <div class="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
             <h1 class="font-display text-4xl text-slate-900 lg:text-5xl">Bienvenido, {{ $perfil->nombre_emprendimiento }}</h1>
@@ -49,7 +49,7 @@
         </div>
     </div>
 
-    <div class="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+    <div class="grid gap-6 xl:grid-cols-[minmax(0,1.55fr)_minmax(320px,0.8fr)] 2xl:grid-cols-[minmax(0,1.7fr)_minmax(340px,0.8fr)]">
         <section class="rounded-[2rem] border border-[#d8d2de] bg-white p-6">
             <div class="flex items-start justify-between gap-4">
                 <div>

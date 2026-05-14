@@ -12,7 +12,7 @@
     </head>
     <body class="bg-[#fdf8ff] text-slate-900 antialiased">
         <header class="fixed inset-x-0 top-0 z-40 border-b border-[#d9d1e5] bg-[#fdf8ff]/95 backdrop-blur">
-            <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 items-center justify-between px-4 sm:px-6 xl:px-10 2xl:px-14">
                 <a href="{{ route('dashboard') }}" class="font-display text-2xl font-semibold text-[#5f4cae]">WAYNA</a>
 
                 <nav class="hidden items-center gap-6 md:flex">
@@ -59,7 +59,7 @@
                 </div>
             </aside>
 
-            <main class="min-h-[calc(100vh-4rem)] flex-1">{{ $slot }}</main>
+            <main class="min-h-[calc(100vh-4rem)] min-w-0 flex-1">{{ $slot }}</main>
         </div>
 
         @livewireScripts
