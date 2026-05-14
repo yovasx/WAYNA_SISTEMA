@@ -288,6 +288,8 @@ docker compose run --rm wayna_node npm run buil
 docker compose exec wayna_app php artisan migrate:fresh --seed
 docker compose exec wayna_app php artisan db:seed
 ```
+### "error aun no cargan diseños de las vistas"
+Elimina el archivo hot de public
 ### "Vite no conecta / HMR no funciona"
 Verifica la configuración de `vite.config.js` (ver sección Frontend).
 
