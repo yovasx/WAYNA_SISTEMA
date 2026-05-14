@@ -282,9 +282,8 @@ chmod -R 775 storage bootstrap/cache
 ### "Error no cargan diseños de la pagina (se ve html solamente) aplicalo cuando hagas cambios grandes en la views"
 ```bash
 ```bash
-docker compose run --rm wayna_node npm run build
 ```
-
+docker compose run --rm wayna_node npm run build
 ```
 
 
