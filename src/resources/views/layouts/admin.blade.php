@@ -24,7 +24,7 @@
 
             <x-admin.sidebar />
 
-            <div class="pt-16 transition-[padding] duration-300 ease-out" :class="sidebarWidth">
+            <div class="pt-16 transition-[padding] duration-300 ease-out" :class="sidebarWidthEffective">
                 <main class="mx-auto max-w-[1600px] px-4 py-8 sm:px-6 lg:px-8">
                     {{ $slot }}
                 </main>

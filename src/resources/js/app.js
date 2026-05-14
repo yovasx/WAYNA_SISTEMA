@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.adminLayoutState = () => ({
     sidebarState: 'expanded',
+    sidebarHover: false,
     mobileSidebarOpen: false,
 
     init() {
@@ -67,20 +68,21 @@ window.adminLayoutState = () => ({
         }
     },
 
-    get sidebarExpanded() {
-        return this.sidebarState === 'expanded';
-    },
-
-    get sidebarIcons() {
-        return this.sidebarState === 'icons';
-    },
-
-    get sidebarHidden() {
-        return this.sidebarState === 'hidden';
+    get sidebarEffective() {
+        if (this.sidebarState === 'expanded') return 'expanded';
+        if (this.sidebarState === 'icons' && this.sidebarHover) return 'expanded';
+        return this.sidebarState;
     },
 
     get sidebarWidth() {
         if (this.sidebarState === 'expanded') return 'md:pl-[260px]';
+        if (this.sidebarState === 'icons') return 'md:pl-[88px]';
+        return 'md:pl-0';
+    },
+
+    get sidebarWidthEffective() {
+        const eff = this.sidebarEffective;
+        if (eff === 'expanded') return 'md:pl-[260px]';
         if (this.sidebarState === 'icons') return 'md:pl-[88px]';
         return 'md:pl-0';
     },
