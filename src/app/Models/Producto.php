@@ -14,6 +14,7 @@ class Producto extends Model
 
     protected $fillable = [
         'emprendedor_id',
+        'perfil_emprendedor_id',
         'categoria_id',
         'nombre',
         'descripcion',
@@ -55,6 +56,14 @@ class Producto extends Model
         return Attribute::make(
             get: fn (?string $value, array $attributes) => $attributes['estado_stock'] ?? 'disponible',
             set: fn (?string $value) => ['estado_stock' => $value],
+        );
+    }
+
+    protected function perfilEmprendedorId(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?int $value, array $attributes) => $attributes['emprendedor_id'] ?? null,
+            set: fn (?int $value) => ['emprendedor_id' => $value],
         );
     }
 }

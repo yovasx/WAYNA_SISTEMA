@@ -77,7 +77,7 @@ class ProductosIndex extends Component
 
         if ($productoId) {
             $producto = Producto::query()->findOrFail($productoId);
-            $this->perfilEmprendedorId = $producto->perfil_emprendedor_id;
+            $this->perfilEmprendedorId = $producto->emprendedor_id;
             $this->categoriaId = $producto->categoria_id;
             $this->nombre = $producto->nombre;
             $this->descripcion = $producto->descripcion ?? '';
@@ -107,7 +107,7 @@ class ProductosIndex extends Component
         ]);
 
         $payload = [
-            'perfil_emprendedor_id' => (int) $datos['perfilEmprendedorId'],
+            'emprendedor_id' => (int) $datos['perfilEmprendedorId'],
             'categoria_id' => $datos['categoriaId'] ? (int) $datos['categoriaId'] : null,
             'nombre' => $datos['nombre'],
             'descripcion' => $datos['descripcion'] !== '' ? $datos['descripcion'] : null,

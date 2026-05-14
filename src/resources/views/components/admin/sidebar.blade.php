@@ -44,6 +44,22 @@
                 Donaciones
             </x-admin.sidebar-item>
 
+            <x-admin.sidebar-item :href="route('admin.transacciones.index')" icon="payments" :active="request()->routeIs('admin.transacciones.*')" wire:navigate>
+                Transacciones
+            </x-admin.sidebar-item>
+
+            <x-admin.sidebar-item :href="route('admin.puntos-donadores.index')" icon="military_tech" :active="request()->routeIs('admin.puntos-donadores.*')" wire:navigate>
+                Puntos donador
+            </x-admin.sidebar-item>
+
+            <x-admin.sidebar-item :href="route('admin.historial-puntos.index')" icon="history" :active="request()->routeIs('admin.historial-puntos.*')" wire:navigate>
+                Historial puntos
+            </x-admin.sidebar-item>
+
+            <x-admin.sidebar-item :href="route('admin.insignias.index')" icon="workspace_premium" :active="request()->routeIs('admin.insignias.*')" wire:navigate>
+                Insignias
+            </x-admin.sidebar-item>
+
             <x-admin.sidebar-item :href="route('admin.reservas.index')" icon="calendar_month" :active="request()->routeIs('admin.reservas.*')" wire:navigate>
                 Reservas
             </x-admin.sidebar-item>

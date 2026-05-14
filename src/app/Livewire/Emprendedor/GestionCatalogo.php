@@ -89,7 +89,7 @@ class GestionCatalogo extends Component
 
         $perfil = $this->asegurarPerfilEmprendedor();
         $payload = [
-            'perfil_emprendedor_id' => $perfil->id,
+            'emprendedor_id' => $perfil->id,
             'categoria_id' => $datos['productoCategoriaId'] ? (int) $datos['productoCategoriaId'] : null,
             'nombre' => $datos['productoNombre'],
             'descripcion' => $datos['productoDescripcion'] !== '' ? $datos['productoDescripcion'] : null,
@@ -172,7 +172,7 @@ class GestionCatalogo extends Component
         return view('livewire.emprendedor.gestion-catalogo', [
             'categorias' => Categoria::query()->withCount('productos')->orderBy('nombre')->get(),
             'productos' => Producto::query()
-                ->where('perfil_emprendedor_id', $perfil->id)
+                ->where('emprendedor_id', $perfil->id)
                 ->with('categoria:id,nombre')
                 ->when($this->busqueda !== '', function ($query) {
                     $query->where(function ($subquery) {
@@ -247,7 +247,7 @@ class GestionCatalogo extends Component
         $perfil = $this->asegurarPerfilEmprendedor();
 
         return Producto::query()
-            ->where('perfil_emprendedor_id', $perfil->id)
+            ->where('emprendedor_id', $perfil->id)
             ->findOrFail($productoId);
     }
 }

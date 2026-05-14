@@ -18,7 +18,7 @@ class Dashboard extends Component
         ]);
 
         $productos = Producto::query()
-            ->when($perfil, fn ($query) => $query->where('perfil_emprendedor_id', $perfil->id), fn ($query) => $query->whereRaw('1 = 0'))
+            ->when($perfil, fn ($query) => $query->where('emprendedor_id', $perfil->id), fn ($query) => $query->whereRaw('1 = 0'))
             ->with('categoria:id,nombre')
             ->latest()
             ->take(5)
@@ -29,12 +29,12 @@ class Dashboard extends Component
             'productos' => $productos,
             'perfil' => $perfil,
             'metricas' => [
-                'productos' => $perfil ? Producto::where('perfil_emprendedor_id', $perfil->id)->count() : 0,
-                'stock_bajo' => $perfil ? Producto::where('perfil_emprendedor_id', $perfil->id)->where(function ($query) {
+                'productos' => $perfil ? Producto::where('emprendedor_id', $perfil->id)->count() : 0,
+                'stock_bajo' => $perfil ? Producto::where('emprendedor_id', $perfil->id)->where(function ($query) {
                     $query->where('stock', '<=', 5)->orWhere('estado_stock', 'ultimas_unidades');
                 })->count() : 0,
-                'inventario_total' => $perfil ? Producto::where('perfil_emprendedor_id', $perfil->id)->sum('stock') : 0,
-                'valor_catalogo' => $perfil ? Producto::where('perfil_emprendedor_id', $perfil->id)->sum('precio') : 0,
+                'inventario_total' => $perfil ? Producto::where('emprendedor_id', $perfil->id)->sum('stock') : 0,
+                'valor_catalogo' => $perfil ? Producto::where('emprendedor_id', $perfil->id)->sum('precio') : 0,
             ],
         ])->layout('layouts.emprendedor');
     }

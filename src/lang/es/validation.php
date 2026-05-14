@@ -140,6 +140,7 @@ return [
         'precio' => 'precio',
         'stock' => 'stock',
         'categoria_id' => 'categoria',
+        'emprendedor_id' => 'emprendedor',
         'perfil_emprendedor_id' => 'perfil emprendedor',
         'estado_disponibilidad' => 'estado de disponibilidad',
         'publicado_at' => 'fecha de publicacion',

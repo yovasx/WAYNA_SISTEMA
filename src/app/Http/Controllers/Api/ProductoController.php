@@ -26,9 +26,8 @@ class ProductoController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $usuario = $request->user();
         $datos = $this->validarProducto($request, null);
-        $datos['perfil_emprendedor_id'] = $this->resolverPerfilEmprendedorId($request, null);
+        $datos['emprendedor_id'] = $this->resolverEmprendedorId($request, null);
 
         $producto = Producto::create($datos)->load(['categoria:id,nombre', 'perfilEmprendedor.usuario:id,nombre_completo,email']);
 
@@ -56,7 +55,7 @@ class ProductoController extends Controller
         }
 
         $datos = $this->validarProducto($request, $producto);
-        $datos['perfil_emprendedor_id'] = $this->resolverPerfilEmprendedorId($request, $producto);
+        $datos['emprendedor_id'] = $this->resolverEmprendedorId($request, $producto);
 
         $producto->update($datos);
 
@@ -98,10 +97,17 @@ class ProductoController extends Controller
         ];
 
         if ($usuario->tieneRol('admin')) {
+            $reglas['emprendedor_id'] = ['nullable', 'integer', 'exists:emprendedores,id'];
             $reglas['perfil_emprendedor_id'] = ['nullable', 'integer', 'exists:emprendedores,id'];
         }
 
         $datos = $request->validate($reglas);
+
+        if (! array_key_exists('emprendedor_id', $datos) && array_key_exists('perfil_emprendedor_id', $datos)) {
+            $datos['emprendedor_id'] = $datos['perfil_emprendedor_id'];
+        }
+
+        unset($datos['perfil_emprendedor_id']);
 
         $datos['stock'] = $datos['stock'] ?? ($producto?->stock ?? 0);
         $datos['estado_stock'] = $datos['estado_disponibilidad'] ?? ($producto?->estado_disponibilidad ?? 'disponible');
@@ -109,14 +115,14 @@ class ProductoController extends Controller
 
         $datos['activo'] = $datos['activo'] ?? ($producto?->activo ?? true);
 
-        if (! array_key_exists('perfil_emprendedor_id', $datos) && $producto) {
-            $datos['perfil_emprendedor_id'] = $producto->perfil_emprendedor_id;
+        if (! array_key_exists('emprendedor_id', $datos) && $producto) {
+            $datos['emprendedor_id'] = $producto->emprendedor_id;
         }
 
         return $datos;
     }
 
-    private function resolverPerfilEmprendedorId(Request $request, ?Producto $producto): int
+    private function resolverEmprendedorId(Request $request, ?Producto $producto): int
     {
         $usuario = $request->user();
 
@@ -128,12 +134,16 @@ class ProductoController extends Controller
             return $perfilId;
         }
 
+        if ($request->filled('emprendedor_id')) {
+            return $request->integer('emprendedor_id');
+        }
+
         if ($request->filled('perfil_emprendedor_id')) {
             return $request->integer('perfil_emprendedor_id');
         }
 
-        abort_if(! $producto, 422, 'Debes indicar un perfil_emprendedor_id para crear el producto.');
+        abort_if(! $producto, 422, 'Debes indicar un emprendedor_id para crear el producto.');
 
-        return $producto->perfil_emprendedor_id;
+        return $producto->emprendedor_id;
     }
 }
