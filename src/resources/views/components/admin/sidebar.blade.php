@@ -1,8 +1,8 @@
 <aside x-cloak
        @mouseenter="if (sidebarState === 'icons') sidebarHover = true"
        @mouseleave="sidebarHover = false"
-       class="fixed left-0 top-16 z-40 h-[calc(100vh-4rem)] border-r border-[#d8d2de] bg-white transition-all duration-300 ease-out"
-       :class="[mobileSidebarOpen ? 'translate-x-0 w-[260px]' : '-translate-x-full md:translate-x-0', sidebarEffective === 'expanded' ? 'md:w-[260px]' : (sidebarState === 'icons' ? 'md:w-[88px]' : 'md:w-0 md:overflow-hidden')]">
+       class="sticky top-16 h-[calc(100vh-4rem)] shrink-0 border-r border-[#d8d2de] bg-white transition-all duration-300 ease-out"
+       :class="[mobileSidebarOpen ? 'translate-x-0 w-[260px]' : '-translate-x-full md:translate-x-0', sidebarEffective === 'expanded' ? 'w-[260px]' : (sidebarState === 'icons' ? 'w-[88px]' : 'w-0 overflow-hidden')]">
     <div class="flex h-full flex-col overflow-y-auto px-3 py-4">
         <div class="flex items-start gap-3 rounded-[1.5rem] border border-[#e7e0f1] bg-[#f7f2fb] px-3 py-4">
             <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#5f4cae] text-white">
