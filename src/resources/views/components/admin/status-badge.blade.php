@@ -2,11 +2,11 @@
 
 @php
     $tones = [
-        'violet' => 'bg-[#e6deff] text-[#4a3597]',
-        'green' => 'bg-[#eef7f2] text-[#1f6b52]',
-        'amber' => 'bg-[#fff3cd] text-[#745800]',
-        'red' => 'bg-[#ffdad6] text-[#93000a]',
-        'gray' => 'bg-[#ece7ef] text-slate-600',
+        'violet' => 'bg-primary-50 text-primary-700',
+        'green' => 'bg-success-100 text-success-700',
+        'amber' => 'bg-accent-50 text-accent-700',
+        'red' => 'bg-danger-100 text-danger-700',
+        'gray' => 'bg-surface-soft text-ink-soft',
     ];
 @endphp
 

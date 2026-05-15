@@ -9,12 +9,12 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="antialiased">
-        <div class="min-h-screen bg-[#fdf8ff]">
+    <body class="wayna-shell antialiased">
+        <div class="min-h-screen bg-transparent">
             <livewire:layout.navigation />
 
             @if (isset($header))
-                <header class="border-b border-[#ddd8e1] bg-white/90 backdrop-blur">
+                <header class="border-b border-stroke bg-surface/90 backdrop-blur">
                     <div class="px-4 py-6 sm:px-6 xl:px-10 2xl:px-14">
                         {{ $header }}
                     </div>

@@ -56,27 +56,27 @@ new #[Layout('layouts.guest')] class extends Component
 
 <div>
     <div class="mb-8">
-        <p class="font-mono-data text-xs uppercase tracking-[0.35em] text-slate-500">Registro</p>
-        <h1 class="mt-3 font-display text-4xl text-slate-900">Crear cuenta</h1>
-        <p class="mt-3 text-slate-600">Registra un usuario o emprendedor para empezar a explorar o publicar dentro de WAYNA.</p>
+        <p class="font-mono-data text-xs uppercase tracking-[0.35em] text-ink-muted">Registro</p>
+        <h1 class="mt-3 font-display text-4xl text-ink">Crear cuenta</h1>
+        <p class="mt-3 text-ink-soft">Registra un usuario o emprendedor para empezar a explorar o publicar dentro de WAYNA.</p>
     </div>
 
     <form wire:submit="register" class="space-y-5">
         <div>
-            <label for="name" class="font-mono-data text-xs uppercase tracking-[0.3em] text-slate-500">Nombre</label>
-            <input wire:model="name" id="name" class="mt-2 block w-full rounded-2xl border border-[#d9d1e5] bg-[#fcfbfe] px-4 py-3 text-slate-900 outline-none transition focus:border-[#5f4cae] focus:ring-0" type="text" name="name" required autofocus autocomplete="name" placeholder="Tu nombre o tu marca" />
+            <label for="name" class="wayna-label">Nombre</label>
+            <input wire:model="name" id="name" class="wayna-input mt-2 block w-full" type="text" name="name" required autofocus autocomplete="name" placeholder="Tu nombre o tu marca" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
         <div>
-            <label for="email" class="font-mono-data text-xs uppercase tracking-[0.3em] text-slate-500">Correo</label>
-            <input wire:model="email" id="email" class="mt-2 block w-full rounded-2xl border border-[#d9d1e5] bg-[#fcfbfe] px-4 py-3 text-slate-900 outline-none transition focus:border-[#5f4cae] focus:ring-0" type="email" name="email" required autocomplete="username" placeholder="nombre@ejemplo.com" />
+            <label for="email" class="wayna-label">Correo</label>
+            <input wire:model="email" id="email" class="wayna-input mt-2 block w-full" type="email" name="email" required autocomplete="username" placeholder="nombre@ejemplo.com" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <div>
-            <label for="rol" class="font-mono-data text-xs uppercase tracking-[0.3em] text-slate-500">Tipo de cuenta</label>
-            <select wire:model="rol" id="rol" class="mt-2 block w-full rounded-2xl border border-[#d9d1e5] bg-[#fcfbfe] px-4 py-3 text-slate-900 outline-none transition focus:border-[#5f4cae] focus:ring-0" name="rol">
+            <label for="rol" class="wayna-label">Tipo de cuenta</label>
+            <select wire:model="rol" id="rol" class="wayna-select mt-2 block w-full" name="rol">
                 <option value="usuario">Usuario</option>
                 <option value="emprendedor">Emprendedor</option>
             </select>
@@ -84,24 +84,24 @@ new #[Layout('layouts.guest')] class extends Component
         </div>
 
         <div>
-            <label for="password" class="font-mono-data text-xs uppercase tracking-[0.3em] text-slate-500">Contrasena</label>
-            <input wire:model="password" id="password" class="mt-2 block w-full rounded-2xl border border-[#d9d1e5] bg-[#fcfbfe] px-4 py-3 text-slate-900 outline-none transition focus:border-[#5f4cae] focus:ring-0" type="password" name="password" required autocomplete="new-password" placeholder="Minimo 8 caracteres" />
+            <label for="password" class="wayna-label">Contrasena</label>
+            <input wire:model="password" id="password" class="wayna-input mt-2 block w-full" type="password" name="password" required autocomplete="new-password" placeholder="Minimo 8 caracteres" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
         <div>
-            <label for="password_confirmation" class="font-mono-data text-xs uppercase tracking-[0.3em] text-slate-500">Confirmar contrasena</label>
-            <input wire:model="password_confirmation" id="password_confirmation" class="mt-2 block w-full rounded-2xl border border-[#d9d1e5] bg-[#fcfbfe] px-4 py-3 text-slate-900 outline-none transition focus:border-[#5f4cae] focus:ring-0" type="password" name="password_confirmation" required autocomplete="new-password" placeholder="Repite tu contrasena" />
+            <label for="password_confirmation" class="wayna-label">Confirmar contrasena</label>
+            <input wire:model="password_confirmation" id="password_confirmation" class="wayna-input mt-2 block w-full" type="password" name="password_confirmation" required autocomplete="new-password" placeholder="Repite tu contrasena" />
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <button type="submit" class="w-full rounded-2xl bg-[#5f4cae] px-5 py-3 text-sm font-medium text-white transition hover:opacity-90">
+        <button type="submit" class="wayna-btn-primary w-full">
             Crear cuenta
         </button>
     </form>
 
-    <p class="mt-8 text-center text-sm text-slate-600">
+    <p class="mt-8 text-center text-sm text-ink-soft">
         Ya tienes una cuenta?
-        <a href="{{ route('login') }}" wire:navigate class="font-medium text-[#5f4cae] hover:underline">Inicia sesion</a>
+        <a href="{{ route('login') }}" wire:navigate class="font-medium text-primary-600 hover:underline">Inicia sesion</a>
     </p>
 </div>

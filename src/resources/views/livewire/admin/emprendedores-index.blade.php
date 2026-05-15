@@ -1,7 +1,7 @@
 <div class="space-y-8">
     <x-admin.page-header eyebrow="Gestion de personas" title="Emprendedores" description="Aprueba, suspende y supervisa perfiles emprendedores segun el flujo real de la plataforma.">
         <x-slot name="actions">
-            <button type="button" wire:click="abrirModalEdicion" class="inline-flex items-center gap-2 rounded-2xl bg-[#5f4cae] px-5 py-3 text-sm font-medium text-white transition hover:opacity-90">
+            <button type="button" wire:click="abrirModalEdicion" class="wayna-btn-primary">
                 <span class="material-symbols-outlined text-[20px]">storefront</span>
                 <span>Nuevo emprendedor</span>
             </button>
@@ -47,8 +47,8 @@
     <x-admin.panel-card title="Mesa de revision" description="Busca por emprendimiento, responsable o correo y ejecuta acciones de aprobacion sin salir del panel.">
         <x-slot name="actions">
             <div class="flex flex-col gap-3 lg:flex-row lg:items-center">
-                <input wire:model.live.debounce.300ms="busqueda" type="text" placeholder="Buscar emprendimiento, ciudad o correo" class="w-full rounded-2xl border border-[#d8d2de] bg-[#fcfbfe] px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#5f4cae] focus:ring-0 lg:w-80">
-                <select wire:model.live="filtroCategoria" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <input wire:model.live.debounce.300ms="busqueda" type="text" placeholder="Buscar emprendimiento, ciudad o correo" class="wayna-input lg:w-80">
+                <select wire:model.live="filtroCategoria" class="wayna-select">
                     <option value="">Todas las categorias</option>
                     @foreach ($categorias as $categoria)
                         <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
@@ -60,37 +60,37 @@
         @if ($emprendedores->isEmpty())
             <x-admin.empty-state title="Sin emprendedores para mostrar" description="Ajusta los filtros o espera nuevos registros para empezar la revision del ecosistema." icon="storefront" />
         @else
-            <div class="overflow-x-auto">
-                <table class="min-w-full border-collapse text-left">
-                    <thead>
-                        <tr class="border-b border-[#ebe6ef] bg-[#fcfbfe]">
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Emprendimiento</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Responsable</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Categoria</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Estado</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">NIT</th>
-                            <th class="px-4 py-4 text-right font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Acciones</th>
+            <div class="wayna-table-wrap">
+                <table class="wayna-table">
+                    <thead class="wayna-table-head">
+                        <tr>
+                            <th class="wayna-table-th">Emprendimiento</th>
+                            <th class="wayna-table-th">Responsable</th>
+                            <th class="wayna-table-th">Categoria</th>
+                            <th class="wayna-table-th">Estado</th>
+                            <th class="wayna-table-th">NIT</th>
+                            <th class="wayna-table-th text-right">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($emprendedores as $perfil)
-                            <tr class="border-b border-[#f0ecf4] align-top last:border-b-0">
-                                <td class="px-4 py-5">
-                                    <p class="font-medium text-slate-900">{{ $perfil->nombre_emprendimiento }}</p>
-                                    <p class="mt-1 text-xs text-slate-500">Alta {{ optional($perfil->created_at)->format('d/m/Y') }}</p>
+                            <tr class="wayna-table-row">
+                                <td class="wayna-table-td">
+                                    <p class="font-medium text-ink">{{ $perfil->nombre_emprendimiento }}</p>
+                                    <p class="mt-1 text-xs text-ink-muted">Alta {{ optional($perfil->created_at)->format('d/m/Y') }}</p>
                                 </td>
-                                <td class="px-4 py-5">
-                                    <p class="text-sm text-slate-900">{{ $perfil->usuario?->name ?? 'Sin usuario' }}</p>
-                                    <p class="mt-1 text-xs text-slate-500">{{ $perfil->usuario?->email ?? 'Sin correo' }}</p>
+                                <td class="wayna-table-td">
+                                    <p class="text-sm text-ink">{{ $perfil->usuario?->name ?? 'Sin usuario' }}</p>
+                                    <p class="mt-1 text-xs text-ink-muted">{{ $perfil->usuario?->email ?? 'Sin correo' }}</p>
                                 </td>
-                                <td class="px-4 py-5 text-sm text-slate-700">{{ $perfil->categoria?->nombre ?? 'Sin categoria' }}</td>
-                                <td class="px-4 py-5">
+                                <td class="wayna-table-td">{{ $perfil->categoria?->nombre ?? 'Sin categoria' }}</td>
+                                <td class="wayna-table-td">
                                     <x-admin.status-badge :tone="$perfil->estado_aprobacion === 'aprobado' ? 'green' : ($perfil->estado_aprobacion === 'pendiente' ? 'amber' : 'red')">
                                         {{ $perfil->estado_aprobacion }}
                                     </x-admin.status-badge>
                                 </td>
-                                <td class="px-4 py-5 text-sm text-slate-700">{{ $perfil->nit ?: 'No registrado' }}</td>
-                                <td class="px-4 py-5">
+                                <td class="wayna-table-td">{{ $perfil->nit ?: 'No registrado' }}</td>
+                                <td class="wayna-table-td">
                                     <div class="flex justify-end gap-1">
                                         <x-admin.action-button wire:click="abrirModalEdicion({{ $perfil->id }})" icon="edit" label="Editar emprendedor" tone="primary" />
 

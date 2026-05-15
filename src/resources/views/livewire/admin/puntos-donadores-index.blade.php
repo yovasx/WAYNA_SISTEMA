@@ -11,9 +11,9 @@
     <x-admin.panel-card title="Ranking de donadores" description="Consulta puntaje, nivel y ultima actualizacion por usuario.">
         <x-slot name="actions">
             <div class="flex flex-col gap-3 lg:flex-row lg:items-center">
-                <input wire:model.live.debounce.300ms="busqueda" type="text" placeholder="Buscar donador" class="w-full rounded-2xl border border-[#d8d2de] bg-[#fcfbfe] px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#5f4cae] focus:ring-0 lg:w-80">
+                <input wire:model.live.debounce.300ms="busqueda" type="text" placeholder="Buscar donador" class="wayna-input lg:w-80">
 
-                <select wire:model.live="filtroNivel" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <select wire:model.live="filtroNivel" class="wayna-select">
                     <option value="">Todos los niveles</option>
                     <option value="bronce">Bronce</option>
                     <option value="plata">Plata</option>
@@ -25,32 +25,32 @@
         @if ($puntosDonadores->isEmpty())
             <x-admin.empty-state title="Sin ranking disponible" description="Cuando existan puntos acumulados por donacion, apareceran aqui con el nivel correspondiente." icon="military_tech" />
         @else
-            <div class="overflow-x-auto">
-                <table class="min-w-full border-collapse text-left">
-                    <thead>
-                        <tr class="border-b border-[#ebe6ef] bg-[#fcfbfe]">
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Posicion</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Donador</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Nivel</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Puntos</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Actualizado</th>
+            <div class="wayna-table-wrap">
+                <table class="wayna-table">
+                    <thead class="wayna-table-head">
+                        <tr>
+                            <th class="wayna-table-th">Posicion</th>
+                            <th class="wayna-table-th">Donador</th>
+                            <th class="wayna-table-th">Nivel</th>
+                            <th class="wayna-table-th">Puntos</th>
+                            <th class="wayna-table-th">Actualizado</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($puntosDonadores as $registro)
-                            <tr class="border-b border-[#f0ecf4] align-top last:border-b-0">
-                                <td class="px-4 py-5 font-mono-data text-sm text-[#5f4cae]">{{ ($puntosDonadores->firstItem() ?? 1) + $loop->index }}</td>
-                                <td class="px-4 py-5">
-                                    <p class="text-sm text-slate-700">{{ $registro->usuario?->nombre_completo ?? 'Usuario no disponible' }}</p>
-                                    <p class="mt-1 text-xs text-slate-500">{{ $registro->usuario?->email ?? 'Sin correo' }}</p>
+                            <tr class="wayna-table-row">
+                                <td class="wayna-table-td font-mono-data text-primary-600">{{ ($puntosDonadores->firstItem() ?? 1) + $loop->index }}</td>
+                                <td class="wayna-table-td">
+                                    <p class="text-sm text-ink">{{ $registro->usuario?->nombre_completo ?? 'Usuario no disponible' }}</p>
+                                    <p class="mt-1 text-xs text-ink-muted">{{ $registro->usuario?->email ?? 'Sin correo' }}</p>
                                 </td>
-                                <td class="px-4 py-5">
+                                <td class="wayna-table-td">
                                     <x-admin.status-badge :tone="$registro->nivel === 'oro' ? 'green' : ($registro->nivel === 'plata' ? 'gray' : 'amber')">
                                         {{ $registro->nivel }}
                                     </x-admin.status-badge>
                                 </td>
-                                <td class="px-4 py-5 font-mono-data text-sm text-slate-900">{{ $registro->puntos_total }}</td>
-                                <td class="px-4 py-5 text-sm text-slate-500">{{ optional($registro->updated_at)->format('d/m/Y H:i') }}</td>
+                                <td class="wayna-table-td font-mono-data text-ink">{{ $registro->puntos_total }}</td>
+                                <td class="wayna-table-td text-ink-muted">{{ optional($registro->updated_at)->format('d/m/Y H:i') }}</td>
                             </tr>
                         @endforeach
                     </tbody>

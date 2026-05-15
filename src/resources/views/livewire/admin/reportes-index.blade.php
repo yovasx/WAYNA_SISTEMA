@@ -76,7 +76,7 @@
         <x-slot name="actions">
             <a
                 href="{{ route('admin.reportes.export', ['preset' => $preset, 'desde' => $desde ?: null, 'hasta' => $hasta ?: null, 'emprendedor_id' => $emprendedorId ?: null, 'categoria_id' => $categoriaId ?: null, 'metodo_pago' => $metodoPago ?: null, 'estado_transaccion' => $estadoTransaccion ?: null, 'tipo_transaccion' => $tipoTransaccion ?: null]) }}"
-                class="inline-flex items-center gap-2 rounded-2xl border border-[#d8d2de] bg-white px-5 py-3 text-sm font-medium text-slate-700 transition hover:border-[#5f4cae] hover:text-[#5f4cae]"
+                class="wayna-btn-secondary"
             >
                 <span class="material-symbols-outlined text-[20px]">table_view</span>
                 <span>CSV</span>
@@ -84,7 +84,7 @@
 
             <a
                 href="{{ route('admin.reportes.export.excel', ['preset' => $preset, 'desde' => $desde ?: null, 'hasta' => $hasta ?: null, 'emprendedor_id' => $emprendedorId ?: null, 'categoria_id' => $categoriaId ?: null, 'metodo_pago' => $metodoPago ?: null, 'estado_transaccion' => $estadoTransaccion ?: null, 'tipo_transaccion' => $tipoTransaccion ?: null]) }}"
-                class="inline-flex items-center gap-2 rounded-2xl border border-[#d8d2de] bg-white px-5 py-3 text-sm font-medium text-slate-700 transition hover:border-[#1f6b52] hover:text-[#1f6b52]"
+                class="wayna-btn-secondary hover:border-success-500 hover:text-success-700"
             >
                 <span class="material-symbols-outlined text-[20px]">grid_on</span>
                 <span>Excel</span>
@@ -92,7 +92,7 @@
 
             <a
                 href="{{ route('admin.reportes.export.pdf', ['preset' => $preset, 'desde' => $desde ?: null, 'hasta' => $hasta ?: null, 'emprendedor_id' => $emprendedorId ?: null, 'categoria_id' => $categoriaId ?: null, 'metodo_pago' => $metodoPago ?: null, 'estado_transaccion' => $estadoTransaccion ?: null, 'tipo_transaccion' => $tipoTransaccion ?: null]) }}"
-                class="inline-flex items-center gap-2 rounded-2xl border border-[#d8d2de] bg-white px-5 py-3 text-sm font-medium text-slate-700 transition hover:border-[#a03f29] hover:text-[#a03f29]"
+                class="wayna-btn-secondary hover:border-accent-500 hover:text-accent-700"
             >
                 <span class="material-symbols-outlined text-[20px]">picture_as_pdf</span>
                 <span>PDF</span>
@@ -115,8 +115,8 @@
             </div>
 
             <div class="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]">
-                <input wire:model.live="desde" type="date" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
-                <input wire:model.live="hasta" type="date" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <input wire:model.live="desde" type="date" class="wayna-input">
+                <input wire:model.live="hasta" type="date" class="wayna-input">
                 <div class="flex flex-wrap gap-2">
                     @foreach (['todo' => 'Todo', 'ventas' => 'Ventas', 'donaciones' => 'Donaciones', 'ingreso' => 'Ingreso plataforma'] as $serieKey => $serieLabel)
                         <button
@@ -131,28 +131,28 @@
             </div>
 
             <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
-                <select wire:model.live="emprendedorId" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <select wire:model.live="emprendedorId" class="wayna-select">
                     <option value="">Todos los emprendedores</option>
                     @foreach ($emprendedores as $emprendedor)
                         <option value="{{ $emprendedor->id }}">{{ $emprendedor->nombre_negocio }}</option>
                     @endforeach
                 </select>
 
-                <select wire:model.live="categoriaId" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <select wire:model.live="categoriaId" class="wayna-select">
                     <option value="">Todas las categorias</option>
                     @foreach ($categorias as $categoria)
                         <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
                     @endforeach
                 </select>
 
-                <select wire:model.live="metodoPago" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <select wire:model.live="metodoPago" class="wayna-select">
                     <option value="">Todos los metodos</option>
                     <option value="qr">QR</option>
                     <option value="nfc">NFC</option>
                     <option value="microtransaccion">Microtransaccion</option>
                 </select>
 
-                <select wire:model.live="estadoTransaccion" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <select wire:model.live="estadoTransaccion" class="wayna-select">
                     <option value="">Todos los estados</option>
                     <option value="pendiente">Pendiente</option>
                     <option value="completada">Completada</option>
@@ -160,7 +160,7 @@
                     <option value="reembolsada">Reembolsada</option>
                 </select>
 
-                <select wire:model.live="tipoTransaccion" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <select wire:model.live="tipoTransaccion" class="wayna-select">
                     <option value="">Todos los tipos</option>
                     <option value="pedido">Pedido</option>
                     <option value="donacion">Donacion</option>
@@ -220,19 +220,19 @@
         <div class="space-y-6">
             <x-admin.panel-card title="Contexto del periodo" description="Lectura rapida del rango elegido y de la salud operativa de cobros.">
                 <div class="space-y-4">
-                    <div class="rounded-2xl bg-[#fcfbfe] px-4 py-4">
-                        <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Rango activo</p>
-                        <p class="mt-2 text-sm font-medium text-slate-900">{{ $reporte['rango']['desde']->format('d/m/Y') }} - {{ $reporte['rango']['hasta']->format('d/m/Y') }}</p>
+                    <div class="wayna-card-soft px-4 py-4">
+                        <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-ink-muted">Rango activo</p>
+                        <p class="mt-2 text-sm font-medium text-ink">{{ $reporte['rango']['desde']->format('d/m/Y') }} - {{ $reporte['rango']['hasta']->format('d/m/Y') }}</p>
                     </div>
 
-                    <div class="rounded-2xl bg-[#fcfbfe] px-4 py-4">
-                        <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Pedidos validos</p>
-                        <p class="mt-2 text-2xl font-display text-[#5f4cae]">{{ $reporte['kpis']['pedidos'] }}</p>
+                    <div class="wayna-card-soft px-4 py-4">
+                        <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-ink-muted">Pedidos validos</p>
+                        <p class="mt-2 text-2xl font-display text-primary-600">{{ $reporte['kpis']['pedidos'] }}</p>
                     </div>
 
-                    <div class="rounded-2xl bg-[#fcfbfe] px-4 py-4">
-                        <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Transacciones completadas</p>
-                        <p class="mt-2 text-2xl font-display text-[#1f6b52]">{{ $reporte['kpis']['transacciones_completadas'] }}</p>
+                    <div class="wayna-card-soft px-4 py-4">
+                        <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-ink-muted">Transacciones completadas</p>
+                        <p class="mt-2 text-2xl font-display text-success-600">{{ $reporte['kpis']['transacciones_completadas'] }}</p>
                     </div>
                 </div>
             </x-admin.panel-card>
@@ -240,9 +240,9 @@
             <x-admin.panel-card title="Metodos de pago" description="Distribucion actual de la operacion financiera.">
                 <div class="space-y-3">
                     @forelse ($reporte['metodos_pago'] as $metodo)
-                        <div class="flex items-center justify-between rounded-2xl bg-[#fcfbfe] px-4 py-3 text-sm">
-                            <span class="text-slate-700">{{ str_replace('_', ' ', $metodo->metodo_pago) }}</span>
-                            <span class="font-mono-data text-[#5f4cae]">{{ $metodo->total }}</span>
+                        <div class="wayna-card-soft flex items-center justify-between px-4 py-3 text-sm">
+                            <span class="text-ink">{{ str_replace('_', ' ', $metodo->metodo_pago) }}</span>
+                            <span class="font-mono-data text-primary-600">{{ $metodo->total }}</span>
                         </div>
                     @empty
                         <p class="text-sm text-slate-500">Sin metodos registrados en este rango.</p>
@@ -253,8 +253,8 @@
             <x-admin.panel-card title="Estados de transaccion" description="Mide calidad de procesamiento en el mismo periodo.">
                 <div class="space-y-3">
                     @forelse ($reporte['estados_transaccion'] as $estado)
-                        <div class="flex items-center justify-between rounded-2xl bg-[#fcfbfe] px-4 py-3 text-sm">
-                            <span class="text-slate-700">{{ ucfirst($estado->estado) }}</span>
+                        <div class="wayna-card-soft flex items-center justify-between px-4 py-3 text-sm">
+                            <span class="text-ink">{{ ucfirst($estado->estado) }}</span>
                             <x-admin.status-badge :tone="$estado->estado === 'completada' ? 'green' : ($estado->estado === 'pendiente' ? 'amber' : ($estado->estado === 'reembolsada' ? 'gray' : 'red'))">
                                 {{ $estado->total }}
                             </x-admin.status-badge>
@@ -270,25 +270,25 @@
     <div class="grid gap-6 xl:grid-cols-3">
         <div class="xl:col-span-2">
             <x-admin.panel-card title="Resumen por periodo" description="Tabla util para exportar y leer la evolucion de cada serie sin perder detalle.">
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border-collapse text-left">
-                        <thead>
-                            <tr class="border-b border-[#ebe6ef] bg-[#fcfbfe]">
-                                <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Periodo</th>
-                                <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Ventas</th>
-                                <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Donaciones</th>
-                                <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Ingreso plataforma</th>
-                                <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Flujo total</th>
+                <div class="wayna-table-wrap">
+                    <table class="wayna-table">
+                        <thead class="wayna-table-head">
+                            <tr>
+                                <th class="wayna-table-th">Periodo</th>
+                                <th class="wayna-table-th">Ventas</th>
+                                <th class="wayna-table-th">Donaciones</th>
+                                <th class="wayna-table-th">Ingreso plataforma</th>
+                                <th class="wayna-table-th">Flujo total</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($reporte['series'] as $fila)
-                                <tr class="border-b border-[#f0ecf4] align-top last:border-b-0">
-                                    <td class="px-4 py-4 text-sm font-medium text-slate-900">{{ $fila['label'] }}</td>
-                                    <td class="px-4 py-4 font-mono-data text-sm text-[#5f4cae]">Bs {{ number_format($fila['ventas'], 2) }}</td>
-                                    <td class="px-4 py-4 font-mono-data text-sm text-[#a03f29]">Bs {{ number_format($fila['donaciones'], 2) }}</td>
-                                    <td class="px-4 py-4 font-mono-data text-sm text-[#1f6b52]">Bs {{ number_format($fila['ingreso'], 2) }}</td>
-                                    <td class="px-4 py-4 font-mono-data text-sm text-slate-900">Bs {{ number_format($fila['flujo'], 2) }}</td>
+                                <tr class="wayna-table-row">
+                                    <td class="wayna-table-td font-medium text-ink">{{ $fila['label'] }}</td>
+                                    <td class="wayna-table-td font-mono-data text-primary-600">Bs {{ number_format($fila['ventas'], 2) }}</td>
+                                    <td class="wayna-table-td font-mono-data text-accent-600">Bs {{ number_format($fila['donaciones'], 2) }}</td>
+                                    <td class="wayna-table-td font-mono-data text-success-600">Bs {{ number_format($fila['ingreso'], 2) }}</td>
+                                    <td class="wayna-table-td font-mono-data text-ink">Bs {{ number_format($fila['flujo'], 2) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -301,12 +301,12 @@
             <x-admin.panel-card title="Top emprendedores" description="Quienes capturan mas ventas dentro del rango.">
                 <div class="space-y-3">
                     @forelse ($reporte['top_emprendedores'] as $emprendedor)
-                        <article class="rounded-2xl bg-[#fcfbfe] px-4 py-4">
-                            <p class="font-medium text-slate-900">{{ $emprendedor->nombre_negocio }}</p>
-                            <p class="mt-1 text-sm text-slate-600">{{ $emprendedor->responsable }}</p>
+                        <article class="wayna-card-soft px-4 py-4">
+                            <p class="font-medium text-ink">{{ $emprendedor->nombre_negocio }}</p>
+                            <p class="mt-1 text-sm text-ink-soft">{{ $emprendedor->responsable }}</p>
                             <div class="mt-3 flex items-center justify-between text-sm">
-                                <span class="text-slate-500">{{ $emprendedor->pedidos }} pedido(s)</span>
-                                <span class="font-mono-data text-[#5f4cae]">Bs {{ number_format((float) $emprendedor->ventas, 2) }}</span>
+                                <span class="text-ink-muted">{{ $emprendedor->pedidos }} pedido(s)</span>
+                                <span class="font-mono-data text-primary-600">Bs {{ number_format((float) $emprendedor->ventas, 2) }}</span>
                             </div>
                         </article>
                     @empty
@@ -318,11 +318,11 @@
             <x-admin.panel-card title="Top productos" description="Piezas con mayor traccion comercial en el periodo elegido.">
                 <div class="space-y-3">
                     @forelse ($reporte['top_productos'] as $producto)
-                        <article class="rounded-2xl bg-[#fcfbfe] px-4 py-4">
-                            <p class="font-medium text-slate-900">{{ $producto->nombre }}</p>
+                        <article class="wayna-card-soft px-4 py-4">
+                            <p class="font-medium text-ink">{{ $producto->nombre }}</p>
                             <div class="mt-3 flex items-center justify-between text-sm">
-                                <span class="text-slate-500">{{ $producto->unidades }} unidad(es)</span>
-                                <span class="font-mono-data text-[#5f4cae]">Bs {{ number_format((float) $producto->ventas, 2) }}</span>
+                                <span class="text-ink-muted">{{ $producto->unidades }} unidad(es)</span>
+                                <span class="font-mono-data text-primary-600">Bs {{ number_format((float) $producto->ventas, 2) }}</span>
                             </div>
                         </article>
                     @empty

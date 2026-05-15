@@ -1,17 +1,17 @@
 <aside x-cloak
        @mouseenter="handleSidebarEnter()"
        @mouseleave="handleSidebarLeave()"
-       class="fixed inset-y-0 left-0 z-40 w-[260px] overflow-hidden border-r border-[#d8d2de] bg-white pt-20 transition-transform duration-300 ease-out md:static md:z-auto md:w-auto md:pt-0 md:transition-none"
+       class="fixed inset-y-0 left-0 z-40 w-[260px] overflow-hidden border-r border-stroke bg-surface-raised pt-20 transition-transform duration-300 ease-out md:static md:z-auto md:w-auto md:pt-0 md:transition-none"
        :class="mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'">
     <div class="flex h-full flex-col overflow-hidden px-3 py-4 md:py-6">
-        <div class="flex items-start gap-3 rounded-[1.5rem] border border-[#e7e0f1] bg-[#f7f2fb] px-3 py-4">
-            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#5f4cae] text-white">
+        <div class="flex items-start gap-3 rounded-[1.5rem] border border-stroke-soft bg-primary-50/70 px-3 py-4">
+            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary-500 text-white shadow-wayna">
                 <span class="material-symbols-outlined">admin_panel_settings</span>
             </div>
 
             <div x-show="sidebarEffective === 'expanded'" x-transition.opacity.duration.150ms class="min-w-0">
-                <p class="font-medium text-slate-900">Portal admin</p>
-                <p class="mt-1 text-xs text-slate-500">Control del ecosistema</p>
+                <p class="font-medium text-ink">Portal admin</p>
+                <p class="mt-1 text-xs text-ink-muted">Control del ecosistema</p>
             </div>
         </div>
 
@@ -69,20 +69,20 @@
             </x-admin.sidebar-item>
         </nav>
 
-        <div class="mt-6 border-t border-[#d8d2de] pt-4">
+        <div class="mt-6 border-t border-stroke pt-4">
             <div x-show="sidebarEffective === 'expanded'" x-transition.opacity.duration.150ms>
-                <button class="mb-4 w-full rounded-2xl bg-[#a03f29] px-4 py-3 text-sm font-medium text-white transition hover:opacity-90">
+                <button class="wayna-btn mb-4 w-full border border-accent-500 bg-accent-500 text-white shadow-wayna hover:border-accent-600 hover:bg-accent-600">
                     <span class="material-symbols-outlined align-middle text-[20px]">volunteer_activism</span>
                     <span class="ml-2 align-middle">Donar ahora</span>
                 </button>
             </div>
 
             <nav class="space-y-1">
-                <a href="#" class="flex items-center gap-3 rounded-2xl px-4 py-2 text-sm text-slate-600 transition hover:bg-[#f7f2fb] hover:text-[#5f4cae]" :class="sidebarEffective !== 'expanded' ? 'justify-center px-2' : ''">
+                <a href="#" class="flex items-center gap-3 rounded-2xl px-4 py-2 text-sm text-ink-soft transition hover:bg-primary-50 hover:text-primary-700" :class="sidebarEffective !== 'expanded' ? 'justify-center px-2' : ''">
                     <span class="material-symbols-outlined">settings</span>
                     <span x-show="sidebarEffective === 'expanded'" x-transition.opacity.duration.150ms>Configuracion</span>
                 </a>
-                <a href="#" class="flex items-center gap-3 rounded-2xl px-4 py-2 text-sm text-slate-600 transition hover:bg-[#f7f2fb] hover:text-[#5f4cae]" :class="sidebarEffective !== 'expanded' ? 'justify-center px-2' : ''">
+                <a href="#" class="flex items-center gap-3 rounded-2xl px-4 py-2 text-sm text-ink-soft transition hover:bg-primary-50 hover:text-primary-700" :class="sidebarEffective !== 'expanded' ? 'justify-center px-2' : ''">
                     <span class="material-symbols-outlined">help_outline</span>
                     <span x-show="sidebarEffective === 'expanded'" x-transition.opacity.duration.150ms>Ayuda</span>
                 </a>

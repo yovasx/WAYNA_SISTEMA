@@ -37,7 +37,7 @@ new #[Layout('layouts.guest')] class extends Component
 }; ?>
 
 <div>
-    <div class="mb-4 text-sm text-gray-600">
+    <div class="mb-4 text-sm text-ink-soft">
         {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
     </div>
 
@@ -52,7 +52,7 @@ new #[Layout('layouts.guest')] class extends Component
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
+        <div class="mt-4 flex items-center justify-end">
             <x-primary-button>
                 {{ __('Email Password Reset Link') }}
             </x-primary-button>

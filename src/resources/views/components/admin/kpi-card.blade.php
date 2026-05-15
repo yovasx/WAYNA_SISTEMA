@@ -2,28 +2,28 @@
 
 @php
     $tones = [
-        'primary' => ['chip' => 'bg-[#e6deff] text-[#4a3597]', 'value' => 'text-[#5f4cae]'],
-        'secondary' => ['chip' => 'bg-[#ffdad2] text-[#812914]', 'value' => 'text-[#a03f29]'],
-        'tertiary' => ['chip' => 'bg-[#ffdf97] text-[#5a4400]', 'value' => 'text-[#745800]'],
-        'neutral' => ['chip' => 'bg-[#f1ecf5] text-slate-600', 'value' => 'text-slate-900'],
-        'green' => ['chip' => 'bg-[#eef7f2] text-[#1f6b52]', 'value' => 'text-[#1f6b52]'],
-        'red' => ['chip' => 'bg-[#ffdad6] text-[#93000a]', 'value' => 'text-[#93000a]'],
-        'amber' => ['chip' => 'bg-[#fff3cd] text-[#745800]', 'value' => 'text-[#745800]'],
+        'primary' => ['chip' => 'bg-primary-50 text-primary-700', 'value' => 'text-primary-600'],
+        'secondary' => ['chip' => 'bg-accent-50 text-accent-700', 'value' => 'text-accent-600'],
+        'tertiary' => ['chip' => 'bg-surface-soft text-accent-700', 'value' => 'text-accent-700'],
+        'neutral' => ['chip' => 'bg-surface-soft text-ink-soft', 'value' => 'text-ink'],
+        'green' => ['chip' => 'bg-success-100 text-success-700', 'value' => 'text-success-600'],
+        'red' => ['chip' => 'bg-danger-100 text-danger-700', 'value' => 'text-danger-600'],
+        'amber' => ['chip' => 'bg-accent-50 text-accent-700', 'value' => 'text-accent-700'],
     ];
 
     $palette = $tones[$tone] ?? $tones['primary'];
 @endphp
 
-<article class="rounded-[1.75rem] border border-[#d8d2de] bg-white p-5">
+<article class="wayna-card p-5">
     <div class="flex items-center justify-between gap-3">
         <div class="inline-flex h-11 w-11 items-center justify-center rounded-2xl {{ $palette['chip'] }}">
             <span class="material-symbols-outlined">{{ $icon }}</span>
         </div>
         @if ($helper)
-            <span class="text-xs text-slate-500">{{ $helper }}</span>
+            <span class="text-xs text-ink-muted">{{ $helper }}</span>
         @endif
     </div>
 
-    <p class="mt-5 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">{{ $label }}</p>
+    <p class="mt-5 font-mono-data text-xs uppercase tracking-[0.24em] text-ink-muted">{{ $label }}</p>
     <p class="mt-3 font-display text-3xl {{ $palette['value'] }}">{{ $value }}</p>
 </article>

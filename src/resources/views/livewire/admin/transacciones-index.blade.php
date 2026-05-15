@@ -12,23 +12,23 @@
     <x-admin.panel-card title="Registro de transacciones" description="Filtra por tipo de referencia, metodo de pago o estado para auditar el movimiento del ecosistema.">
         <x-slot name="actions">
             <div class="grid w-full gap-3 lg:grid-cols-4">
-                <input wire:model.live.debounce.300ms="busqueda" type="text" placeholder="Buscar usuario, QR o referencia" class="w-full rounded-2xl border border-[#d8d2de] bg-[#fcfbfe] px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <input wire:model.live.debounce.300ms="busqueda" type="text" placeholder="Buscar usuario, QR o referencia" class="wayna-input">
 
-                <select wire:model.live="filtroTipo" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <select wire:model.live="filtroTipo" class="wayna-select">
                     <option value="">Todos los tipos</option>
                     <option value="pedido">Pedido</option>
                     <option value="donacion">Donacion</option>
                     <option value="reserva">Reserva</option>
                 </select>
 
-                <select wire:model.live="filtroMetodo" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <select wire:model.live="filtroMetodo" class="wayna-select">
                     <option value="">Todos los metodos</option>
                     <option value="qr">QR</option>
                     <option value="nfc">NFC</option>
                     <option value="microtransaccion">Microtransaccion</option>
                 </select>
 
-                <select wire:model.live="filtroEstado" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <select wire:model.live="filtroEstado" class="wayna-select">
                     <option value="">Todos los estados</option>
                     <option value="pendiente">Pendiente</option>
                     <option value="completada">Completada</option>
@@ -41,16 +41,16 @@
         @if ($transacciones->isEmpty())
             <x-admin.empty-state title="Sin transacciones registradas" description="Cuando existan cobros o pagos procesados, quedaran visibles aqui con su referencia y estado." icon="payments" />
         @else
-            <div class="overflow-x-auto">
-                <table class="min-w-full border-collapse text-left">
-                    <thead>
-                        <tr class="border-b border-[#ebe6ef] bg-[#fcfbfe]">
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Operacion</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Usuario</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Metodo</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Monto</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Estado</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Fecha</th>
+            <div class="wayna-table-wrap">
+                <table class="wayna-table">
+                    <thead class="wayna-table-head">
+                        <tr>
+                            <th class="wayna-table-th">Operacion</th>
+                            <th class="wayna-table-th">Usuario</th>
+                            <th class="wayna-table-th">Metodo</th>
+                            <th class="wayna-table-th">Monto</th>
+                            <th class="wayna-table-th">Estado</th>
+                            <th class="wayna-table-th">Fecha</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,23 +64,23 @@
                                 };
                             @endphp
 
-                            <tr class="border-b border-[#f0ecf4] align-top last:border-b-0">
-                                <td class="px-4 py-5">
-                                    <p class="font-medium text-slate-900">{{ $tituloReferencia }}</p>
-                                    <p class="mt-1 text-sm text-slate-600">{{ strtoupper($transaccion->referencia_tipo) }} · ID {{ $transaccion->id }}</p>
+                            <tr class="wayna-table-row">
+                                <td class="wayna-table-td">
+                                    <p class="font-medium text-ink">{{ $tituloReferencia }}</p>
+                                    <p class="mt-1 text-sm text-ink-soft">{{ strtoupper($transaccion->referencia_tipo) }} · ID {{ $transaccion->id }}</p>
                                 </td>
-                                <td class="px-4 py-5">
-                                    <p class="text-sm text-slate-700">{{ $transaccion->usuario?->nombre_completo ?? 'Usuario no disponible' }}</p>
-                                    <p class="mt-1 text-xs text-slate-500">{{ $transaccion->usuario?->email ?? 'Sin correo' }}</p>
+                                <td class="wayna-table-td">
+                                    <p class="text-sm text-ink">{{ $transaccion->usuario?->nombre_completo ?? 'Usuario no disponible' }}</p>
+                                    <p class="mt-1 text-xs text-ink-muted">{{ $transaccion->usuario?->email ?? 'Sin correo' }}</p>
                                 </td>
-                                <td class="px-4 py-5 text-sm text-slate-700">{{ str_replace('_', ' ', $transaccion->metodo_pago) }}</td>
-                                <td class="px-4 py-5 font-mono-data text-sm text-[#5f4cae]">Bs {{ number_format((float) $transaccion->monto, 2) }}</td>
-                                <td class="px-4 py-5">
+                                <td class="wayna-table-td">{{ str_replace('_', ' ', $transaccion->metodo_pago) }}</td>
+                                <td class="wayna-table-td font-mono-data text-primary-600">Bs {{ number_format((float) $transaccion->monto, 2) }}</td>
+                                <td class="wayna-table-td">
                                     <x-admin.status-badge :tone="$transaccion->estado === 'fallida' ? 'red' : ($transaccion->estado === 'pendiente' ? 'amber' : ($transaccion->estado === 'reembolsada' ? 'gray' : 'green'))">
                                         {{ $transaccion->estado }}
                                     </x-admin.status-badge>
                                 </td>
-                                <td class="px-4 py-5 text-sm text-slate-500">{{ optional($transaccion->created_at)->format('d/m/Y H:i') }}</td>
+                                <td class="wayna-table-td text-ink-muted">{{ optional($transaccion->created_at)->format('d/m/Y H:i') }}</td>
                             </tr>
                         @endforeach
                     </tbody>

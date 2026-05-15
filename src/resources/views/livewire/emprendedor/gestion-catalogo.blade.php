@@ -1,41 +1,41 @@
 <section class="mt-10 space-y-8 px-4 pb-8 sm:px-6 xl:px-10 2xl:px-14">
     @if (session('catalogo_estado'))
-        <div class="rounded-2xl border border-[#d8d2de] bg-[#eef7f2] px-4 py-3 text-sm text-[#1f6b52]">
+        <div class="wayna-alert-success">
             {{ session('catalogo_estado') }}
         </div>
     @endif
 
     @if (session('catalogo_error'))
-        <div class="rounded-2xl border border-[#f0c7c2] bg-[#ffdad6] px-4 py-3 text-sm text-[#93000a]">
+        <div class="wayna-alert-danger">
             {{ session('catalogo_error') }}
         </div>
     @endif
 
     <div class="grid gap-6 xl:grid-cols-[minmax(0,2.8fr)_minmax(320px,1fr)] 2xl:grid-cols-[minmax(0,3fr)_minmax(340px,1fr)]">
-        <section class="overflow-hidden rounded-[1.75rem] border border-[#d8d2de] bg-white">
-            <div class="flex flex-col gap-4 border-b border-[#e6e1ea] bg-[#f7f2fb] px-6 py-5 lg:flex-row lg:items-end lg:justify-between">
+        <section class="wayna-card overflow-hidden">
+            <div class="flex flex-col gap-4 border-b border-stroke-soft bg-surface-soft px-6 py-5 lg:flex-row lg:items-end lg:justify-between">
                 <div>
-                    <p class="font-mono-data text-xs uppercase tracking-[0.3em] text-slate-500">Gestion de productos</p>
-                    <h2 class="mt-2 font-display text-3xl text-slate-900">Mi catalogo artesanal</h2>
-                    <p class="mt-2 text-sm text-slate-600">Administra inventario, precios y visibilidad de tus piezas activas.</p>
+                    <p class="font-mono-data text-xs uppercase tracking-[0.3em] text-ink-muted">Gestion de productos</p>
+                    <h2 class="mt-2 font-display text-3xl text-ink">Mi catalogo artesanal</h2>
+                    <p class="mt-2 text-sm text-ink-soft">Administra inventario, precios y visibilidad de tus piezas activas.</p>
                 </div>
 
                 <div class="flex flex-wrap gap-3">
-                    <button type="button" wire:click="abrirModalProducto" class="rounded-2xl bg-[#5f4cae] px-4 py-3 text-sm font-medium text-white transition hover:opacity-90">
+                    <button type="button" wire:click="abrirModalProducto" class="wayna-btn-primary">
                         Nuevo producto
                     </button>
                 </div>
             </div>
 
-            <div class="flex flex-col gap-4 border-b border-[#e6e1ea] px-6 py-5 xl:flex-row xl:items-center xl:justify-between">
+            <div class="flex flex-col gap-4 border-b border-stroke-soft px-6 py-5 xl:flex-row xl:items-center xl:justify-between">
                 <div class="relative w-full xl:flex-1">
-                    <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400">Buscar</span>
-                    <input wire:model.live.debounce.300ms="busqueda" type="text" placeholder="Nombre o descripcion del producto" class="w-full rounded-2xl border border-[#d8d2de] bg-[#fcfbfe] px-4 py-3 pl-20 text-sm text-slate-900 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                    <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-ink-muted">Buscar</span>
+                    <input wire:model.live.debounce.300ms="busqueda" type="text" placeholder="Nombre o descripcion del producto" class="wayna-input pl-20">
                 </div>
 
                 <div class="flex w-full items-center gap-3 xl:w-auto xl:shrink-0">
-                    <label for="filtroCategoria" class="font-mono-data text-xs uppercase tracking-[0.28em] text-slate-500">Categoria</label>
-                    <select id="filtroCategoria" wire:model.live="filtroCategoria" class="w-full rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none focus:border-[#5f4cae] focus:ring-0 xl:w-auto xl:min-w-[220px]">
+                    <label for="filtroCategoria" class="wayna-label">Categoria</label>
+                    <select id="filtroCategoria" wire:model.live="filtroCategoria" class="wayna-select w-full xl:w-auto xl:min-w-[220px]">
                         <option value="">Todas</option>
                         @foreach ($categorias as $categoria)
                             <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
@@ -44,42 +44,42 @@
                 </div>
             </div>
 
-            <div class="overflow-x-auto">
-                <table class="min-w-full border-collapse text-left">
-                    <thead>
-                        <tr class="border-b border-[#e6e1ea] bg-[#fcfbfe]">
-                            <th class="px-6 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Producto</th>
-                            <th class="px-6 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Categoria</th>
-                            <th class="px-6 py-4 text-right font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Precio</th>
-                            <th class="px-6 py-4 text-right font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Stock</th>
-                            <th class="px-6 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Estado</th>
-                            <th class="px-6 py-4 text-right font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Acciones</th>
+            <div class="wayna-table-wrap rounded-none border-0">
+                <table class="wayna-table">
+                    <thead class="wayna-table-head">
+                        <tr>
+                            <th class="wayna-table-th px-6">Producto</th>
+                            <th class="wayna-table-th px-6">Categoria</th>
+                            <th class="wayna-table-th px-6 text-right">Precio</th>
+                            <th class="wayna-table-th px-6 text-right">Stock</th>
+                            <th class="wayna-table-th px-6">Estado</th>
+                            <th class="wayna-table-th px-6 text-right">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($productos as $producto)
-                            <tr class="border-b border-[#f0ecf4] align-top last:border-b-0">
-                                <td class="px-6 py-5">
+                            <tr class="wayna-table-row">
+                                <td class="wayna-table-td px-6">
                                     <div class="flex items-start gap-4">
-                                        <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#f1ecf5] font-display text-lg text-[#5f4cae]">
+                                        <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary-50 font-display text-lg text-primary-700">
                                             {{ strtoupper(mb_substr($producto->nombre, 0, 1)) }}
                                         </div>
                                         <div>
-                                            <h3 class="font-medium text-slate-900">{{ $producto->nombre }}</h3>
-                                            <p class="mt-1 text-sm text-slate-600">{{ $producto->descripcion ?: 'Sin descripcion registrada.' }}</p>
-                                            <span class="mt-3 inline-flex rounded-full {{ $producto->activo ? 'bg-[#eef7f2] text-[#1f6b52]' : 'bg-[#ece7ef] text-slate-500' }} px-3 py-1 text-xs font-medium">{{ $producto->activo ? 'Activo' : 'Inactivo' }}</span>
+                                            <h3 class="font-medium text-ink">{{ $producto->nombre }}</h3>
+                                            <p class="mt-1 text-sm text-ink-soft">{{ $producto->descripcion ?: 'Sin descripcion registrada.' }}</p>
+                                            <span class="mt-3 inline-flex rounded-full {{ $producto->activo ? 'bg-success-100 text-success-700' : 'bg-surface-soft text-ink-soft' }} px-3 py-1 text-xs font-medium">{{ $producto->activo ? 'Activo' : 'Inactivo' }}</span>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-5 text-sm text-slate-700">{{ $producto->categoria?->nombre ?? 'Sin categoria' }}</td>
-                                <td class="px-6 py-5 text-right font-mono-data text-sm text-[#5f4cae]">Bs {{ number_format((float) $producto->precio, 2) }}</td>
-                                <td class="px-6 py-5 text-right text-sm text-slate-700">{{ $producto->stock }}</td>
-                                <td class="px-6 py-5">
-                                    <span class="inline-flex rounded-full px-3 py-1 text-xs font-medium {{ $producto->estado_disponibilidad === 'agotado' ? 'bg-[#ffdad6] text-[#93000a]' : ($producto->estado_disponibilidad === 'ultimas_unidades' ? 'bg-[#fff3cd] text-[#745800]' : 'bg-[#e6deff] text-[#4a3597]') }}">
+                                <td class="wayna-table-td px-6">{{ $producto->categoria?->nombre ?? 'Sin categoria' }}</td>
+                                <td class="wayna-table-td px-6 text-right font-mono-data text-primary-600">Bs {{ number_format((float) $producto->precio, 2) }}</td>
+                                <td class="wayna-table-td px-6 text-right text-ink">{{ $producto->stock }}</td>
+                                <td class="wayna-table-td px-6">
+                                    <span class="inline-flex rounded-full px-3 py-1 text-xs font-medium {{ $producto->estado_disponibilidad === 'agotado' ? 'bg-danger-100 text-danger-700' : ($producto->estado_disponibilidad === 'ultimas_unidades' ? 'bg-accent-50 text-accent-700' : 'bg-primary-50 text-primary-700') }}">
                                         {{ str_replace('_', ' ', $producto->estado_disponibilidad) }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-5">
+                                <td class="wayna-table-td px-6">
                                     <div class="flex justify-end gap-2">
                                         <x-admin.action-button wire:click="abrirModalProducto({{ $producto->id }})" icon="edit" label="Editar producto" tone="primary" />
                                         <x-admin.action-button wire:click="confirmarEliminarProducto({{ $producto->id }})" icon="delete" label="Eliminar producto" tone="danger" />
@@ -89,10 +89,10 @@
                         @empty
                             <tr>
                                 <td colspan="6" class="px-6 py-12">
-                                    <div class="rounded-3xl border border-dashed border-[#d8d2de] bg-[#fcfbfe] px-6 py-10 text-center">
-                                        <p class="font-display text-2xl text-slate-900">Aun no tienes productos publicados</p>
-                                        <p class="mt-2 text-sm text-slate-600">Crea tu primer producto para empezar a poblar el catalogo con tus piezas activas.</p>
-                                        <button type="button" wire:click="abrirModalProducto" class="mt-5 rounded-2xl bg-[#5f4cae] px-4 py-3 text-sm font-medium text-white transition hover:opacity-90">
+                                    <div class="rounded-3xl border border-dashed border-stroke bg-surface-soft px-6 py-10 text-center">
+                                        <p class="font-display text-2xl text-ink">Aun no tienes productos publicados</p>
+                                        <p class="mt-2 text-sm text-ink-soft">Crea tu primer producto para empezar a poblar el catalogo con tus piezas activas.</p>
+                                        <button type="button" wire:click="abrirModalProducto" class="wayna-btn-primary mt-5">
                                             Crear primer producto
                                         </button>
                                     </div>
@@ -103,7 +103,7 @@
                 </table>
             </div>
 
-            <div class="border-t border-[#e6e1ea] px-6 py-4">
+            <div class="border-t border-stroke-soft px-6 py-4">
                 {{ $productos->links() }}
             </div>
         </section>

@@ -1,7 +1,7 @@
 <div class="space-y-8">
     <x-admin.page-header eyebrow="Gestion de personas" title="Usuarios" description="Administra usuarios del sistema, asigna roles, activa o suspende cuentas.">
         <x-slot name="actions">
-            <button type="button" wire:click="abrirModal" class="inline-flex items-center gap-2 rounded-2xl bg-[#5f4cae] px-5 py-3 text-sm font-medium text-white transition hover:opacity-90">
+            <button type="button" wire:click="abrirModal" class="wayna-btn-primary">
                 <span class="material-symbols-outlined text-[20px]">person_add</span>
                 <span>Nuevo usuario</span>
             </button>
@@ -9,10 +9,10 @@
     </x-admin.page-header>
 
     @if (session('admin_status'))
-        <div class="rounded-2xl border border-[#d8d2de] bg-[#eef7f2] px-4 py-3 text-sm text-[#1f6b52]">{{ session('admin_status') }}</div>
+        <div class="wayna-alert-success">{{ session('admin_status') }}</div>
     @endif
     @if (session('admin_error'))
-        <div class="rounded-2xl border border-[#f0c7c2] bg-[#ffdad6] px-4 py-3 text-sm text-[#93000a]">{{ session('admin_error') }}</div>
+        <div class="wayna-alert-danger">{{ session('admin_error') }}</div>
     @endif
 
     <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -53,8 +53,8 @@
     <x-admin.panel-card title="Listado de usuarios" description="Busca por nombre o correo, filtra por estado o rol.">
         <x-slot name="actions">
             <div class="flex flex-col gap-3 lg:flex-row lg:items-center">
-                <input wire:model.live.debounce.300ms="busqueda" type="text" placeholder="Buscar nombre o correo" class="w-full rounded-2xl border border-[#d8d2de] bg-[#fcfbfe] px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#5f4cae] focus:ring-0 lg:w-72">
-                <select wire:model.live="filtroRol" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <input wire:model.live.debounce.300ms="busqueda" type="text" placeholder="Buscar nombre o correo" class="wayna-input lg:w-72">
+                <select wire:model.live="filtroRol" class="wayna-select">
                     <option value="">Todos los roles</option>
                     @foreach ($roles as $rol)
                         <option value="{{ $rol->nombre }}">{{ ucfirst(strtolower($rol->nombre)) }}</option>
@@ -66,38 +66,38 @@
         @if ($usuarios->isEmpty())
             <x-admin.empty-state title="Sin usuarios para mostrar" description="Ajusta los filtros o crea un nuevo usuario." icon="group" />
         @else
-            <div class="overflow-x-auto">
-                <table class="min-w-full border-collapse text-left">
-                    <thead>
-                        <tr class="border-b border-[#ebe6ef] bg-[#fcfbfe]">
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Usuario</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Roles</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Estado</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Registro</th>
-                            <th class="px-4 py-4 text-right font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Acciones</th>
+            <div class="wayna-table-wrap">
+                <table class="wayna-table">
+                    <thead class="wayna-table-head">
+                        <tr>
+                            <th class="wayna-table-th">Usuario</th>
+                            <th class="wayna-table-th">Roles</th>
+                            <th class="wayna-table-th">Estado</th>
+                            <th class="wayna-table-th">Registro</th>
+                            <th class="wayna-table-th text-right">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($usuarios as $usuario)
-                            <tr class="border-b border-[#f0ecf4] align-top last:border-b-0">
-                                <td class="px-4 py-5">
-                                    <p class="font-medium text-slate-900">{{ $usuario->nombre_completo }}</p>
-                                    <p class="mt-1 text-sm text-slate-600">{{ $usuario->email }}</p>
+                            <tr class="wayna-table-row">
+                                <td class="wayna-table-td">
+                                    <p class="font-medium text-ink">{{ $usuario->nombre_completo }}</p>
+                                    <p class="mt-1 text-sm text-ink-soft">{{ $usuario->email }}</p>
                                 </td>
-                                <td class="px-4 py-5">
+                                <td class="wayna-table-td">
                                     <div class="flex flex-wrap gap-1">
                                         @foreach ($usuario->roles as $rol)
                                             <x-admin.status-badge tone="violet">{{ ucfirst(strtolower($rol->nombre)) }}</x-admin.status-badge>
                                         @endforeach
                                     </div>
                                 </td>
-                                <td class="px-4 py-5">
+                                <td class="wayna-table-td">
                                     <x-admin.status-badge :tone="$usuario->estado === 'activo' ? 'green' : ($usuario->estado === 'pendiente' ? 'amber' : 'red')">
                                         {{ $usuario->estado }}
                                     </x-admin.status-badge>
                                 </td>
-                                <td class="px-4 py-5 text-sm text-slate-500">{{ optional($usuario->created_at)->format('d/m/Y') }}</td>
-                                <td class="px-4 py-5">
+                                <td class="wayna-table-td text-ink-muted">{{ optional($usuario->created_at)->format('d/m/Y') }}</td>
+                                <td class="wayna-table-td">
                                     <div class="flex justify-end gap-1">
                                         <x-admin.action-button wire:click="abrirModal({{ $usuario->id }})" icon="edit" label="Editar usuario" tone="primary" />
                                         <x-admin.action-button wire:click="abrirModalRoles({{ $usuario->id }})" icon="manage_accounts" label="Gestionar roles" tone="neutral" />

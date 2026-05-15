@@ -10,8 +10,8 @@
     <x-admin.panel-card title="Listado de reservas" description="Filtra por estado para gestionar la agenda.">
         <x-slot name="actions">
             <div class="flex flex-col gap-3 lg:flex-row lg:items-center">
-                <input wire:model.live.debounce.300ms="busqueda" type="text" placeholder="Buscar codigo de reserva" class="w-full rounded-2xl border border-[#d8d2de] bg-[#fcfbfe] px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#5f4cae] focus:ring-0 lg:w-80">
-                <select wire:model.live="filtroEstado" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <input wire:model.live.debounce.300ms="busqueda" type="text" placeholder="Buscar codigo de reserva" class="wayna-input lg:w-80">
+                <select wire:model.live="filtroEstado" class="wayna-select">
                     <option value="">Todos los estados</option>
                     <option value="pendiente">Pendiente</option>
                     <option value="confirmada">Confirmada</option>
@@ -24,25 +24,25 @@
         @if ($reservas->isEmpty())
             <x-admin.empty-state title="Sin reservas registradas" description="Cuando los usuarios hagan reservas de talleres o productos, apareceran aqui." icon="calendar_month" />
         @else
-            <div class="overflow-x-auto">
-                <table class="min-w-full border-collapse text-left">
-                    <thead>
-                        <tr class="border-b border-[#ebe6ef] bg-[#fcfbfe]">
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Codigo</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Usuario</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Tipo</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Fecha</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Estado</th>
+            <div class="wayna-table-wrap">
+                <table class="wayna-table">
+                    <thead class="wayna-table-head">
+                        <tr>
+                            <th class="wayna-table-th">Codigo</th>
+                            <th class="wayna-table-th">Usuario</th>
+                            <th class="wayna-table-th">Tipo</th>
+                            <th class="wayna-table-th">Fecha</th>
+                            <th class="wayna-table-th">Estado</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($reservas as $reserva)
-                            <tr class="border-b border-[#f0ecf4] align-top last:border-b-0">
-                                <td class="px-4 py-5 font-mono-data text-sm text-[#5f4cae]">{{ $reserva->codigo }}</td>
-                                <td class="px-4 py-5 text-sm text-slate-700">{{ $reserva->usuario?->nombre_completo ?? 'N/A' }}</td>
-                                <td class="px-4 py-5 text-sm text-slate-700">{{ str_replace('_', ' ', $reserva->tipo) }}</td>
-                                <td class="px-4 py-5 text-sm text-slate-500">{{ optional($reserva->fecha_reserva)->format('d/m/Y') }}</td>
-                                <td class="px-4 py-5">
+                            <tr class="wayna-table-row">
+                                <td class="wayna-table-td font-mono-data text-primary-600">{{ $reserva->codigo }}</td>
+                                <td class="wayna-table-td text-ink">{{ $reserva->usuario?->nombre_completo ?? 'N/A' }}</td>
+                                <td class="wayna-table-td">{{ str_replace('_', ' ', $reserva->tipo) }}</td>
+                                <td class="wayna-table-td text-ink-muted">{{ optional($reserva->fecha_reserva)->format('d/m/Y') }}</td>
+                                <td class="wayna-table-td">
                                     <x-admin.status-badge :tone="$reserva->estado === 'cancelada' ? 'red' : ($reserva->estado === 'pendiente' ? 'amber' : 'green')">
                                         {{ $reserva->estado }}
                                     </x-admin.status-badge>

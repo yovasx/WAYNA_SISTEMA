@@ -1,16 +1,16 @@
 <div class="space-y-8">
     <x-admin.page-header eyebrow="Catalogo global" title="Productos" description="Gestiona el inventario transversal del marketplace y visibilidad de piezas destacadas.">
         <x-slot name="actions">
-            <button type="button" wire:click="abrirModal" class="rounded-2xl bg-[#5f4cae] px-5 py-3 text-sm font-medium text-white transition hover:opacity-90">Nuevo producto</button>
+            <button type="button" wire:click="abrirModal" class="wayna-btn-primary">Nuevo producto</button>
         </x-slot>
     </x-admin.page-header>
 
     @if (session('admin_status'))
-        <div class="rounded-2xl border border-[#d8d2de] bg-[#eef7f2] px-4 py-3 text-sm text-[#1f6b52]">{{ session('admin_status') }}</div>
+        <div class="wayna-alert-success">{{ session('admin_status') }}</div>
     @endif
 
     @if (session('admin_error'))
-        <div class="rounded-2xl border border-[#f0c7c2] bg-[#ffdad6] px-4 py-3 text-sm text-[#93000a]">{{ session('admin_error') }}</div>
+        <div class="wayna-alert-danger">{{ session('admin_error') }}</div>
     @endif
 
     <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -23,23 +23,23 @@
     <x-admin.panel-card title="Inventario transversal" description="Filtra por categoria, emprendedor o disponibilidad para operar el catalogo sin cambiar de panel.">
         <x-slot name="actions">
             <div class="grid w-full gap-3 lg:grid-cols-5">
-                <input wire:model.live.debounce.300ms="busqueda" type="text" placeholder="Buscar producto o emprendedor" class="w-full rounded-2xl border border-[#d8d2de] bg-[#fcfbfe] px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <input wire:model.live.debounce.300ms="busqueda" type="text" placeholder="Buscar producto o emprendedor" class="wayna-input">
 
-                <select wire:model.live="filtroCategoria" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <select wire:model.live="filtroCategoria" class="wayna-select">
                     <option value="">Todas las categorias</option>
                     @foreach ($categorias as $categoria)
                         <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
                     @endforeach
                 </select>
 
-                <select wire:model.live="filtroEmprendedor" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <select wire:model.live="filtroEmprendedor" class="wayna-select">
                     <option value="">Todos los emprendedores</option>
                     @foreach ($perfiles as $perfil)
                         <option value="{{ $perfil->id }}">{{ $perfil->nombre_emprendimiento }}</option>
                     @endforeach
                 </select>
 
-                <select wire:model.live="filtroEstado" class="rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#5f4cae] focus:ring-0">
+                <select wire:model.live="filtroEstado" class="wayna-select">
                     <option value="">Todos los estados</option>
                     <option value="disponible">Disponible</option>
                     <option value="ultimas_unidades">Ultimas unidades</option>
@@ -52,48 +52,48 @@
         @if ($productos->isEmpty())
             <x-admin.empty-state title="No hay productos para mostrar" description="Crea el primer producto global o ajusta los filtros para revisar otro segmento del catalogo." icon="inventory_2">
                 <x-slot name="action">
-                    <button type="button" wire:click="abrirModal" class="rounded-2xl bg-[#5f4cae] px-4 py-3 text-sm font-medium text-white transition hover:opacity-90">Crear primer producto</button>
+                    <button type="button" wire:click="abrirModal" class="wayna-btn-primary">Crear primer producto</button>
                 </x-slot>
             </x-admin.empty-state>
         @else
-            <div class="overflow-x-auto">
-                <table class="min-w-full border-collapse text-left">
-                    <thead>
-                        <tr class="border-b border-[#ebe6ef] bg-[#fcfbfe]">
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Producto</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Emprendedor</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Categoria</th>
-                            <th class="px-4 py-4 text-right font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Precio</th>
-                            <th class="px-4 py-4 text-right font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Stock</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Estado</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Activo</th>
-                            <th class="px-4 py-4 text-right font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Acciones</th>
+            <div class="wayna-table-wrap">
+                <table class="wayna-table">
+                    <thead class="wayna-table-head">
+                        <tr>
+                            <th class="wayna-table-th">Producto</th>
+                            <th class="wayna-table-th">Emprendedor</th>
+                            <th class="wayna-table-th">Categoria</th>
+                            <th class="wayna-table-th text-right">Precio</th>
+                            <th class="wayna-table-th text-right">Stock</th>
+                            <th class="wayna-table-th">Estado</th>
+                            <th class="wayna-table-th">Activo</th>
+                            <th class="wayna-table-th text-right">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($productos as $producto)
-                            <tr class="border-b border-[#f0ecf4] align-top last:border-b-0">
-                                <td class="px-4 py-5">
-                                    <p class="font-medium text-slate-900">{{ $producto->nombre }}</p>
-                                    <p class="mt-1 max-w-sm text-sm text-slate-600">{{ $producto->descripcion ?: 'Sin descripcion registrada.' }}</p>
+                            <tr class="wayna-table-row">
+                                <td class="wayna-table-td">
+                                    <p class="font-medium text-ink">{{ $producto->nombre }}</p>
+                                    <p class="mt-1 max-w-sm text-sm text-ink-soft">{{ $producto->descripcion ?: 'Sin descripcion registrada.' }}</p>
                                 </td>
-                                <td class="px-4 py-5 text-sm text-slate-700">{{ $producto->perfilEmprendedor?->nombre_emprendimiento ?? 'Sin emprendedor' }}</td>
-                                <td class="px-4 py-5 text-sm text-slate-700">{{ $producto->categoria?->nombre ?? 'Sin categoria' }}</td>
-                                <td class="px-4 py-5 text-right font-mono-data text-sm text-[#5f4cae]">Bs {{ number_format((float) $producto->precio, 2) }}</td>
-                                <td class="px-4 py-5 text-right text-sm text-slate-700">{{ $producto->stock }}</td>
-                                <td class="px-4 py-5">
-                                    <select wire:change="actualizarEstado({{ $producto->id }}, $event.target.value)" class="rounded-xl border border-[#d8d2de] bg-white px-3 py-2 text-xs text-slate-700 outline-none focus:border-[#5f4cae] focus:ring-0">
+                                <td class="wayna-table-td">{{ $producto->perfilEmprendedor?->nombre_emprendimiento ?? 'Sin emprendedor' }}</td>
+                                <td class="wayna-table-td">{{ $producto->categoria?->nombre ?? 'Sin categoria' }}</td>
+                                <td class="wayna-table-td text-right font-mono-data text-primary-600">Bs {{ number_format((float) $producto->precio, 2) }}</td>
+                                <td class="wayna-table-td text-right text-ink">{{ $producto->stock }}</td>
+                                <td class="wayna-table-td">
+                                    <select wire:change="actualizarEstado({{ $producto->id }}, $event.target.value)" class="wayna-select rounded-xl px-3 py-2 text-xs">
                                         <option value="disponible" @selected($producto->estado_disponibilidad === 'disponible')>Disponible</option>
                                         <option value="ultimas_unidades" @selected($producto->estado_disponibilidad === 'ultimas_unidades')>Ultimas unidades</option>
                                         <option value="agotado" @selected($producto->estado_disponibilidad === 'agotado')>Agotado</option>
                                     </select>
                                 </td>
-                                <td class="px-4 py-5">
+                                <td class="wayna-table-td">
                                     <button type="button" wire:click="alternarActivo({{ $producto->id }})">
                                         <x-admin.status-badge :tone="$producto->activo ? 'green' : 'gray'">{{ $producto->activo ? 'Si' : 'No' }}</x-admin.status-badge>
                                     </button>
                                 </td>
-                                <td class="px-4 py-5">
+                                <td class="wayna-table-td">
                                     <div class="flex justify-end gap-2">
                                         <x-admin.action-button wire:click="abrirModal({{ $producto->id }})" icon="edit" label="Editar producto" tone="primary" />
                                         <x-admin.action-button wire:click="confirmarEliminar({{ $producto->id }})" icon="delete" label="Eliminar producto" tone="danger" />

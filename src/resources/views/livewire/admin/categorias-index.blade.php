@@ -1,16 +1,16 @@
 <div class="space-y-8">
     <x-admin.page-header eyebrow="Curaduria global" title="Categorias" description="Administra la taxonomia global del marketplace para que el catalogo crezca con orden.">
         <x-slot name="actions">
-            <button type="button" wire:click="abrirModal" class="rounded-2xl bg-[#5f4cae] px-5 py-3 text-sm font-medium text-white transition hover:opacity-90">Nueva categoria</button>
+            <button type="button" wire:click="abrirModal" class="wayna-btn-primary">Nueva categoria</button>
         </x-slot>
     </x-admin.page-header>
 
     @if (session('admin_status'))
-        <div class="rounded-2xl border border-[#d8d2de] bg-[#eef7f2] px-4 py-3 text-sm text-[#1f6b52]">{{ session('admin_status') }}</div>
+        <div class="wayna-alert-success">{{ session('admin_status') }}</div>
     @endif
 
     @if (session('admin_error'))
-        <div class="rounded-2xl border border-[#f0c7c2] bg-[#ffdad6] px-4 py-3 text-sm text-[#93000a]">{{ session('admin_error') }}</div>
+        <div class="wayna-alert-danger">{{ session('admin_error') }}</div>
     @endif
 
     <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -23,7 +23,7 @@
     <x-admin.panel-card title="Categorias globales" description="Estas categorias alimentan filtros, relacion entre emprendedores y organizacion del inventario.">
         <x-slot name="actions">
             <div class="flex flex-col gap-3 lg:flex-row lg:items-center">
-                <input wire:model.live.debounce.300ms="busqueda" type="text" placeholder="Buscar categoria o descripcion" class="w-full rounded-2xl border border-[#d8d2de] bg-[#fcfbfe] px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#5f4cae] focus:ring-0 lg:w-80">
+                <input wire:model.live.debounce.300ms="busqueda" type="text" placeholder="Buscar categoria o descripcion" class="wayna-input lg:w-80">
 
             </div>
         </x-slot>
@@ -31,32 +31,32 @@
         @if ($categorias->isEmpty())
             <x-admin.empty-state title="Aun no hay categorias" description="Crea la primera categoria global para empezar a ordenar emprendedores y productos dentro del admin." icon="category">
                 <x-slot name="action">
-                    <button type="button" wire:click="abrirModal" class="rounded-2xl bg-[#5f4cae] px-4 py-3 text-sm font-medium text-white transition hover:opacity-90">Crear primera categoria</button>
+                    <button type="button" wire:click="abrirModal" class="wayna-btn-primary">Crear primera categoria</button>
                 </x-slot>
             </x-admin.empty-state>
         @else
-            <div class="overflow-x-auto">
-                <table class="min-w-full border-collapse text-left">
-                    <thead>
-                        <tr class="border-b border-[#ebe6ef] bg-[#fcfbfe]">
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Categoria</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Slug</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Icono</th>
-                            <th class="px-4 py-4 font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Productos</th>
-                            <th class="px-4 py-4 text-right font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Acciones</th>
+            <div class="wayna-table-wrap">
+                <table class="wayna-table">
+                    <thead class="wayna-table-head">
+                        <tr>
+                            <th class="wayna-table-th">Categoria</th>
+                            <th class="wayna-table-th">Slug</th>
+                            <th class="wayna-table-th">Icono</th>
+                            <th class="wayna-table-th">Productos</th>
+                            <th class="wayna-table-th text-right">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($categorias as $categoria)
-                            <tr class="border-b border-[#f0ecf4] align-top last:border-b-0">
-                                <td class="px-4 py-5">
-                                    <p class="font-medium text-slate-900">{{ $categoria->nombre }}</p>
-                                    <p class="mt-1 text-sm text-slate-600">{{ $categoria->descripcion ?: 'Sin descripcion registrada.' }}</p>
+                            <tr class="wayna-table-row">
+                                <td class="wayna-table-td">
+                                    <p class="font-medium text-ink">{{ $categoria->nombre }}</p>
+                                    <p class="mt-1 text-sm text-ink-soft">{{ $categoria->descripcion ?: 'Sin descripcion registrada.' }}</p>
                                 </td>
-                                <td class="px-4 py-5 text-sm text-slate-700">{{ $categoria->slug }}</td>
-                                <td class="px-4 py-5 text-sm text-slate-700">{{ $categoria->icono ?: 'Sin icono' }}</td>
-                                <td class="px-4 py-5 font-mono-data text-sm text-[#5f4cae]">{{ $categoria->productos_count }}</td>
-                                <td class="px-4 py-5">
+                                <td class="wayna-table-td">{{ $categoria->slug }}</td>
+                                <td class="wayna-table-td">{{ $categoria->icono ?: 'Sin icono' }}</td>
+                                <td class="wayna-table-td font-mono-data text-primary-600">{{ $categoria->productos_count }}</td>
+                                <td class="wayna-table-td">
                                     <div class="flex justify-end gap-2">
                                         <x-admin.action-button wire:click="abrirModal({{ $categoria->id }})" icon="edit" label="Editar categoria" tone="primary" />
                                         <x-admin.action-button wire:click="confirmarEliminar({{ $categoria->id }})" icon="delete" label="Eliminar categoria" tone="danger" />

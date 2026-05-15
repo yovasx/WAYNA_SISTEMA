@@ -5,10 +5,37 @@
 @tailwind utilities;
 
 @layer base {
+    :root {
+        --wayna-bg: #f6f1ea;
+        --wayna-surface: #fffdf9;
+        --wayna-surface-soft: #f3eee7;
+        --wayna-surface-tint: #f7f2ff;
+        --wayna-border: #e3d9ce;
+        --wayna-border-soft: #eee6de;
+        --wayna-primary: #5b4bc4;
+        --wayna-primary-dark: #4a3aa8;
+        --wayna-accent: #b86a4f;
+        --wayna-accent-dark: #94503a;
+        --wayna-success: #3f7a5c;
+        --wayna-success-soft: #e7f3ec;
+        --wayna-danger: #a14e4b;
+        --wayna-danger-soft: #f8e6e4;
+        --wayna-ink: #201b18;
+        --wayna-ink-soft: #6e6259;
+    }
+
+    * {
+        border-color: var(--wayna-border-soft);
+    }
+
+    html {
+        color-scheme: light;
+    }
+
     body {
         font-family: 'DM Sans', sans-serif;
-        background-color: #fdf8ff;
-        color: #1c1b21;
+        background-color: var(--wayna-bg);
+        color: var(--wayna-ink);
     }
 
     h1,
@@ -17,9 +44,122 @@
     h4 {
         font-family: 'Playfair Display', serif;
     }
+
+    ::selection {
+        background-color: rgba(91, 75, 196, 0.18);
+        color: var(--wayna-ink);
+    }
 }
 
 @layer components {
+    .wayna-shell {
+        @apply bg-surface text-ink;
+        background-image: radial-gradient(circle at top left, rgba(91, 75, 196, 0.05), transparent 28%), radial-gradient(circle at bottom right, rgba(184, 106, 79, 0.06), transparent 26%);
+    }
+
+    .wayna-surface {
+        background-color: var(--wayna-surface);
+    }
+
+    .wayna-surface-soft {
+        background-color: var(--wayna-surface-soft);
+    }
+
+    .wayna-card {
+        @apply rounded-wayna-xl border border-stroke bg-surface-raised shadow-wayna-soft shadow-wayna-inner;
+    }
+
+    .wayna-card-soft {
+        @apply rounded-wayna border border-stroke-soft bg-surface-soft;
+    }
+
+    .wayna-btn {
+        @apply inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-medium transition duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-2 focus:ring-offset-surface active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60;
+    }
+
+    .wayna-btn-primary {
+        @apply wayna-btn border border-primary-500 bg-primary-500 text-white shadow-wayna hover:border-primary-600 hover:bg-primary-600;
+    }
+
+    .wayna-btn-secondary {
+        @apply wayna-btn border border-stroke bg-surface-raised text-ink-soft hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700;
+    }
+
+    .wayna-btn-danger {
+        @apply wayna-btn border border-danger-500 bg-danger-500 text-white shadow-wayna hover:border-danger-600 hover:bg-danger-600;
+    }
+
+    .wayna-icon-btn {
+        @apply inline-flex h-11 w-11 items-center justify-center rounded-2xl border bg-surface-raised transition duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-2 focus:ring-offset-surface active:scale-[0.98];
+    }
+
+    .wayna-input,
+    .wayna-select,
+    .wayna-textarea {
+        @apply w-full rounded-2xl border border-stroke bg-surface-raised px-4 py-3 text-sm text-ink shadow-sm transition duration-200 placeholder:text-ink-muted focus:border-primary-400 focus:ring-2 focus:ring-primary-200;
+    }
+
+    .wayna-input,
+    .wayna-select {
+        @apply min-h-[3rem];
+    }
+
+    .wayna-textarea {
+        @apply resize-y;
+    }
+
+    .wayna-checkbox {
+        @apply rounded border-stroke-strong text-primary-500 focus:ring-primary-300;
+    }
+
+    .wayna-file-input {
+        @apply wayna-input block file:mr-4 file:rounded-xl file:border-0 file:bg-primary-50 file:px-3 file:py-2 file:text-sm file:font-medium file:text-primary-700 hover:file:bg-primary-100;
+    }
+
+    .wayna-label {
+        @apply font-mono-data text-xs uppercase tracking-[0.28em] text-ink-muted;
+    }
+
+    .wayna-alert-success {
+        @apply rounded-2xl border border-success-100 bg-success-100 px-4 py-3 text-sm text-success-700;
+    }
+
+    .wayna-alert-danger {
+        @apply rounded-2xl border border-danger-100 bg-danger-100 px-4 py-3 text-sm text-danger-700;
+    }
+
+    .wayna-table-wrap {
+        @apply overflow-x-auto rounded-wayna border border-stroke-soft bg-surface-raised;
+    }
+
+    .wayna-table {
+        @apply min-w-full border-collapse text-left;
+    }
+
+    .wayna-table-head {
+        @apply bg-primary-50/70;
+    }
+
+    .wayna-table-head tr {
+        @apply border-b border-stroke-soft;
+    }
+
+    .wayna-table-th {
+        @apply px-4 py-4 font-mono-data text-[11px] font-semibold uppercase tracking-[0.24em] text-ink-muted;
+    }
+
+    .wayna-table-td {
+        @apply px-4 py-4 text-sm text-ink-soft;
+    }
+
+    .wayna-table-row {
+        @apply border-b border-stroke-soft align-top transition duration-150 last:border-b-0 even:bg-surface-soft/40 hover:bg-primary-50/70;
+    }
+
+    .wayna-modal {
+        @apply rounded-wayna-xl border border-stroke bg-surface-raised shadow-wayna;
+    }
+
     .landing-page {
         cursor: default;
     }
@@ -73,11 +213,11 @@
     }
 
     .landing-nav-link:hover {
-        color: #5f4cae;
+        color: var(--wayna-primary);
     }
 
     .landing-nav-link[data-active='true'] {
-        border-color: #5f4cae;
-        color: #5f4cae;
+        border-color: var(--wayna-primary);
+        color: var(--wayna-primary);
     }
 }

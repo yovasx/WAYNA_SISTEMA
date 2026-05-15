@@ -13,13 +13,13 @@ new class extends Component
     }
 }; ?>
 
-<nav x-data="{ open: false }" class="border-b border-[#ddd8e1] bg-white/90 backdrop-blur">
+<nav x-data="{ open: false }" class="border-b border-stroke bg-surface/90 backdrop-blur">
     <div class="px-4 sm:px-6 xl:px-10 2xl:px-14">
         <div class="flex h-16 justify-between">
             <div class="flex">
                 <div class="flex shrink-0 items-center">
                     <a href="{{ route('dashboard') }}" wire:navigate>
-                        <span class="font-display text-2xl text-[#5f4cae]">WAYNA</span>
+                        <span class="font-display text-2xl text-primary-600">WAYNA</span>
                     </a>
                 </div>
 
@@ -33,7 +33,7 @@ new class extends Component
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center rounded-full border border-[#ddd8e1] bg-white px-3 py-2 text-sm font-medium leading-4 text-slate-600 transition duration-150 ease-in-out hover:border-[#5f4cae] hover:text-[#5f4cae] focus:outline-none">
+                        <button class="inline-flex items-center rounded-full border border-stroke bg-surface-raised px-3 py-2 text-sm font-medium leading-4 text-ink-soft transition duration-150 ease-in-out hover:border-primary-300 hover:text-primary-700 focus:outline-none">
                             <div x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
 
                             <div class="ms-1">
@@ -59,7 +59,7 @@ new class extends Component
             </div>
 
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center rounded-md p-2 text-slate-400 transition duration-150 ease-in-out hover:bg-[#f7f2fb] hover:text-[#5f4cae] focus:outline-none">
+                <button @click="open = ! open" class="inline-flex items-center justify-center rounded-xl p-2 text-ink-muted transition duration-150 ease-in-out hover:bg-primary-50 hover:text-primary-700 focus:outline-none">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -76,10 +76,10 @@ new class extends Component
             </x-responsive-nav-link>
         </div>
 
-        <div class="border-t border-[#ddd8e1] pt-4 pb-1">
+        <div class="border-t border-stroke pt-4 pb-1">
             <div class="px-4">
-                <div class="text-base font-medium text-slate-800" x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
-                <div class="text-sm font-medium text-slate-500">{{ auth()->user()->email }}</div>
+                <div class="text-base font-medium text-ink" x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
+                <div class="text-sm font-medium text-ink-muted">{{ auth()->user()->email }}</div>
             </div>
 
             <div class="mt-3 space-y-1">
