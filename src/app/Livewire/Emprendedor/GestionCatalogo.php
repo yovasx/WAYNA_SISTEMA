@@ -6,6 +6,8 @@ use App\Models\Categoria;
 use App\Models\PerfilEmprendedor;
 use App\Models\Producto;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -17,6 +19,12 @@ class GestionCatalogo extends Component
     public string $busqueda = '';
 
     public string $filtroCategoria = '';
+
+    public string $filtroEstado = '';
+
+    public string $graficoPreset = '30d';
+
+    public string $graficoMetrica = 'unidades';
 
     public bool $mostrarModalProducto = false;
 
@@ -54,6 +62,11 @@ class GestionCatalogo extends Component
     }
 
     public function updatedFiltroCategoria(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatedFiltroEstado(): void
     {
         $this->resetPage();
     }
@@ -168,26 +181,128 @@ class GestionCatalogo extends Component
     public function render(): View
     {
         $perfil = $this->asegurarPerfilEmprendedor();
+        $salesStates = config('reporting.sales_states', ['confirmado', 'entregado', 'completado']);
+
+        $ventasPorProducto = DB::table('pedido_items')
+            ->join('pedidos', 'pedidos.id', '=', 'pedido_items.pedido_id')
+            ->where('pedidos.emprendedor_id', $perfil->id)
+            ->whereIn('pedidos.estado', $salesStates)
+            ->groupBy('pedido_items.producto_id')
+            ->select([
+                'pedido_items.producto_id',
+                DB::raw('SUM(pedido_items.cantidad) as unidades_vendidas'),
+                DB::raw('SUM(pedido_items.subtotal) as ventas_generadas'),
+                DB::raw('MAX(pedidos.created_at) as ultima_venta'),
+            ]);
+
+        [$graficoDesde, $graficoHasta] = $this->rangoGrafico();
+
+        $topProductosGrafico = DB::table('pedido_items')
+            ->join('pedidos', 'pedidos.id', '=', 'pedido_items.pedido_id')
+            ->join('productos', 'productos.id', '=', 'pedido_items.producto_id')
+            ->where('pedidos.emprendedor_id', $perfil->id)
+            ->whereIn('pedidos.estado', $salesStates)
+            ->when($graficoDesde && $graficoHasta, fn ($query) => $query->whereBetween('pedidos.created_at', [$graficoDesde, $graficoHasta]))
+            ->when($this->filtroCategoria !== '', fn ($query) => $query->where('productos.categoria_id', (int) $this->filtroCategoria))
+            ->when($this->filtroEstado !== '', fn ($query) => $query->where('productos.estado_stock', $this->filtroEstado))
+            ->groupBy('productos.id', 'productos.nombre')
+            ->orderByDesc($this->graficoMetrica === 'ventas' ? DB::raw('SUM(pedido_items.subtotal)') : DB::raw('SUM(pedido_items.cantidad)'))
+            ->orderByDesc(DB::raw('SUM(pedido_items.subtotal)'))
+            ->limit(5)
+            ->get([
+                'productos.id',
+                'productos.nombre',
+                DB::raw('SUM(pedido_items.cantidad) as unidades'),
+                DB::raw('SUM(pedido_items.subtotal) as ventas'),
+            ]);
+
+        $graficoCampo = $this->graficoMetrica === 'ventas' ? 'ventas' : 'unidades';
+        $graficoMax = max((float) ($topProductosGrafico->max($graficoCampo) ?? 0), 1);
+
+        $productos = Producto::query()
+            ->where('productos.emprendedor_id', $perfil->id)
+            ->leftJoinSub($ventasPorProducto, 'ventas_producto', function ($join) {
+                $join->on('ventas_producto.producto_id', '=', 'productos.id');
+            })
+            ->with('categoria:id,nombre')
+            ->select([
+                'productos.*',
+                DB::raw('COALESCE(ventas_producto.unidades_vendidas, 0) as unidades_vendidas'),
+                DB::raw('COALESCE(ventas_producto.ventas_generadas, 0) as ventas_generadas'),
+                DB::raw('ventas_producto.ultima_venta as ultima_venta'),
+            ])
+            ->when($this->busqueda !== '', function ($query) {
+                $query->where(function ($subquery) {
+                    $subquery
+                        ->where('productos.nombre', 'like', '%'.$this->busqueda.'%')
+                        ->orWhere('productos.descripcion', 'like', '%'.$this->busqueda.'%');
+                });
+            })
+            ->when($this->filtroCategoria !== '', fn ($query) => $query->where('productos.categoria_id', (int) $this->filtroCategoria))
+            ->when($this->filtroEstado !== '', fn ($query) => $query->where('productos.estado_stock', $this->filtroEstado))
+            ->orderByDesc('productos.created_at')
+            ->paginate(8);
+
+        $resumen = [
+            'activos' => Producto::query()->where('emprendedor_id', $perfil->id)->where('activo', true)->count(),
+            'agotados' => Producto::query()->where('emprendedor_id', $perfil->id)->where('estado_stock', 'agotado')->count(),
+            'stock_critico' => Producto::query()->where('emprendedor_id', $perfil->id)->where(function ($query) {
+                $query->where('stock', '<=', 5)->orWhere('estado_stock', 'ultimas_unidades');
+            })->count(),
+            'ventas_totales' => (float) DB::table('pedidos')
+                ->where('emprendedor_id', $perfil->id)
+                ->whereIn('estado', $salesStates)
+                ->sum('total'),
+            'unidades_vendidas' => (int) DB::table('pedido_items')
+                ->join('pedidos', 'pedidos.id', '=', 'pedido_items.pedido_id')
+                ->where('pedidos.emprendedor_id', $perfil->id)
+                ->whereIn('pedidos.estado', $salesStates)
+                ->sum('pedido_items.cantidad'),
+        ];
+
+        $productosSinVentas = Producto::query()
+            ->where('emprendedor_id', $perfil->id)
+            ->leftJoinSub($ventasPorProducto, 'ventas_producto', function ($join) {
+                $join->on('ventas_producto.producto_id', '=', 'productos.id');
+            })
+            ->whereRaw('COALESCE(ventas_producto.unidades_vendidas, 0) = 0')
+            ->orderByDesc('productos.created_at')
+            ->limit(3)
+            ->get(['productos.id', 'productos.nombre', 'productos.stock']);
+
+        $productosStockCritico = Producto::query()
+            ->where('emprendedor_id', $perfil->id)
+            ->where(function ($query) {
+                $query->where('stock', '<=', 5)->orWhere('estado_stock', 'ultimas_unidades');
+            })
+            ->orderBy('stock')
+            ->limit(3)
+            ->get(['id', 'nombre', 'stock', 'estado_stock']);
 
         return view('livewire.emprendedor.gestion-catalogo', [
             'categorias' => Categoria::query()->withCount('productos')->orderBy('nombre')->get(),
-            'productos' => Producto::query()
-                ->where('emprendedor_id', $perfil->id)
-                ->with('categoria:id,nombre')
-                ->when($this->busqueda !== '', function ($query) {
-                    $query->where(function ($subquery) {
-                        $subquery
-                            ->where('nombre', 'like', '%'.$this->busqueda.'%')
-                            ->orWhere('descripcion', 'like', '%'.$this->busqueda.'%');
-                    });
-                })
-                ->when($this->filtroCategoria !== '', fn ($query) => $query->where('categoria_id', (int) $this->filtroCategoria))
-                ->latest()
-                ->paginate(8),
+            'productos' => $productos,
             'perfil' => $perfil,
+            'resumen' => $resumen,
+            'topProductosGrafico' => $topProductosGrafico,
+            'graficoMax' => $graficoMax,
+            'productosSinVentas' => $productosSinVentas,
+            'productosStockCritico' => $productosStockCritico,
         ])->layout('layouts.emprendedor', [
             'pageTitle' => 'Productos',
         ]);
+    }
+
+    private function rangoGrafico(): array
+    {
+        $hasta = now()->endOfDay();
+
+        return match ($this->graficoPreset) {
+            '7d' => [now()->subDays(6)->startOfDay(), $hasta],
+            '90d' => [now()->subDays(89)->startOfDay(), $hasta],
+            'all' => [null, null],
+            default => [now()->subDays(29)->startOfDay(), $hasta],
+        };
     }
 
     private function reglasProducto(): array
