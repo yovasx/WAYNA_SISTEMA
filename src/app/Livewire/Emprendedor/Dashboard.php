@@ -36,6 +36,8 @@ class Dashboard extends Component
                 'inventario_total' => $perfil ? Producto::where('emprendedor_id', $perfil->id)->sum('stock') : 0,
                 'valor_catalogo' => $perfil ? Producto::where('emprendedor_id', $perfil->id)->sum('precio') : 0,
             ],
-        ])->layout('layouts.emprendedor');
+        ])->layout('layouts.emprendedor', [
+            'pageTitle' => 'Dashboard',
+        ]);
     }
 }

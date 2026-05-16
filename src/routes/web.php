@@ -100,6 +100,10 @@ Route::get('panel/emprendedor', EmprendedorDashboard::class)
     ->middleware(['auth', 'rol:emprendedor'])
     ->name('dashboard.emprendedor');
 
+Route::get('panel/emprendedor/productos', \App\Livewire\Emprendedor\GestionCatalogo::class)
+    ->middleware(['auth', 'rol:emprendedor'])
+    ->name('emprendedor.productos.index');
+
 Route::post('logout', function (Request $request) {
     Auth::guard('web')->logout();
 

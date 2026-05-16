@@ -22,6 +22,7 @@ class PerfilEmprendedor extends Model
         'descripcion',
         'historia',
         'foto_portada',
+        'video_url',
         'portada_url',
         'nit',
         'estado',

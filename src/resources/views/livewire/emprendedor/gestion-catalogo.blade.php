@@ -1,4 +1,4 @@
-<section class="mt-10 space-y-8 px-4 pb-8 sm:px-6 xl:px-10 2xl:px-14">
+<div class="space-y-8">
     @if (session('catalogo_estado'))
         <div class="wayna-alert-success">
             {{ session('catalogo_estado') }}
@@ -11,6 +11,14 @@
         </div>
     @endif
 
+    <x-admin.page-header eyebrow="Gestion de productos" title="Mi catalogo artesanal" description="Administra inventario, precios y visibilidad de tus piezas activas desde una vista separada del dashboard.">
+        <x-slot name="actions">
+            <button type="button" wire:click="abrirModalProducto" class="wayna-btn-primary">
+                Nuevo producto
+            </button>
+        </x-slot>
+    </x-admin.page-header>
+
     <div class="grid gap-6 xl:grid-cols-[minmax(0,2.8fr)_minmax(320px,1fr)] 2xl:grid-cols-[minmax(0,3fr)_minmax(340px,1fr)]">
         <section class="wayna-card overflow-hidden">
             <div class="flex flex-col gap-4 border-b border-stroke-soft bg-surface-soft px-6 py-5 lg:flex-row lg:items-end lg:justify-between">
@@ -18,12 +26,6 @@
                     <p class="font-mono-data text-xs uppercase tracking-[0.3em] text-ink-muted">Gestion de productos</p>
                     <h2 class="mt-2 font-display text-3xl text-ink">Mi catalogo artesanal</h2>
                     <p class="mt-2 text-sm text-ink-soft">Administra inventario, precios y visibilidad de tus piezas activas.</p>
-                </div>
-
-                <div class="flex flex-wrap gap-3">
-                    <button type="button" wire:click="abrirModalProducto" class="wayna-btn-primary">
-                        Nuevo producto
-                    </button>
                 </div>
             </div>
 
@@ -234,4 +236,4 @@
         </div>
     @endif
 
-</section>
+</div>

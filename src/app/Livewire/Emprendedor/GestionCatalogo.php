@@ -185,6 +185,8 @@ class GestionCatalogo extends Component
                 ->latest()
                 ->paginate(8),
             'perfil' => $perfil,
+        ])->layout('layouts.emprendedor', [
+            'pageTitle' => 'Productos',
         ]);
     }
 
