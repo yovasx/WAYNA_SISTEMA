@@ -283,6 +283,9 @@ chmod -R 775 storage bootstrap/cache
 ```bash
 docker compose run --rm wayna_node npm run buil
 ```
+```bash
+docker compose run --rm wayna_node npm run build
+```
 ### "Error SQLexception"
 ```bash
 docker compose exec wayna_app php artisan migrate:fresh --seed
