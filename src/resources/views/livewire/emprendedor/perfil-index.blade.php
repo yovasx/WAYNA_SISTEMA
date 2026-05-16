@@ -5,7 +5,43 @@
         </div>
     @endif
 
-    <x-admin.page-header eyebrow="Perfil del negocio" title="Identidad del emprendimiento" description="Gestiona la historia, branding visual, video por URL y redes sociales del negocio sin mezclarlo con la operacion diaria del dashboard." />
+    <x-admin.page-header eyebrow="Cuenta empresaria" title="Perfil comercial del negocio" description="Centraliza la identidad publica, la ubicacion, el branding y la preparacion comercial del emprendimiento en un solo lugar." />
+
+    <div class="grid gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
+        <x-admin.panel-card title="Estado del negocio" description="Lectura ejecutiva del avance comercial y la visibilidad actual del emprendimiento.">
+            <div class="grid gap-4 md:grid-cols-3">
+                <div class="rounded-2xl border border-[#ebe6ef] bg-[#fcfbfe] px-4 py-4">
+                    <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Estado</p>
+                    <div class="mt-3">
+                        <x-admin.status-badge :tone="match($perfil->estado_aprobacion) { 'aprobado' => 'green', 'suspendido' => 'red', default => 'amber' }">
+                            {{ $perfil->estado_aprobacion }}
+                        </x-admin.status-badge>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-[#ebe6ef] bg-[#fcfbfe] px-4 py-4">
+                    <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Preparacion</p>
+                    <p class="mt-3 font-display text-3xl text-primary-600">{{ $porcentajePreparacion }}%</p>
+                </div>
+
+                <div class="rounded-2xl border border-[#ebe6ef] bg-[#fcfbfe] px-4 py-4">
+                    <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Checklist</p>
+                    <p class="mt-3 font-display text-3xl text-ink">{{ $tareasCompletadas }}/{{ $tareasTotales }}</p>
+                </div>
+            </div>
+        </x-admin.panel-card>
+
+        <x-admin.panel-card title="Checklist comercial" description="Lo que falta completar para fortalecer la confianza, la operacion y la futura vitrina publica del negocio.">
+            <div class="space-y-3">
+                @foreach ($checklist as $paso)
+                    <div class="flex items-start gap-3 rounded-2xl border border-[#ebe6ef] bg-[#fcfbfe] px-4 py-4 text-sm text-slate-700">
+                        <span class="material-symbols-outlined mt-0.5 {{ $paso['done'] ? 'text-[#1f6b52]' : 'text-slate-400' }}">{{ $paso['done'] ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                        <span>{{ $paso['label'] }}</span>
+                    </div>
+                @endforeach
+            </div>
+        </x-admin.panel-card>
+    </div>
 
     <div class="grid gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(320px,0.9fr)]">
         <div class="space-y-6">
@@ -36,7 +72,7 @@
                 </div>
             </x-admin.panel-card>
 
-            <x-admin.panel-card title="Historia del negocio" description="Aqui defines la narrativa corta y larga con la que se presentara tu emprendimiento.">
+            <x-admin.panel-card title="Historia del negocio" description="Aqui defines la narrativa corta y larga con la que se presentara tu emprendimiento en las superficies publicas y comerciales.">
                 <div class="space-y-5">
                     <div>
                         <label class="font-mono-data text-xs uppercase tracking-[0.28em] text-slate-500">Descripcion</label>
@@ -117,7 +153,7 @@
                 </div>
             </x-admin.panel-card>
 
-            <x-admin.panel-card title="Portada, logo y video" description="Define la identidad visual del negocio y el video de presentacion por URL.">
+            <x-admin.panel-card title="Portada, logo y video" description="Define la identidad visual del negocio y el video de presentacion por URL para reforzar tu marca.">
                 <div class="space-y-6">
                     <div class="grid gap-5 lg:grid-cols-[220px_minmax(0,1fr)]">
                         <div class="flex h-40 w-full items-center justify-center overflow-hidden rounded-[1.5rem] border border-dashed border-[#d8d2de] bg-[#fcfbfe] text-slate-400">
@@ -184,7 +220,7 @@
         </div>
 
         <aside class="space-y-6">
-            <x-admin.panel-card title="Redes sociales" description="Canales rapidos para que tu negocio conecte con clientes y comunidad.">
+            <x-admin.panel-card title="Redes sociales" description="Canales rapidos para que tu negocio conecte con clientes, comunidad y futuras visitas al perfil publico.">
                 <div class="space-y-4">
                     <div>
                         <label class="font-mono-data text-xs uppercase tracking-[0.28em] text-slate-500">Instagram</label>
@@ -212,7 +248,7 @@
                 </div>
             </x-admin.panel-card>
 
-            <x-admin.panel-card title="Vista previa" description="Asi se completa la identidad del negocio para futuras pantallas publicas.">
+            <x-admin.panel-card title="Vista previa" description="Asi se consolidan los datos principales de la cuenta empresaria antes de llegar a las superficies publicas.">
                 <div class="space-y-4">
                     <div class="rounded-[1.5rem] border border-[#ebe6ef] bg-[#fcfbfe] p-4">
                         <p class="font-medium text-slate-900">{{ $nombreNegocio ?: 'Nombre del negocio' }}</p>

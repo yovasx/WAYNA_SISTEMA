@@ -51,4 +51,16 @@ class PerfilIndexTest extends TestCase
             ->call('guardar')
             ->assertHasErrors(['longitud']);
     }
+
+    public function test_business_account_page_displays_commercial_checklist(): void
+    {
+        $user = User::factory()->emprendedor()->create();
+
+        $this->actingAs($user)
+            ->get(route('emprendedor.perfil.index'))
+            ->assertOk()
+            ->assertSee('Cuenta empresaria')
+            ->assertSee('Checklist comercial')
+            ->assertSee('Primer producto publicado');
+    }
 }

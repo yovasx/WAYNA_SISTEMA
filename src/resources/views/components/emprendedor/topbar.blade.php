@@ -34,7 +34,7 @@
                 Mis pedidos
             </a>
 
-            <a href="{{ route('profile') }}" class="hidden rounded-full border border-stroke bg-surface-raised px-4 py-2 text-ink-soft transition hover:border-primary-300 hover:text-primary-700 md:inline-flex">
+            <a href="{{ route('emprendedor.cuenta.index') }}" wire:navigate class="hidden rounded-full border border-stroke bg-surface-raised px-4 py-2 text-ink-soft transition hover:border-primary-300 hover:text-primary-700 md:inline-flex">
                 Mi cuenta
             </a>
 

@@ -3,7 +3,9 @@
 namespace App\Livewire\Emprendedor;
 
 use App\Models\Categoria;
+use App\Models\Pedido;
 use App\Models\PerfilEmprendedor;
+use App\Models\Producto;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -141,10 +143,20 @@ class PerfilIndex extends Component
 
     public function render(): View
     {
+        $perfil = $this->asegurarPerfilEmprendedor();
+        $checklist = $this->checklistComercial($perfil);
+        $tareasCompletadas = collect($checklist)->where('done', true)->count();
+        $tareasTotales = count($checklist);
+
         return view('livewire.emprendedor.perfil-index', [
             'categorias' => Categoria::query()->orderBy('nombre')->get(['id', 'nombre']),
+            'perfil' => $perfil,
+            'checklist' => $checklist,
+            'tareasCompletadas' => $tareasCompletadas,
+            'tareasTotales' => $tareasTotales,
+            'porcentajePreparacion' => (int) round(($tareasCompletadas / max($tareasTotales, 1)) * 100),
         ])->layout('layouts.emprendedor', [
-            'pageTitle' => 'Perfil del negocio',
+            'pageTitle' => 'Cuenta empresaria',
         ]);
     }
 
@@ -266,5 +278,24 @@ class PerfilIndex extends Component
         }
 
         return Storage::disk('public')->url($ruta);
+    }
+
+    private function checklistComercial(PerfilEmprendedor $perfil): array
+    {
+        $productosCount = Producto::query()->where('emprendedor_id', $perfil->id)->count();
+        $pedidosCount = Pedido::query()->where('emprendedor_id', $perfil->id)->count();
+        $redes = is_array($perfil->redes_sociales) ? array_filter($perfil->redes_sociales) : [];
+
+        return [
+            ['label' => 'Nombre comercial definido', 'done' => filled($perfil->nombre_negocio)],
+            ['label' => 'Categoria principal asignada', 'done' => $perfil->categoria_id !== null],
+            ['label' => 'Descripcion breve del negocio', 'done' => filled($perfil->descripcion)],
+            ['label' => 'Historia completa del emprendimiento', 'done' => filled($perfil->historia)],
+            ['label' => 'Identidad visual cargada', 'done' => filled($perfil->foto_portada) || filled($perfil->logo_url)],
+            ['label' => 'Canales de contacto o redes cargados', 'done' => $redes !== []],
+            ['label' => 'Ubicacion comercial definida', 'done' => filled($perfil->ciudad) || ($perfil->latitud !== null && $perfil->longitud !== null)],
+            ['label' => 'Primer producto publicado', 'done' => $productosCount > 0],
+            ['label' => 'Primer pedido recibido', 'done' => $pedidosCount > 0],
+        ];
     }
 }

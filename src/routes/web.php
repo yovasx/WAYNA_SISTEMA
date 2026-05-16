@@ -100,6 +100,10 @@ Route::get('panel/emprendedor', EmprendedorDashboard::class)
     ->middleware(['auth', 'rol:emprendedor'])
     ->name('dashboard.emprendedor');
 
+Route::get('panel/emprendedor/mi-cuenta', \App\Livewire\Emprendedor\CuentaPersonal::class)
+    ->middleware(['auth', 'rol:emprendedor'])
+    ->name('emprendedor.cuenta.index');
+
 Route::get('panel/emprendedor/pedidos', \App\Livewire\Emprendedor\PedidosIndex::class)
     ->middleware(['auth', 'rol:emprendedor'])
     ->name('emprendedor.pedidos.index');

@@ -29,7 +29,11 @@
             </x-admin.sidebar-item>
 
             <x-admin.sidebar-item :href="route('emprendedor.perfil.index')" icon="store" :active="request()->routeIs('emprendedor.perfil.*')" wire:navigate>
-                Perfil del negocio
+                Cuenta empresaria
+            </x-admin.sidebar-item>
+
+            <x-admin.sidebar-item :href="route('emprendedor.cuenta.index')" icon="account_circle" :active="request()->routeIs('emprendedor.cuenta.*')" wire:navigate>
+                Mi cuenta
             </x-admin.sidebar-item>
         </nav>
 
