@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Models\Categoria;
 use App\Models\PerfilEmprendedor;
 use App\Models\Producto;
+use App\Services\Admin\AdminReportService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -21,6 +22,10 @@ class ProductosIndex extends Component
     public string $filtroEmprendedor = '';
 
     public string $filtroEstado = '';
+
+    public string $graficoPreset = '30d';
+
+    public string $graficoMetrica = 'unidades';
 
     public bool $mostrarModal = false;
 
@@ -169,7 +174,7 @@ class ProductosIndex extends Component
         $this->resetFormulario();
     }
 
-    public function render(): View
+    public function render(AdminReportService $reportService): View
     {
         $productos = Producto::query()
             ->with(['categoria:id,nombre', 'perfilEmprendedor:id,nombre_negocio,usuario_id', 'perfilEmprendedor.usuario:id,nombre_completo'])
@@ -189,10 +194,23 @@ class ProductosIndex extends Component
             ->latest()
             ->paginate(12);
 
+        $topProductosGrafico = $reportService->topProductosResumen([
+            'preset' => $this->graficoPreset,
+            'metrica' => $this->graficoMetrica,
+            'categoria_id' => $this->filtroCategoria,
+            'emprendedor_id' => $this->filtroEmprendedor,
+            'limite' => 5,
+        ]);
+
+        $graficoCampo = $this->graficoMetrica === 'ventas' ? 'ventas' : 'unidades';
+        $graficoMax = max((float) ($topProductosGrafico->max($graficoCampo) ?? 0), 1);
+
         return view('livewire.admin.productos-index', [
             'productos' => $productos,
             'categorias' => Categoria::query()->orderBy('nombre')->get(['id', 'nombre']),
             'perfiles' => PerfilEmprendedor::query()->with('usuario:id,nombre_completo')->orderBy('nombre_negocio')->get(['id', 'nombre_negocio', 'usuario_id']),
+            'topProductosGrafico' => $topProductosGrafico,
+            'graficoMax' => $graficoMax,
             'resumen' => [
                 'totales' => Producto::query()->count(),
                 'activos' => Producto::query()->where('activo', true)->count(),

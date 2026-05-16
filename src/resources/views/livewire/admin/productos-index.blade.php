@@ -20,6 +20,83 @@
         <x-admin.kpi-card label="Stock critico" :value="$resumen['stock_critico']" icon="warning" tone="neutral" />
     </div>
 
+    <x-admin.panel-card title="Productos mas vendidos" description="Cada compra validada suma unidades y monto al ranking. El bloque respeta el rango elegido y los filtros activos de categoria o emprendedor.">
+        <x-slot name="actions">
+            <div class="grid w-full gap-3 sm:grid-cols-2 lg:w-auto">
+                <select wire:model.live="graficoPreset" class="wayna-select">
+                    <option value="7d">Ultimos 7 dias</option>
+                    <option value="30d">Ultimos 30 dias</option>
+                    <option value="90d">Ultimos 90 dias</option>
+                    <option value="all">Todo el historial</option>
+                </select>
+
+                <select wire:model.live="graficoMetrica" class="wayna-select">
+                    <option value="unidades">Por unidades</option>
+                    <option value="ventas">Por monto</option>
+                </select>
+            </div>
+        </x-slot>
+
+        @if ($topProductosGrafico->isEmpty())
+            <x-admin.empty-state title="Sin productos vendidos" description="Cuando existan pedidos confirmados, entregados o completados, este ranking mostrara los productos con mejor salida comercial." icon="bar_chart" />
+        @else
+            <div class="grid gap-4 xl:grid-cols-[minmax(0,1.2fr)_minmax(280px,0.8fr)]">
+                <div class="space-y-4">
+                    @foreach ($topProductosGrafico as $producto)
+                        @php
+                            $valorPrincipal = (float) ($graficoMetrica === 'ventas' ? $producto->ventas : $producto->unidades);
+                            $ancho = $graficoMax > 0 ? max(($valorPrincipal / $graficoMax) * 100, 8) : 0;
+                        @endphp
+
+                        <article class="rounded-[1.5rem] border border-[#ebe6ef] bg-[#fcfbfe] p-4">
+                            <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                                <div>
+                                    <p class="font-medium text-ink">{{ $producto->nombre }}</p>
+                                    <p class="mt-1 text-sm text-ink-soft">{{ (int) $producto->unidades }} unidad(es) vendidas</p>
+                                </div>
+
+                                <div class="text-left sm:text-right">
+                                    <p class="font-mono-data text-sm text-primary-600">
+                                        @if ($graficoMetrica === 'ventas')
+                                            Bs {{ number_format((float) $producto->ventas, 2) }}
+                                        @else
+                                            {{ (int) $producto->unidades }} und.
+                                        @endif
+                                    </p>
+                                    <p class="mt-1 text-xs text-slate-500">Bs {{ number_format((float) $producto->ventas, 2) }} en ventas</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 h-3 overflow-hidden rounded-full bg-[#e8e2ee]">
+                                <div class="h-full rounded-full bg-[#5f4cae] transition-all" style="width: {{ min($ancho, 100) }}%"></div>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+
+                <aside class="rounded-[1.5rem] border border-[#ebe6ef] bg-white p-5">
+                    <p class="font-mono-data text-xs uppercase tracking-[0.24em] text-slate-500">Lectura del ranking</p>
+                    <div class="mt-5 space-y-4 text-sm text-slate-600">
+                        <div class="rounded-2xl border border-[#ebe6ef] bg-[#fcfbfe] px-4 py-4">
+                            <p class="font-medium text-slate-900">Metrica activa</p>
+                            <p class="mt-1">{{ $graficoMetrica === 'ventas' ? 'Ordenado por monto vendido acumulado.' : 'Ordenado por unidades vendidas acumuladas.' }}</p>
+                        </div>
+
+                        <div class="rounded-2xl border border-[#ebe6ef] bg-[#fcfbfe] px-4 py-4">
+                            <p class="font-medium text-slate-900">Estados que suman</p>
+                            <p class="mt-1">Solo cuentan pedidos confirmados, entregados o completados.</p>
+                        </div>
+
+                        <div class="rounded-2xl border border-[#ebe6ef] bg-[#fcfbfe] px-4 py-4">
+                            <p class="font-medium text-slate-900">Contexto</p>
+                            <p class="mt-1">Si filtras por categoria o emprendedor en este panel, el ranking se recalcula con ese mismo segmento.</p>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        @endif
+    </x-admin.panel-card>
+
     <x-admin.panel-card title="Inventario transversal" description="Filtra por categoria, emprendedor o disponibilidad para operar el catalogo sin cambiar de panel.">
         <x-slot name="actions">
             <div class="grid w-full gap-3 lg:grid-cols-5">

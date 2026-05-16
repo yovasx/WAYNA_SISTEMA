@@ -80,6 +80,31 @@ class AdminReportService
         ];
     }
 
+    public function topProductosResumen(array $filters = []): Collection
+    {
+        [$desde, $hasta] = $this->resolverRango(
+            $filters['preset'] ?? '30d',
+            $filters['desde'] ?? null,
+            $filters['hasta'] ?? null,
+        );
+
+        $filtros = [
+            'emprendedor_id' => ! empty($filters['emprendedor_id']) ? (int) $filters['emprendedor_id'] : null,
+            'categoria_id' => ! empty($filters['categoria_id']) ? (int) $filters['categoria_id'] : null,
+            'metodo_pago' => null,
+            'estado_transaccion' => null,
+            'tipo_transaccion' => null,
+        ];
+
+        $metrica = in_array($filters['metrica'] ?? 'ventas', ['unidades', 'ventas'], true)
+            ? $filters['metrica']
+            : 'ventas';
+
+        $limite = max(1, min((int) ($filters['limite'] ?? 5), 10));
+
+        return $this->topProductos($desde, $hasta, $filtros, $metrica, $limite);
+    }
+
     private function resolverPeriodoPrevio(Carbon $desde, Carbon $hasta): array
     {
         $duracion = $desde->diffInDays($hasta) + 1;
@@ -340,8 +365,18 @@ class AdminReportService
             ]);
     }
 
-    private function topProductos(Carbon $desde, Carbon $hasta, array $filtros): Collection
+    private function topProductos(
+        Carbon $desde,
+        Carbon $hasta,
+        array $filtros,
+        string $metrica = 'ventas',
+        int $limite = 5
+    ): Collection
     {
+        $orderBy = $metrica === 'unidades'
+            ? DB::raw('SUM(pedido_items.cantidad)')
+            : DB::raw('SUM(pedido_items.subtotal)');
+
         return DB::table('pedido_items')
             ->join('pedidos', 'pedidos.id', '=', 'pedido_items.pedido_id')
             ->join('productos', 'productos.id', '=', 'pedido_items.producto_id')
@@ -350,8 +385,9 @@ class AdminReportService
             ->when($filtros['emprendedor_id'], fn ($query, $emprendedorId) => $query->where('pedidos.emprendedor_id', $emprendedorId))
             ->when($filtros['categoria_id'], fn ($query, $categoriaId) => $query->where('productos.categoria_id', $categoriaId))
             ->groupBy('productos.id', 'productos.nombre')
+            ->orderByDesc($orderBy)
             ->orderByDesc(DB::raw('SUM(pedido_items.subtotal)'))
-            ->limit(5)
+            ->limit($limite)
             ->get([
                 'productos.id',
                 'productos.nombre',
