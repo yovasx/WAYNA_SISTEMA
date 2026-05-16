@@ -142,12 +142,12 @@
             </section>
 
             <section class="rounded-[1.75rem] border border-[#d8d2de] bg-[#f7f2fb] p-6">
-                <p class="font-mono-data text-xs uppercase tracking-[0.3em] text-slate-500">Perfil operativo</p>
+                <p class="font-mono-data text-xs uppercase tracking-[0.3em] text-slate-500">Perfil del negocio</p>
                 <h2 class="mt-2 font-display text-2xl text-slate-900">{{ $perfil->nombre_emprendimiento }}</h2>
-                <p class="mt-2 text-sm text-slate-600">NIT: {{ $perfil->nit ?: 'No registrado' }}. Estado: {{ $perfil->estado_aprobacion }}.</p>
-                <p class="mt-4 rounded-2xl bg-white px-4 py-3 text-sm text-slate-600">
-                    Tu panel ya esta preparado para escalar con nuevos productos y visibilidad publica sin tocar configuraciones globales.
-                </p>
+                <p class="mt-2 text-sm text-slate-600">La historia, branding y video del negocio ahora se gestionan desde una seccion propia del panel.</p>
+                <a href="{{ route('emprendedor.perfil.index') }}" wire:navigate class="mt-4 inline-flex rounded-2xl bg-white px-4 py-3 text-sm font-medium text-[#5f4cae] transition hover:text-[#4a3597]">
+                    Editar perfil del negocio
+                </a>
             </section>
         </aside>
     </div>

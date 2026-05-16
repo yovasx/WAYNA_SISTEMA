@@ -104,6 +104,10 @@ Route::get('panel/emprendedor/productos', \App\Livewire\Emprendedor\GestionCatal
     ->middleware(['auth', 'rol:emprendedor'])
     ->name('emprendedor.productos.index');
 
+Route::get('panel/emprendedor/perfil', \App\Livewire\Emprendedor\PerfilIndex::class)
+    ->middleware(['auth', 'rol:emprendedor'])
+    ->name('emprendedor.perfil.index');
+
 Route::post('logout', function (Request $request) {
     Auth::guard('web')->logout();
 

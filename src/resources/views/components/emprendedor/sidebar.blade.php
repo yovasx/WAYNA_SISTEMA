@@ -23,11 +23,15 @@
             <x-admin.sidebar-item :href="route('emprendedor.productos.index')" icon="inventory_2" :active="request()->routeIs('emprendedor.productos.*')" wire:navigate>
                 Productos
             </x-admin.sidebar-item>
+
+            <x-admin.sidebar-item :href="route('emprendedor.perfil.index')" icon="store" :active="request()->routeIs('emprendedor.perfil.*')" wire:navigate>
+                Perfil del negocio
+            </x-admin.sidebar-item>
         </nav>
 
         <div class="mt-6 border-t border-stroke pt-4">
             <div x-show="sidebarEffective === 'expanded'" x-transition.opacity.duration.150ms class="rounded-[1.5rem] border border-accent-100 bg-accent-50 px-4 py-4 text-sm text-accent-700 shadow-wayna-soft">
-                Tu panel ya esta listo para crecer con perfil del negocio, video por URL y gestion de pedidos en la siguiente fase.
+                Tu panel ya separa operacion y branding del negocio. La siguiente fase podra sumar pedidos y estadisticas propias del emprendimiento.
             </div>
         </div>
     </div>

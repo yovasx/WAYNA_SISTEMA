@@ -22,7 +22,9 @@ class PerfilEmprendedor extends Model
         'descripcion',
         'historia',
         'foto_portada',
+        'logo_url',
         'video_url',
+        'redes_sociales',
         'portada_url',
         'nit',
         'estado',
@@ -35,6 +37,7 @@ class PerfilEmprendedor extends Model
     {
         return [
             'aprobado_en' => 'datetime',
+            'redes_sociales' => 'array',
         ];
     }
 
