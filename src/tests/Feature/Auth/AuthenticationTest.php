@@ -17,12 +17,13 @@ class AuthenticationTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSeeVolt('pages.auth.login');
+            ->assertSee('Iniciar sesion')
+            ->assertSee('Olvide mi contrasena');
     }
 
     public function test_users_can_authenticate_using_the_login_screen(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->comprador()->create();
 
         $component = Volt::test('pages.auth.login')
             ->set('form.email', $user->email)
@@ -39,7 +40,7 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->comprador()->create();
 
         $component = Volt::test('pages.auth.login')
             ->set('form.email', $user->email)
@@ -54,22 +55,56 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_navigation_menu_can_be_rendered(): void
+    public function test_comprador_is_redirected_to_user_dashboard(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->comprador()->create();
 
         $this->actingAs($user);
 
-        $response = $this->get('/dashboard');
+        $this->get('/dashboard')
+            ->assertRedirect(route('dashboard.usuario', absolute: false));
+    }
 
-        $response
-            ->assertOk()
-            ->assertSeeVolt('layout.navigation');
+    public function test_emprendedor_is_redirected_to_business_dashboard(): void
+    {
+        $user = User::factory()->emprendedor()->create();
+
+        $this->actingAs($user);
+
+        $this->get('/dashboard')
+            ->assertRedirect(route('dashboard.emprendedor', absolute: false));
+    }
+
+    public function test_admin_is_redirected_to_admin_dashboard(): void
+    {
+        $user = User::factory()->admin()->create();
+
+        $this->actingAs($user);
+
+        $this->get('/dashboard')
+            ->assertRedirect(route('dashboard.admin', absolute: false));
+    }
+
+    public function test_inactive_users_can_not_authenticate(): void
+    {
+        $user = User::factory()->comprador()->inactivo()->create();
+
+        $component = Volt::test('pages.auth.login')
+            ->set('form.email', $user->email)
+            ->set('form.password', 'password');
+
+        $component->call('login');
+
+        $component
+            ->assertHasErrors(['form.email'])
+            ->assertNoRedirect();
+
+        $this->assertGuest();
     }
 
     public function test_users_can_logout(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->comprador()->create();
 
         $this->actingAs($user);
 

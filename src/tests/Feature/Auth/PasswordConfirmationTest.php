@@ -13,18 +13,18 @@ class PasswordConfirmationTest extends TestCase
 
     public function test_confirm_password_screen_can_be_rendered(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->comprador()->create();
 
         $response = $this->actingAs($user)->get('/confirm-password');
 
         $response
-            ->assertSeeVolt('pages.auth.confirm-password')
+            ->assertSee('confirm your password')
             ->assertStatus(200);
     }
 
     public function test_password_can_be_confirmed(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->comprador()->create();
 
         $this->actingAs($user);
 
@@ -40,7 +40,7 @@ class PasswordConfirmationTest extends TestCase
 
     public function test_password_is_not_confirmed_with_invalid_password(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->comprador()->create();
 
         $this->actingAs($user);
 

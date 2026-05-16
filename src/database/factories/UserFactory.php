@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\PerfilEmprendedor;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -41,6 +42,41 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    public function comprador(): static
+    {
+        return $this->afterCreating(function (User $user): void {
+            $user->asignarRol('COMPRADOR');
+        });
+    }
+
+    public function emprendedor(): static
+    {
+        return $this->afterCreating(function (User $user): void {
+            $user->asignarRol('EMPRENDEDOR');
+
+            PerfilEmprendedor::query()->firstOrCreate([
+                'usuario_id' => $user->id,
+            ], [
+                'nombre_negocio' => $user->name,
+                'estado' => 'pendiente',
+            ]);
+        });
+    }
+
+    public function admin(): static
+    {
+        return $this->afterCreating(function (User $user): void {
+            $user->asignarRol('ADMINISTRADOR');
+        });
+    }
+
+    public function inactivo(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'estado' => 'pendiente',
         ]);
     }
 }

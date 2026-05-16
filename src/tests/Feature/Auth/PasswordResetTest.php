@@ -18,7 +18,7 @@ class PasswordResetTest extends TestCase
         $response = $this->get('/forgot-password');
 
         $response
-            ->assertSeeVolt('pages.auth.forgot-password')
+            ->assertSee('Forgot your password?')
             ->assertStatus(200);
     }
 
@@ -26,7 +26,7 @@ class PasswordResetTest extends TestCase
     {
         Notification::fake();
 
-        $user = User::factory()->create();
+        $user = User::factory()->comprador()->create();
 
         Volt::test('pages.auth.forgot-password')
             ->set('email', $user->email)
@@ -39,7 +39,7 @@ class PasswordResetTest extends TestCase
     {
         Notification::fake();
 
-        $user = User::factory()->create();
+        $user = User::factory()->comprador()->create();
 
         Volt::test('pages.auth.forgot-password')
             ->set('email', $user->email)
@@ -49,7 +49,7 @@ class PasswordResetTest extends TestCase
             $response = $this->get('/reset-password/'.$notification->token);
 
             $response
-                ->assertSeeVolt('pages.auth.reset-password')
+                ->assertSee('Reset Password')
                 ->assertStatus(200);
 
             return true;
@@ -60,7 +60,7 @@ class PasswordResetTest extends TestCase
     {
         Notification::fake();
 
-        $user = User::factory()->create();
+        $user = User::factory()->comprador()->create();
 
         Volt::test('pages.auth.forgot-password')
             ->set('email', $user->email)

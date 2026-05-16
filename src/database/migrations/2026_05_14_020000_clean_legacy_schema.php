@@ -1,12 +1,19 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
     public function up(): void
     {
+        // Esta migracion solo limpia divergencias de esquemas heredados. En SQLite
+        // de pruebas no aporta valor y algunos dropColumn legacy no son compatibles.
+        if (DB::getDriverName() === 'sqlite') {
+            return;
+        }
+
         $this->limpiarCategorias();
         $this->limpiarProductos();
         $this->limpiarTablasSobrantes();
