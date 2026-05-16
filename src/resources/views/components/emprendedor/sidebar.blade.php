@@ -20,6 +20,10 @@
                 Dashboard
             </x-admin.sidebar-item>
 
+            <x-admin.sidebar-item :href="route('emprendedor.pedidos.index')" icon="receipt_long" :active="request()->routeIs('emprendedor.pedidos.*')" wire:navigate>
+                Pedidos
+            </x-admin.sidebar-item>
+
             <x-admin.sidebar-item :href="route('emprendedor.productos.index')" icon="inventory_2" :active="request()->routeIs('emprendedor.productos.*')" wire:navigate>
                 Productos
             </x-admin.sidebar-item>
@@ -31,7 +35,7 @@
 
         <div class="mt-6 border-t border-stroke pt-4">
             <div x-show="sidebarEffective === 'expanded'" x-transition.opacity.duration.150ms class="rounded-[1.5rem] border border-accent-100 bg-accent-50 px-4 py-4 text-sm text-accent-700 shadow-wayna-soft">
-                Tu panel ya separa operacion y branding del negocio. La siguiente fase podra sumar pedidos y estadisticas propias del emprendimiento.
+                Tu panel ahora conecta pedidos, catalogo y perfil del negocio para operar tu emprendimiento desde un mismo espacio.
             </div>
         </div>
     </div>

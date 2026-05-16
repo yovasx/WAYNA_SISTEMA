@@ -1,6 +1,15 @@
 @props(['pageTitle' => 'Panel emprendedor'])
 
 <header class="sticky top-0 z-50 border-b border-stroke bg-surface/95 backdrop-blur wayna-shell">
+    @php
+        $perfil = auth()->user()->perfilEmprendedor;
+        $estadoPerfil = $perfil?->estado_aprobacion ?? 'pendiente';
+        $estadoTone = match ($estadoPerfil) {
+            'aprobado' => 'green',
+            'suspendido' => 'red',
+            default => 'amber',
+        };
+    @endphp
     <div class="mx-auto flex h-16 max-w-[1600px] items-center justify-between px-4 sm:px-6 lg:px-8">
         <div class="flex items-center gap-3">
             <button type="button" @click="openMobileSidebar()" class="wayna-icon-btn border-stroke text-ink-soft hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700 md:hidden" aria-label="Abrir menu">
@@ -16,6 +25,15 @@
         </div>
 
         <div class="flex items-center gap-3 text-sm">
+            <div class="hidden items-center gap-3 rounded-full border border-stroke bg-surface-raised px-4 py-2 md:inline-flex">
+                <span class="text-xs uppercase tracking-[0.2em] text-ink-muted">Estado</span>
+                <x-admin.status-badge :tone="$estadoTone">{{ $estadoPerfil }}</x-admin.status-badge>
+            </div>
+
+            <a href="{{ route('emprendedor.pedidos.index') }}" wire:navigate class="hidden rounded-full border border-stroke bg-surface-raised px-4 py-2 text-ink-soft transition hover:border-primary-300 hover:text-primary-700 lg:inline-flex">
+                Mis pedidos
+            </a>
+
             <a href="{{ route('profile') }}" class="hidden rounded-full border border-stroke bg-surface-raised px-4 py-2 text-ink-soft transition hover:border-primary-300 hover:text-primary-700 md:inline-flex">
                 Mi cuenta
             </a>

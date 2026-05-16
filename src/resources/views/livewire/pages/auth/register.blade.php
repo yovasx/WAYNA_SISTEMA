@@ -100,6 +100,14 @@ new #[Layout('layouts.guest')] class extends Component
         </button>
     </form>
 
+    <div class="mt-6 rounded-[1.5rem] border border-primary-100 bg-primary-50/70 p-5 text-sm text-ink-soft">
+        <p class="font-medium text-ink">Quieres vender en WAYNA?</p>
+        <div class="mt-3 flex flex-wrap gap-3">
+            <a href="{{ route('emprendedor.register') }}" wire:navigate class="wayna-btn-primary px-4 py-2">Registro emprendedor</a>
+            <a href="{{ route('emprendedor.login') }}" wire:navigate class="wayna-btn-secondary px-4 py-2">Acceso emprendedor</a>
+        </div>
+    </div>
+
     <p class="mt-8 text-center text-sm text-ink-soft">
         Ya tienes una cuenta?
         <a href="{{ route('login') }}" wire:navigate class="font-medium text-primary-600 hover:underline">Inicia sesion</a>
