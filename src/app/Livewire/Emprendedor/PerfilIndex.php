@@ -25,6 +25,18 @@ class PerfilIndex extends Component
 
     public string $videoUrl = '';
 
+    public bool $tieneLocalFisico = false;
+
+    public string $ciudad = '';
+
+    public string $direccionCalle = '';
+
+    public string $direccionNumero = '';
+
+    public ?string $latitud = null;
+
+    public ?string $longitud = null;
+
     public string $instagram = '';
 
     public string $facebook = '';
@@ -57,6 +69,12 @@ class PerfilIndex extends Component
             'descripcion' => ['nullable', 'string'],
             'historia' => ['nullable', 'string'],
             'videoUrl' => ['nullable', 'url', 'max:500'],
+            'tieneLocalFisico' => ['boolean'],
+            'ciudad' => ['nullable', 'string', 'max:120'],
+            'direccionCalle' => ['nullable', 'string', 'max:180'],
+            'direccionNumero' => ['nullable', 'string', 'max:30'],
+            'latitud' => ['nullable', 'numeric', 'between:-90,90', 'required_with:longitud'],
+            'longitud' => ['nullable', 'numeric', 'between:-180,180', 'required_with:latitud'],
             'instagram' => ['nullable', 'string', 'max:255'],
             'facebook' => ['nullable', 'string', 'max:255'],
             'tiktok' => ['nullable', 'string', 'max:255'],
@@ -70,6 +88,12 @@ class PerfilIndex extends Component
             'descripcion' => 'descripcion',
             'historia' => 'historia',
             'videoUrl' => 'video',
+            'tieneLocalFisico' => 'local fisico',
+            'ciudad' => 'ciudad',
+            'direccionCalle' => 'calle',
+            'direccionNumero' => 'numero',
+            'latitud' => 'latitud',
+            'longitud' => 'longitud',
             'instagram' => 'Instagram',
             'facebook' => 'Facebook',
             'tiktok' => 'TikTok',
@@ -85,6 +109,12 @@ class PerfilIndex extends Component
             'descripcion' => $datos['descripcion'] !== '' ? $datos['descripcion'] : null,
             'historia' => $datos['historia'] !== '' ? $datos['historia'] : null,
             'video_url' => $datos['videoUrl'] !== '' ? $datos['videoUrl'] : null,
+            'tiene_local_fisico' => $datos['tieneLocalFisico'],
+            'ciudad' => $datos['ciudad'] !== '' ? $datos['ciudad'] : null,
+            'direccion_calle' => $datos['direccionCalle'] !== '' ? $datos['direccionCalle'] : null,
+            'direccion_numero' => $datos['direccionNumero'] !== '' ? $datos['direccionNumero'] : null,
+            'latitud' => $datos['latitud'] !== null && $datos['latitud'] !== '' ? (float) $datos['latitud'] : null,
+            'longitud' => $datos['longitud'] !== null && $datos['longitud'] !== '' ? (float) $datos['longitud'] : null,
             'foto_portada' => $this->guardarArchivoPublico(
                 $perfil->foto_portada,
                 $this->fotoPortadaNueva,
@@ -159,6 +189,12 @@ class PerfilIndex extends Component
         $this->descripcion = $perfil->descripcion ?? '';
         $this->historia = $perfil->historia ?? '';
         $this->videoUrl = $perfil->video_url ?? '';
+        $this->tieneLocalFisico = (bool) $perfil->tiene_local_fisico;
+        $this->ciudad = $perfil->ciudad ?? '';
+        $this->direccionCalle = $perfil->direccion_calle ?? '';
+        $this->direccionNumero = $perfil->direccion_numero ?? '';
+        $this->latitud = $perfil->latitud !== null ? (string) $perfil->latitud : null;
+        $this->longitud = $perfil->longitud !== null ? (string) $perfil->longitud : null;
         $this->instagram = $redes['instagram'] ?? '';
         $this->facebook = $redes['facebook'] ?? '';
         $this->tiktok = $redes['tiktok'] ?? '';

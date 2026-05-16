@@ -52,6 +52,71 @@
                 </div>
             </x-admin.panel-card>
 
+            <x-admin.panel-card title="Ubicacion del negocio" description="Esta seccion es opcional. Si tienes un local fisico, puedes cargar una referencia simple y marcarlo en el mapa.">
+                <div class="space-y-6" data-business-location-root>
+                    <label class="flex items-center gap-3 rounded-2xl border border-[#d8d2de] bg-white px-4 py-4">
+                        <input wire:model.live="tieneLocalFisico" type="checkbox" class="rounded border-[#cbc4d4] text-[#5f4cae] focus:ring-[#5f4cae]">
+                        <span>
+                            <span class="block text-sm font-medium text-slate-900">Mi negocio tiene local fisico</span>
+                            <span class="mt-1 block text-xs text-slate-500">Puedes dejar esta seccion vacia si solo atiendes por coordinacion o medios digitales.</span>
+                        </span>
+                    </label>
+
+                    <div class="grid gap-5 lg:grid-cols-3">
+                        <div>
+                            <label class="font-mono-data text-xs uppercase tracking-[0.28em] text-slate-500">Ciudad</label>
+                            <input wire:model.live="ciudad" type="text" class="mt-2 w-full rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-[#5f4cae] focus:ring-0" placeholder="Ej. La Paz">
+                            <x-input-error :messages="$errors->get('ciudad')" class="mt-2" />
+                        </div>
+
+                        <div>
+                            <label class="font-mono-data text-xs uppercase tracking-[0.28em] text-slate-500">Nombre de la calle</label>
+                            <input wire:model.live="direccionCalle" type="text" class="mt-2 w-full rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-[#5f4cae] focus:ring-0" placeholder="Ej. Av. 16 de Julio">
+                            <x-input-error :messages="$errors->get('direccionCalle')" class="mt-2" />
+                        </div>
+
+                        <div>
+                            <label class="font-mono-data text-xs uppercase tracking-[0.28em] text-slate-500">Numero</label>
+                            <input wire:model.live="direccionNumero" type="text" class="mt-2 w-full rounded-2xl border border-[#d8d2de] bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-[#5f4cae] focus:ring-0" placeholder="Ej. 1234">
+                            <x-input-error :messages="$errors->get('direccionNumero')" class="mt-2" />
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div wire:ignore class="space-y-4">
+                            <div class="wayna-map-shell">
+                                <div
+                                    data-business-map
+                                    data-lat="{{ $latitud ?? '' }}"
+                                    data-lng="{{ $longitud ?? '' }}"
+                                    class="wayna-map"
+                                ></div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" wire:model.live="latitud" data-map-lat>
+                        <input type="hidden" wire:model.live="longitud" data-map-lng>
+
+                        <div class="rounded-2xl border border-[#ebe6ef] bg-[#fcfbfe] px-4 py-4 text-sm text-slate-600">
+                            <p class="font-medium text-slate-900">Mapa del negocio</p>
+                            <p class="mt-2">Haz clic en el mapa para marcar tu negocio. Tambien puedes arrastrar el marcador para ajustar la ubicacion.</p>
+                            <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                                <div class="rounded-2xl border border-[#e5deef] bg-white px-4 py-3">
+                                    <p class="font-mono-data text-[11px] uppercase tracking-[0.2em] text-slate-500">Latitud</p>
+                                    <p data-map-lat-display class="mt-2 text-sm text-slate-900">{{ $latitud !== null && $latitud !== '' ? $latitud : 'Sin marcar' }}</p>
+                                </div>
+                                <div class="rounded-2xl border border-[#e5deef] bg-white px-4 py-3">
+                                    <p class="font-mono-data text-[11px] uppercase tracking-[0.2em] text-slate-500">Longitud</p>
+                                    <p data-map-lng-display class="mt-2 text-sm text-slate-900">{{ $longitud !== null && $longitud !== '' ? $longitud : 'Sin marcar' }}</p>
+                                </div>
+                            </div>
+                            <x-input-error :messages="$errors->get('latitud')" class="mt-3" />
+                            <x-input-error :messages="$errors->get('longitud')" class="mt-2" />
+                        </div>
+                    </div>
+                </div>
+            </x-admin.panel-card>
+
             <x-admin.panel-card title="Portada, logo y video" description="Define la identidad visual del negocio y el video de presentacion por URL.">
                 <div class="space-y-6">
                     <div class="grid gap-5 lg:grid-cols-[220px_minmax(0,1fr)]">
@@ -152,6 +217,17 @@
                     <div class="rounded-[1.5rem] border border-[#ebe6ef] bg-[#fcfbfe] p-4">
                         <p class="font-medium text-slate-900">{{ $nombreNegocio ?: 'Nombre del negocio' }}</p>
                         <p class="mt-1 text-sm text-slate-600">{{ $descripcion ?: 'Agrega una descripcion breve que explique tu propuesta artesanal.' }}</p>
+                    </div>
+
+                    <div class="rounded-[1.5rem] border border-[#ebe6ef] bg-[#fcfbfe] p-4 text-sm text-slate-600">
+                        <p class="font-medium text-slate-900">Ubicacion publica</p>
+                        @if ($tieneLocalFisico)
+                            <p class="mt-2">Negocio con atencion local activa.</p>
+                            <p class="mt-2">{{ collect([$direccionCalle !== '' ? trim($direccionCalle.' '.$direccionNumero) : '', $ciudad])->filter(fn ($item) => trim((string) $item) !== '')->implode(', ') ?: 'Direccion aun no completada.' }}</p>
+                            <p class="mt-2">{{ ($latitud !== null && $latitud !== '' && $longitud !== null && $longitud !== '') ? 'Ubicacion marcada en el mapa.' : 'Aun no hay un punto marcado en el mapa.' }}</p>
+                        @else
+                            <p class="mt-2">Atencion digital o por coordinacion previa.</p>
+                        @endif
                     </div>
 
                     @if ($this->videoEmbedUrl())

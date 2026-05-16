@@ -1,6 +1,134 @@
 import Chart from 'chart.js/auto';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: markerIcon2x,
+    iconUrl: markerIcon,
+    shadowUrl: markerShadow,
+});
 
 const adminChartRegistry = new WeakMap();
+const businessMapRegistry = new Map();
+const businessMapDefaultCenter = [-16.4897, -68.1193];
+
+const parseBusinessCoordinate = (value) => {
+    const parsed = Number.parseFloat(value ?? '');
+
+    return Number.isFinite(parsed) ? parsed : null;
+};
+
+const syncBusinessMapInput = (input, value) => {
+    if (!input) {
+        return;
+    }
+
+    input.value = value;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+};
+
+const updateBusinessMapDisplays = (root, latitude, longitude) => {
+    const latDisplay = root.querySelector('[data-map-lat-display]');
+    const lngDisplay = root.querySelector('[data-map-lng-display]');
+
+    if (latDisplay) {
+        latDisplay.textContent = latitude ?? 'Sin marcar';
+    }
+
+    if (lngDisplay) {
+        lngDisplay.textContent = longitude ?? 'Sin marcar';
+    }
+};
+
+const cleanupBusinessMaps = () => {
+    businessMapRegistry.forEach((instance, element) => {
+        if (element.isConnected) {
+            return;
+        }
+
+        instance.map.remove();
+        businessMapRegistry.delete(element);
+    });
+};
+
+const initializeBusinessMaps = () => {
+    cleanupBusinessMaps();
+
+    document.querySelectorAll('[data-business-location-root]').forEach((root) => {
+        const mapElement = root.querySelector('[data-business-map]');
+
+        if (!mapElement || businessMapRegistry.has(mapElement)) {
+            return;
+        }
+
+        const latInput = root.querySelector('[data-map-lat]');
+        const lngInput = root.querySelector('[data-map-lng]');
+        const initialLatitude = parseBusinessCoordinate(latInput?.value ?? mapElement.dataset.lat);
+        const initialLongitude = parseBusinessCoordinate(lngInput?.value ?? mapElement.dataset.lng);
+
+        const map = L.map(mapElement, {
+            scrollWheelZoom: false,
+        }).setView(
+            initialLatitude !== null && initialLongitude !== null
+                ? [initialLatitude, initialLongitude]
+                : businessMapDefaultCenter,
+            initialLatitude !== null && initialLongitude !== null ? 16 : 12
+        );
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors',
+            maxZoom: 19,
+        }).addTo(map);
+
+        let marker = null;
+
+        const setMarker = (latitude, longitude, options = {}) => {
+            const nextLatitude = Number.parseFloat(latitude.toFixed(7));
+            const nextLongitude = Number.parseFloat(longitude.toFixed(7));
+            const coords = [nextLatitude, nextLongitude];
+
+            if (!marker) {
+                marker = L.marker(coords, { draggable: true }).addTo(map);
+                marker.on('dragend', () => {
+                    const markerPosition = marker.getLatLng();
+                    setMarker(markerPosition.lat, markerPosition.lng, { pan: false });
+                });
+            } else {
+                marker.setLatLng(coords);
+            }
+
+            if (options.pan !== false) {
+                map.setView(coords, Math.max(map.getZoom(), 16));
+            }
+
+            syncBusinessMapInput(latInput, nextLatitude.toFixed(7));
+            syncBusinessMapInput(lngInput, nextLongitude.toFixed(7));
+            updateBusinessMapDisplays(root, nextLatitude.toFixed(7), nextLongitude.toFixed(7));
+        };
+
+        if (initialLatitude !== null && initialLongitude !== null) {
+            setMarker(initialLatitude, initialLongitude, { pan: false });
+        } else {
+            updateBusinessMapDisplays(root, null, null);
+        }
+
+        map.on('click', (event) => {
+            setMarker(event.latlng.lat, event.latlng.lng);
+        });
+
+        map.whenReady(() => {
+            setTimeout(() => map.invalidateSize(), 0);
+        });
+
+        businessMapRegistry.set(mapElement, { map });
+    });
+};
 
 const buildAdminChart = (canvas) => {
     const rawConfig = canvas.dataset.adminChart;
@@ -110,11 +238,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     initializeAdminCharts();
+    initializeBusinessMaps();
 });
 
 document.addEventListener('livewire:navigated', () => {
     destroyDetachedAdminCharts();
     initializeAdminCharts();
+    initializeBusinessMaps();
 });
 
 window.Chart = Chart;

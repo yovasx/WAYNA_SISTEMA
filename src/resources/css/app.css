@@ -160,6 +160,20 @@
         @apply rounded-wayna-xl border border-stroke bg-surface-raised shadow-wayna;
     }
 
+    .wayna-map-shell {
+        @apply overflow-hidden rounded-wayna border border-stroke-soft bg-surface-raised;
+    }
+
+    .wayna-map {
+        min-height: 320px;
+        width: 100%;
+        background: linear-gradient(135deg, rgba(91, 75, 196, 0.08), rgba(184, 106, 79, 0.08));
+    }
+
+    .wayna-map :where(.leaflet-control-attribution, .leaflet-control-zoom a) {
+        font-family: 'DM Sans', sans-serif;
+    }
+
     .landing-page {
         cursor: default;
     }

@@ -25,6 +25,12 @@ class PerfilEmprendedor extends Model
         'logo_url',
         'video_url',
         'redes_sociales',
+        'tiene_local_fisico',
+        'ciudad',
+        'direccion_calle',
+        'direccion_numero',
+        'latitud',
+        'longitud',
         'portada_url',
         'nit',
         'estado',
@@ -38,6 +44,9 @@ class PerfilEmprendedor extends Model
         return [
             'aprobado_en' => 'datetime',
             'redes_sociales' => 'array',
+            'tiene_local_fisico' => 'boolean',
+            'latitud' => 'decimal:7',
+            'longitud' => 'decimal:7',
         ];
     }
 
@@ -92,6 +101,30 @@ class PerfilEmprendedor extends Model
                 'suspendido' => 'suspendido',
                 default => 'pendiente',
             }],
+        );
+    }
+
+    protected function direccionFormateada(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $partes = array_filter([
+                    trim((string) ($this->direccion_calle ?? '')),
+                    trim((string) ($this->direccion_numero ?? '')),
+                ], fn (string $valor) => $valor !== '');
+
+                $direccion = implode(' ', $partes);
+
+                if ($direccion !== '' && $this->ciudad) {
+                    return $direccion.', '.$this->ciudad;
+                }
+
+                if ($direccion !== '') {
+                    return $direccion;
+                }
+
+                return $this->ciudad ?: null;
+            },
         );
     }
 }
