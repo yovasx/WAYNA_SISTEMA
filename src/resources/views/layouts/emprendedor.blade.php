@@ -22,7 +22,7 @@
 
             <div x-cloak x-show="mobileSidebarOpen" class="fixed inset-0 z-30 bg-stone-950/35 backdrop-blur-sm md:hidden" @click="closeMobileSidebar()"></div>
 
-            <div class="min-h-0 md:grid md:transition-[grid-template-columns] md:duration-300 md:ease-out" :style="desktopGridStyle">
+            <div class="min-h-0 md:grid md:grid-cols-[88px_minmax(0,1fr)] md:transition-[grid-template-columns] md:duration-300 md:ease-out" :style="desktopGridStyle">
                 <x-emprendedor.sidebar />
 
                 <main class="min-h-0 min-w-0 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8 lg:py-8">

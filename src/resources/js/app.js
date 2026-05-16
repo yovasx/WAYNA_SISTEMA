@@ -252,11 +252,48 @@ window.Chart = Chart;
 window.adminLayoutState = () => ({
     sidebarHover: false,
     mobileSidebarOpen: false,
+    sidebarPinned: false,
+    isDesktop: false,
+    supportsHover: false,
 
-    init() {},
+    init() {
+        const sync = () => this.syncViewportState();
+
+        this.syncViewportState();
+        window.addEventListener('resize', sync, { passive: true });
+        window.addEventListener('orientationchange', sync, { passive: true });
+    },
+
+    syncViewportState() {
+        const wasDesktop = this.isDesktop;
+
+        this.isDesktop = window.innerWidth >= 768;
+        this.supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+        if (!this.isDesktop) {
+            this.sidebarPinned = false;
+            this.sidebarHover = false;
+            return;
+        }
+
+        this.mobileSidebarOpen = false;
+
+        if (this.supportsHover) {
+            this.sidebarPinned = false;
+            return;
+        }
+
+        if (!wasDesktop) {
+            this.sidebarPinned = true;
+        }
+    },
 
     get sidebarEffective() {
-        if (this.mobileSidebarOpen || this.sidebarHover) return 'expanded';
+        if (!this.isDesktop) {
+            return this.mobileSidebarOpen ? 'expanded' : 'hidden';
+        }
+
+        if (this.sidebarPinned || (this.supportsHover && this.sidebarHover)) return 'expanded';
 
         return 'icons';
     },
@@ -266,22 +303,43 @@ window.adminLayoutState = () => ({
     },
 
     get desktopGridStyle() {
-        return `grid-template-columns: ${this.desktopSidebarWidth}px minmax(0, 1fr);`;
+        return this.isDesktop
+            ? `grid-template-columns: ${this.desktopSidebarWidth}px minmax(0, 1fr);`
+            : '';
     },
 
     handleSidebarEnter() {
-        if (window.innerWidth >= 768) {
+        if (this.isDesktop && this.supportsHover) {
             this.sidebarHover = true;
         }
     },
 
     handleSidebarLeave() {
-        if (window.innerWidth >= 768) {
+        if (this.isDesktop && this.supportsHover) {
             this.sidebarHover = false;
         }
     },
 
+    toggleDesktopSidebar() {
+        if (!this.isDesktop) {
+            return;
+        }
+
+        if (this.supportsHover) {
+            this.sidebarPinned = !this.sidebarPinned;
+            this.sidebarHover = false;
+
+            return;
+        }
+
+        this.sidebarPinned = !this.sidebarPinned;
+    },
+
     openMobileSidebar() {
+        if (this.isDesktop) {
+            return;
+        }
+
         this.mobileSidebarOpen = true;
     },
 

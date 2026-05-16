@@ -16,6 +16,10 @@
                 <span class="material-symbols-outlined">menu</span>
             </button>
 
+            <button type="button" @click="toggleDesktopSidebar()" class="hidden md:inline-flex wayna-icon-btn border-stroke text-ink-soft hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700" aria-label="Alternar barra lateral">
+                <span class="material-symbols-outlined" x-text="sidebarEffective === 'expanded' ? 'left_panel_close' : 'left_panel_open'">left_panel_open</span>
+            </button>
+
             <a href="{{ route('dashboard.emprendedor') }}" wire:navigate class="font-display text-2xl text-primary-600">WAYNA</a>
 
             <div class="hidden md:block">

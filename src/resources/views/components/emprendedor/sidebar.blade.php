@@ -1,7 +1,7 @@
 <aside x-cloak
        @mouseenter="handleSidebarEnter()"
        @mouseleave="handleSidebarLeave()"
-       class="fixed inset-y-0 left-0 z-40 w-[260px] overflow-hidden border-r border-stroke bg-surface-raised pt-20 transition-transform duration-300 ease-out md:static md:z-auto md:w-auto md:pt-0 md:transition-none"
+       class="fixed inset-y-0 left-0 z-40 w-[260px] overflow-hidden border-r border-stroke bg-surface-raised pt-20 transition-transform duration-300 ease-out md:static md:z-auto md:w-full md:shrink-0 md:pt-0 md:transition-none"
        :class="mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'">
     <div class="flex h-full flex-col overflow-hidden px-3 py-4 md:py-6">
         <div class="flex items-start gap-3 rounded-[1.5rem] border border-stroke-soft bg-primary-50/70 px-3 py-4">
