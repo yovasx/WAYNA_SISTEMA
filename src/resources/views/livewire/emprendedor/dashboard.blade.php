@@ -40,7 +40,7 @@
                 'datasets' => [[
                     'data' => $pedidosPorEstado->pluck('total')->values()->all(),
                     'backgroundColor' => [
-                        'rgba(184, 106, 79, 0.88)',
+                        'rgba(212, 163, 64, 0.92)',
                         'rgba(95, 76, 174, 0.88)',
                         'rgba(63, 122, 92, 0.88)',
                         'rgba(41, 31, 88, 0.88)',
@@ -68,7 +68,7 @@
                 'datasets' => [[
                     'label' => 'Ventas por producto',
                     'data' => $topProductos->pluck('ventas')->map(fn ($value) => (float) $value)->values()->all(),
-                    'backgroundColor' => 'rgba(160, 63, 41, 0.82)',
+                    'backgroundColor' => 'rgba(212, 163, 64, 0.88)',
                     'borderRadius' => 10,
                 ]],
             ],
@@ -101,7 +101,7 @@
                     'data' => $inventarioChartData->pluck('total')->values()->all(),
                     'backgroundColor' => [
                         'rgba(95, 76, 174, 0.88)',
-                        'rgba(184, 106, 79, 0.88)',
+                        'rgba(212, 163, 64, 0.92)',
                         'rgba(161, 78, 75, 0.88)',
                     ],
                     'borderWidth' => 0,

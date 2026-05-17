@@ -87,7 +87,7 @@
                 </table>
             </div>
 
-            <div class="mt-6">{{ $transacciones->links() }}</div>
+            <div class="mt-6">{{ $transacciones->links(data: ['scrollTo' => false]) }}</div>
         @endif
     </x-admin.panel-card>
 </div>

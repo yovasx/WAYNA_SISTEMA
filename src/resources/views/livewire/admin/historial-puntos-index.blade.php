@@ -51,7 +51,7 @@
                 </table>
             </div>
 
-            <div class="mt-6">{{ $historial->links() }}</div>
+            <div class="mt-6">{{ $historial->links(data: ['scrollTo' => false]) }}</div>
         @endif
     </x-admin.panel-card>
 </div>

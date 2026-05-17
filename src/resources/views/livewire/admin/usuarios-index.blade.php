@@ -113,7 +113,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="mt-6">{{ $usuarios->links() }}</div>
+            <div class="mt-6">{{ $usuarios->links(data: ['scrollTo' => false]) }}</div>
         @endif
     </x-admin.panel-card>
 

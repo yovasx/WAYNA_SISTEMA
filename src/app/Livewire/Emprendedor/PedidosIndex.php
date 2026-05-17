@@ -6,6 +6,7 @@ use App\Models\Pedido;
 use App\Models\PerfilEmprendedor;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -98,7 +99,7 @@ class PedidosIndex extends Component
 
     private function cambiarEstado(int $pedidoId, string $estadoDestino, string $mensajeExito): void
     {
-        $pedido = $this->pedidoDelPerfil($pedidoId);
+        $pedido = $this->pedidoDelPerfil($pedidoId)->load('items.producto');
 
         $transiciones = [
             'pendiente' => ['confirmado', 'cancelado'],
@@ -116,7 +117,19 @@ class PedidosIndex extends Component
             return;
         }
 
-        $pedido->update(['estado' => $estadoDestino]);
+        DB::transaction(function () use ($pedido, $estadoDestino) {
+            if ($pedido->estado === 'pendiente' && $estadoDestino === 'confirmado') {
+                $this->asegurarStockDisponible($pedido);
+                $this->aplicarImpactoInventario($pedido, -1);
+            }
+
+            if ($pedido->estado === 'confirmado' && $estadoDestino === 'cancelado') {
+                $this->aplicarImpactoInventario($pedido, 1);
+            }
+
+            $pedido->update(['estado' => $estadoDestino]);
+        });
+
         session()->flash('pedidos_estado', $mensajeExito);
     }
 
@@ -139,5 +152,40 @@ class PedidosIndex extends Component
         return Pedido::query()
             ->where('emprendedor_id', $perfil->id)
             ->findOrFail($pedidoId);
+    }
+
+    private function asegurarStockDisponible(Pedido $pedido): void
+    {
+        foreach ($pedido->items as $item) {
+            $producto = $item->producto;
+
+            if (! $producto) {
+                abort(422, 'Uno de los productos del pedido ya no existe.');
+            }
+
+            if ($producto->stock < $item->cantidad) {
+                session()->flash('pedidos_error', 'No hay stock suficiente para confirmar este pedido. Revisa el inventario del producto '.$producto->nombre.'.');
+                abort(422, 'Stock insuficiente para confirmar el pedido.');
+            }
+        }
+    }
+
+    private function aplicarImpactoInventario(Pedido $pedido, int $direction): void
+    {
+        foreach ($pedido->items as $item) {
+            $producto = $item->producto;
+
+            if (! $producto) {
+                continue;
+            }
+
+            $producto->stock = max(0, $producto->stock + ($direction * $item->cantidad));
+            $producto->estado_disponibilidad = match (true) {
+                $producto->stock <= 0 => 'agotado',
+                $producto->stock <= 5 => 'ultimas_unidades',
+                default => 'disponible',
+            };
+            $producto->save();
+        }
     }
 }

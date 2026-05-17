@@ -220,7 +220,7 @@
             </div>
 
             <div class="border-t border-stroke-soft px-6 py-4">
-                {{ $productos->links() }}
+                {{ $productos->links(data: ['scrollTo' => false]) }}
             </div>
         </section>
 

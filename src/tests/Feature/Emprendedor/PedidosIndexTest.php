@@ -92,6 +92,20 @@ class PedidosIndexTest extends TestCase
     {
         $emprendedor = User::factory()->emprendedor()->create();
         $cliente = User::factory()->comprador()->create();
+        $categoria = Categoria::query()->create([
+            'nombre' => 'Ceramica',
+            'icono' => 'local_cafe',
+            'descripcion' => 'Piezas ceramicas',
+        ]);
+        $producto = Producto::query()->create([
+            'emprendedor_id' => $emprendedor->perfilEmprendedor->id,
+            'categoria_id' => $categoria->id,
+            'nombre' => 'Taza artesanal',
+            'precio' => 80,
+            'stock' => 6,
+            'estado_stock' => 'disponible',
+            'activo' => true,
+        ]);
 
         $pedido = Pedido::query()->create([
             'codigo' => 'PED-STATE-001',
@@ -102,6 +116,14 @@ class PedidosIndexTest extends TestCase
             'total' => 80,
         ]);
 
+        PedidoItem::query()->create([
+            'pedido_id' => $pedido->id,
+            'producto_id' => $producto->id,
+            'cantidad' => 1,
+            'precio_unitario' => 80,
+            'subtotal' => 80,
+        ]);
+
         $this->actingAs($emprendedor);
 
         Livewire::test(PedidosIndex::class)
@@ -109,11 +131,68 @@ class PedidosIndexTest extends TestCase
             ->assertHasNoErrors();
 
         $this->assertSame('confirmado', $pedido->fresh()->estado);
+        $this->assertSame(5, $producto->fresh()->stock);
+        $this->assertSame('ultimas_unidades', $producto->fresh()->estado_disponibilidad);
 
         Livewire::test(PedidosIndex::class)
             ->call('marcarEntregado', $pedido->id)
             ->assertHasNoErrors();
 
         $this->assertSame('entregado', $pedido->fresh()->estado);
+        $this->assertSame(5, $producto->fresh()->stock);
+    }
+
+    public function test_canceling_a_confirmed_order_restores_inventory(): void
+    {
+        $emprendedor = User::factory()->emprendedor()->create();
+        $cliente = User::factory()->comprador()->create();
+        $categoria = Categoria::query()->create([
+            'nombre' => 'Joyeria',
+            'icono' => 'diamond',
+            'descripcion' => 'Joyeria artesanal',
+        ]);
+        $producto = Producto::query()->create([
+            'emprendedor_id' => $emprendedor->perfilEmprendedor->id,
+            'categoria_id' => $categoria->id,
+            'nombre' => 'Collar de plata',
+            'precio' => 140,
+            'stock' => 3,
+            'estado_stock' => 'ultimas_unidades',
+            'activo' => true,
+        ]);
+
+        $pedido = Pedido::query()->create([
+            'codigo' => 'PED-STATE-002',
+            'usuario_id' => $cliente->id,
+            'emprendedor_id' => $emprendedor->perfilEmprendedor->id,
+            'estado' => 'pendiente',
+            'metodo_entrega' => 'retiro_tienda',
+            'total' => 280,
+        ]);
+
+        PedidoItem::query()->create([
+            'pedido_id' => $pedido->id,
+            'producto_id' => $producto->id,
+            'cantidad' => 2,
+            'precio_unitario' => 140,
+            'subtotal' => 280,
+        ]);
+
+        $this->actingAs($emprendedor);
+
+        Livewire::test(PedidosIndex::class)
+            ->call('confirmarPedido', $pedido->id)
+            ->assertHasNoErrors();
+
+        $this->assertSame(1, $producto->fresh()->stock);
+        $this->assertSame('ultimas_unidades', $producto->fresh()->estado_disponibilidad);
+
+        Livewire::test(PedidosIndex::class)
+            ->call('cancelarPedido', $pedido->id)
+            ->assertHasNoErrors();
+
+        $this->assertSame('cancelado', $pedido->fresh()->estado);
+        $this->assertSame(3, $producto->fresh()->stock);
+        $this->assertSame('ultimas_unidades', $producto->fresh()->estado_disponibilidad);
     }
 }

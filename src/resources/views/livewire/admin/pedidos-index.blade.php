@@ -55,7 +55,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="mt-6">{{ $pedidos->links() }}</div>
+            <div class="mt-6">{{ $pedidos->links(data: ['scrollTo' => false]) }}</div>
         @endif
     </x-admin.panel-card>
 </div>

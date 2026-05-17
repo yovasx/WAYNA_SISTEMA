@@ -59,7 +59,7 @@
                 </table>
             </div>
 
-            <div class="mt-6">{{ $insignias->links() }}</div>
+            <div class="mt-6">{{ $insignias->links(data: ['scrollTo' => false]) }}</div>
         @endif
     </x-admin.panel-card>
 

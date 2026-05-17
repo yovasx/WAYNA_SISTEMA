@@ -18,6 +18,7 @@ class Dashboard extends Component
     {
         $inicioMes = Carbon::now()->startOfMonth();
         $inicioManana = Carbon::tomorrow();
+        $salesStates = config('reporting.sales_states', ['confirmado', 'entregado', 'completado']);
 
         $ventasMensuales = [];
         $donacionesMensuales = [];
@@ -25,7 +26,7 @@ class Dashboard extends Component
         if (Schema::hasTable('pedidos')) {
             $ventasMensuales = DB::table('pedidos')
                 ->select(DB::raw('COALESCE(SUM(total), 0) as total'), DB::raw("to_char(created_at, 'YYYY-MM') as mes"))
-                ->whereIn('estado', ['confirmado', 'entregado', 'completado'])
+                ->whereIn('estado', $salesStates)
                 ->where('created_at', '>=', now()->subMonths(6))
                 ->groupBy(DB::raw("to_char(created_at, 'YYYY-MM')"))
                 ->orderBy('mes')
@@ -47,7 +48,7 @@ class Dashboard extends Component
             'emprendedores_activos' => PerfilEmprendedor::query()->where('estado', 'activo')->count(),
             'ventas_mes' => Schema::hasTable('pedidos')
                 ? (float) DB::table('pedidos')
-                    ->whereIn('estado', ['confirmado', 'entregado', 'completado'])
+                    ->whereIn('estado', $salesStates)
                     ->where('created_at', '>=', $inicioMes)
                     ->sum('total')
                 : 0,

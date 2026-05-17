@@ -16,6 +16,7 @@ L.Icon.Default.mergeOptions({
 const adminChartRegistry = new WeakMap();
 const businessMapRegistry = new Map();
 const businessMapDefaultCenter = [-16.4897, -68.1193];
+let chartRefreshFrame = null;
 
 const parseBusinessCoordinate = (value) => {
     const parsed = Number.parseFloat(value ?? '');
@@ -168,6 +169,23 @@ const initializeAdminCharts = () => {
     });
 };
 
+const refreshInteractivePanels = () => {
+    destroyDetachedAdminCharts();
+    initializeAdminCharts();
+    initializeBusinessMaps();
+};
+
+const scheduleInteractiveRefresh = () => {
+    if (chartRefreshFrame !== null) {
+        cancelAnimationFrame(chartRefreshFrame);
+    }
+
+    chartRefreshFrame = requestAnimationFrame(() => {
+        chartRefreshFrame = null;
+        refreshInteractivePanels();
+    });
+};
+
 const destroyDetachedAdminCharts = () => {
     document.querySelectorAll('[data-admin-chart]').forEach((canvas) => {
         if (!canvas.isConnected) {
@@ -237,14 +255,21 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('resize', syncActiveLink);
     });
 
-    initializeAdminCharts();
-    initializeBusinessMaps();
+    refreshInteractivePanels();
 });
 
 document.addEventListener('livewire:navigated', () => {
-    destroyDetachedAdminCharts();
-    initializeAdminCharts();
-    initializeBusinessMaps();
+    scheduleInteractiveRefresh();
+});
+
+document.addEventListener('livewire:init', () => {
+    if (!window.Livewire?.hook) {
+        return;
+    }
+
+    window.Livewire.hook('morphed', () => {
+        scheduleInteractiveRefresh();
+    });
 });
 
 window.Chart = Chart;

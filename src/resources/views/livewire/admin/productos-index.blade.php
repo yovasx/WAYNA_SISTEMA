@@ -182,7 +182,7 @@
                 </table>
             </div>
 
-            <div class="mt-6">{{ $productos->links() }}</div>
+            <div class="mt-6">{{ $productos->links(data: ['scrollTo' => false]) }}</div>
         @endif
     </x-admin.panel-card>
 

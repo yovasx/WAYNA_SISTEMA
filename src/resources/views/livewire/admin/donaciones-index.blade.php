@@ -40,7 +40,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="mt-6">{{ $donaciones->links() }}</div>
+            <div class="mt-6">{{ $donaciones->links(data: ['scrollTo' => false]) }}</div>
         @endif
     </x-admin.panel-card>
 </div>

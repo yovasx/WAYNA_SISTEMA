@@ -57,7 +57,7 @@
                 </table>
             </div>
 
-            <div class="mt-6">{{ $puntosDonadores->links() }}</div>
+            <div class="mt-6">{{ $puntosDonadores->links(data: ['scrollTo' => false]) }}</div>
         @endif
     </x-admin.panel-card>
 </div>
